@@ -21,13 +21,20 @@ class _QuizPageState extends State<QuizPage> {
   void initState() {
     super.initState();
     _startTimer();
+    colorSelect();
 // Generate a random index within the range of the colorList
+
+  }
+
+  colorSelect(){
     int randomIndex = Random().nextInt(colorList.length);
 
 // Assign the randomly selected color to the 'color' variable
-    color = colorList[randomIndex];
-  }
+    setState(() {
+      color = colorList[randomIndex];
 
+    });
+  }
   @override
   void dispose() {
     _timer?.cancel();
@@ -50,14 +57,14 @@ class _QuizPageState extends State<QuizPage> {
   Color color = Colors.transparent;
 
   List<Color> colorList = [
-    Colors.red,
+    Colors.orangeAccent,
     Colors.blue,
     Colors.green,
     Colors.yellow,
     Colors.orange,
     Colors.purple,
     Colors.teal,
-    Colors.pink,
+    Colors.deepPurpleAccent,
   ];
 
   String _formatDuration(Duration duration) {
@@ -124,6 +131,7 @@ class _QuizPageState extends State<QuizPage> {
       },
     );
   }
+  bool shouldRevealAnswer = false;
   List<Question> questionList = getQuestions();
   int currentQuestionIndex = 0;
   int score = 0;
@@ -284,10 +292,10 @@ class _QuizPageState extends State<QuizPage> {
                             topLeft: Radius.circular(20))),
                     width: MediaQuery.sizeOf(context).width * 0.95,
                     height: 35,
-                    child: const Center(
+                    child: Center(
                       child: Text(
-                        "Question 1",
-                        style: TextStyle(color: Colors.black, fontSize: 15),
+                        "Question ${currentQuestionIndex + 1}",
+                        style: const TextStyle(color: Colors.black, fontSize: 15),
                       ),
                     ),
                   ),
@@ -319,6 +327,7 @@ class _QuizPageState extends State<QuizPage> {
                   itemCount: questionList[currentQuestionIndex].answersList.length,
                   itemBuilder: (BuildContext context, int index) {
                     Answer answer = questionList[currentQuestionIndex].answersList[index];
+
                     return SizedBox(
                       width: MediaQuery.sizeOf(context).width *
                           0.4, // Adjust the width as needed
@@ -330,12 +339,35 @@ class _QuizPageState extends State<QuizPage> {
                               borderRadius: BorderRadius.all(Radius.circular(20)),
                             ),
                           ),
-                          backgroundColor: MaterialStateProperty.all(color),
+                          backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                (Set<MaterialState> states) {
+                              if (states.contains(MaterialState.pressed)) {
+                                // Button is pressed
+                                return color;
+                              } else if (shouldRevealAnswer) {
+                                // Reveal the correct answer
+                                if (answer.isCorrect) {
+                                  return Colors.green;
+                                } else {
+                                  return Colors.red;
+                                }
+                              } else if (selectedAnswer != null && answer == selectedAnswer) {
+                                // Selected answer
+                                return color;
+                              } else {
+                                // Default color
+                                return color;
+                              }
+                            },
+                          ),
+
                         ),
                         onPressed: () {
+
                           setState(() {
                             selectedAnswer = answer;
                           });
+                          shouldRevealAnswer = true;
                         },
                         child: Center(
                           child: Text(
@@ -352,48 +384,6 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
             ),
-
-            // Padding(
-            //   padding: const EdgeInsets.all(25),
-            //   child: SizedBox(
-            //       height: MediaQuery.sizeOf(context).height * 0.28,
-            //       child: GridView.builder(
-            //         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            //           crossAxisCount: 2,
-            //           crossAxisSpacing: 30,
-            //           mainAxisSpacing: 20,
-            //           childAspectRatio:
-            //               2.0, // Adjust the aspect ratio as needed
-            //         ),
-            //         itemCount: 4,
-            //         itemBuilder: (BuildContext context, int index) {
-            //           return SizedBox(
-            //             width: MediaQuery.sizeOf(context).width *
-            //                 0.4, // Adjust the width as needed
-            //             height: 200, // Adjust the height as needed
-            //             child: ElevatedButton(
-            //               style: ButtonStyle(
-            //                   shape: MaterialStateProperty.all(
-            //                       const RoundedRectangleBorder(
-            //                           borderRadius: BorderRadius.all(
-            //                               Radius.circular(20)))),
-            //                   backgroundColor:
-            //                       MaterialStateProperty.all(color)),
-            //               onPressed: () {},
-            //               child: Center(
-            //                 child: Text(
-            //                   'Answer $index',
-            //                   style: const TextStyle(
-            //                     fontSize: 20,
-            //                     color: Colors.white,
-            //                   ),
-            //                 ),
-            //               ),
-            //             ),
-            //           );
-            //         },
-            //       )),
-            // ),
             SizedBox(
                 height: 35,
                 width: MediaQuery.sizeOf(context).width * 0.5,
@@ -405,14 +395,35 @@ class _QuizPageState extends State<QuizPage> {
                                     BorderRadius.all(Radius.circular(50)))),
                         backgroundColor:
                             MaterialStateProperty.all(const Color(0xff494FC7))),
-                    onPressed: () {},
-                    child: const Text(
+                    onPressed: () {
+                     // print( questionList.length);
+                      if(currentQuestionIndex + 1 == questionList.length ){
+                      }
+                      else {
+                        setState(() {
+                        // print(questionList[currentQuestionIndex].answersList[currentQuestionIndex].answerText);
+                        currentQuestionIndex++;
+                        colorSelect();
+                        shouldRevealAnswer = false;
+
+
+                        });
+                      }
+                    },
+                    child: currentQuestionIndex + 1 == questionList.length ? const Text(
+                      "Done",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w300),
+                    ) : const Text(
                       "Next",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 15,
                           fontWeight: FontWeight.w300),
-                    ))),
+                    )
+                )),
           ],
         ),
       ),

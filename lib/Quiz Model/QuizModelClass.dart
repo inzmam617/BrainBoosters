@@ -51,6 +51,8 @@ List<Question> getQuestions() {
     [
       Answer("True", true),
       Answer("False", false),
+      Answer("Maybe", false),
+      Answer("No Sure", false),
     ],
   ));
 

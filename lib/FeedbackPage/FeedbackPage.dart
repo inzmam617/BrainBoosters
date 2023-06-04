@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
 class FeedBackScreen extends StatefulWidget {
   const FeedBackScreen({Key? key}) : super(key: key);
@@ -44,7 +45,7 @@ class _FeedBackScreenState extends State<FeedBackScreen> {
                         width: 35,
                         child: IconButton(
                           onPressed: () {
-                            Navigator.of(context).pop();
+                           Get.back();
                           },
                           icon: const Icon(
                             Icons.arrow_back_ios,
@@ -94,11 +95,11 @@ class _FeedBackScreenState extends State<FeedBackScreen> {
               ),
             ),
           ),
-          SizedBox(height: 30,),
-          Center(
+          const SizedBox(height: 30,),
+          const Center(
             child: Text('How Would you \n Rate Our App Experience ?',style: TextStyle(color: Colors.black,fontSize: 25,fontWeight: FontWeight.w200),textAlign: TextAlign.center,),
           ),
-          SizedBox(height: 30,),
+          const SizedBox(height: 30,),
 
           RatingBar.builder(
             initialRating: 3,
@@ -106,17 +107,16 @@ class _FeedBackScreenState extends State<FeedBackScreen> {
             direction: Axis.horizontal,
             allowHalfRating: true,
             itemCount: 5,
-            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-            itemBuilder: (context, _) => Icon(
+            itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+            itemBuilder: (context, _) => const Icon(
               Icons.star,
               color: Colors.amber,
             ),
             onRatingUpdate: (rating) {
-              print(rating);
             },
           ),
-          SizedBox(height: 20,),
-          Text("Select One")
+          const SizedBox(height: 20,),
+          const Text("Select One")
         ],
       ),
     );

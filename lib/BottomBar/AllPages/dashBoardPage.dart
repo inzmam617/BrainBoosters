@@ -1,6 +1,7 @@
 import 'package:brainboosters/QuizePage/QuizePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
 class DashPage extends StatefulWidget {
   const DashPage({Key? key}) : super(key: key);
@@ -137,7 +138,7 @@ class _DashPageState extends State<DashPage> {
               ),
             ],
           ),
-          SizedBox(height: 50,),
+          const SizedBox(height: 50,),
           SizedBox(
               height: 35,
               width: MediaQuery.sizeOf(context).width * 0.5,
@@ -148,13 +149,12 @@ class _DashPageState extends State<DashPage> {
                               borderRadius: BorderRadius.all(
                                   Radius.circular(20)))),
                       backgroundColor:
-                      MaterialStateProperty.all(Color(0xff494FC7))),
+                      MaterialStateProperty.all(const Color(0xff494FC7))),
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                      return const QuizPage();
-                    }));
+
+                    Get.to(() => const QuizPage());
                   },
-                  child: Text(
+                  child: const Text(
                     "Play",
                     style: TextStyle(
                         color: Colors.white,

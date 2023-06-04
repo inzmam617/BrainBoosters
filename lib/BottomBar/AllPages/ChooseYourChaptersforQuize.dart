@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
+import 'package:get/get.dart';
 import '../BottomNavBar.dart';
 
 class ChooseYourChaptersForQuiz extends StatefulWidget {
@@ -76,7 +76,7 @@ class _ChooseYourChaptersForQuizState extends State<ChooseYourChaptersForQuiz> {
                                                 MaterialStateProperty.all(
                                                     Colors.white)),
                                         onPressed: () {
-                                          Navigator.of(context).pop();
+                                         Get.back();
                                         },
                                         child: const Center(
                                           child: Icon(
@@ -185,9 +185,8 @@ class _ChooseYourChaptersForQuizState extends State<ChooseYourChaptersForQuiz> {
               itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
                 onTap: (){
-                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                    return const BottomNavBar(page: 2);
-                  }));
+
+                  Get.to(() => const BottomNavBar(page: 2));
                 },
                 child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),

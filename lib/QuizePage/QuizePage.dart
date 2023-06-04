@@ -243,6 +243,7 @@ class _QuizPageState extends State<QuizPage> {
                           const SizedBox(
                             width: 5,
                           ),
+
                           Text(
                             "${_formatDuration(Duration(seconds: _seconds))} sec",
                             style: const TextStyle(fontSize: 16),
@@ -251,6 +252,8 @@ class _QuizPageState extends State<QuizPage> {
                       ),
                     ),
                   ),
+                  Text("${score}"),
+
                   Container(
                     height: 35,
                     width: 35,
@@ -294,7 +297,7 @@ class _QuizPageState extends State<QuizPage> {
                     height: 35,
                     child: Center(
                       child: Text(
-                        "Question ${currentQuestionIndex + 1}",
+                        "Question (${currentQuestionIndex + 1}/${questionList.length})",
                         style: const TextStyle(color: Colors.black, fontSize: 15),
                       ),
                     ),
@@ -304,7 +307,6 @@ class _QuizPageState extends State<QuizPage> {
                   ),
                   Center(
                     child: Text(
-                      // "What did the first World Start",
                       questionList[currentQuestionIndex].questionText.toString(),
 
                       style: const TextStyle(color: Colors.black, fontSize: 17),
@@ -368,6 +370,13 @@ class _QuizPageState extends State<QuizPage> {
                             selectedAnswer = answer;
                           });
                           shouldRevealAnswer = true;
+                          if(selectedAnswer?.isCorrect == true){
+
+                            score++;
+
+                        }else{
+
+                          }
                         },
                         child: Center(
                           child: Text(

@@ -1,3 +1,4 @@
+import 'package:brainboosters/QuizePage/QuizePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -148,7 +149,11 @@ class _DashPageState extends State<DashPage> {
                                   Radius.circular(20)))),
                       backgroundColor:
                       MaterialStateProperty.all(Color(0xff494FC7))),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+                      return const QuizPage();
+                    }));
+                  },
                   child: Text(
                     "Play",
                     style: TextStyle(

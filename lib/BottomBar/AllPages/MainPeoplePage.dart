@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
 class MainPeoplePage extends StatefulWidget {
   const MainPeoplePage({Key? key}) : super(key: key);
@@ -114,7 +115,6 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                                               MaterialStateProperty.all(
                                                   Colors.white)),
                                           onPressed: () {
-                                            Navigator.of(context).pop();
                                           },
                                           child: const Center(
                                             child: Text("Invite" ,style: TextStyle(color: Colors.red,fontSize: 10),),
@@ -136,7 +136,6 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                                               MaterialStateProperty.all(
                                                   Colors.white)),
                                           onPressed: () {
-                                            Navigator.of(context).pop();
                                           },
                                           child: const Center(
                                             child: Text("Chat" ,style: TextStyle(color: Colors.green,fontSize: 10),),

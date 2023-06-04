@@ -1,6 +1,8 @@
 import 'package:brainboosters/ChooseCourseStudy/ChooseCourse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -34,9 +36,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     backgroundColor:
                         MaterialStateProperty.all(const Color(0xff494FC7))),
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                    return ChooseCoursePage();
-                  }));
+                  Get.to(()  =>const ChooseCoursePage());
+
+
                 },
                 child: Row(
                   children: [
@@ -59,7 +61,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.all(Radius.circular(10)))),
                     backgroundColor:
                         MaterialStateProperty.all(Colors.white)),
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(()  =>const ChooseCoursePage());
+
+                },
                 child: Row(
                   children: [
                     SvgPicture.asset("assets/google.svg"),
@@ -81,7 +86,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.all(Radius.circular(10)))),
                     backgroundColor:
                         MaterialStateProperty.all(Colors.black)),
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(()  =>const ChooseCoursePage());
+
+                },
                 child: Row(
                   children: [
                     SvgPicture.asset("assets/apple.svg"),

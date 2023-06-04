@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
 import '../Quiz Model/QuizModelClass.dart';
 
@@ -73,7 +73,8 @@ class _QuizPageState extends State<QuizPage> {
     final seconds = twoDigits(duration.inSeconds.remainder(60));
     return '$minutes:$seconds';
   }
-  Future<void> _showAlertDialog() async {
+  String choose = "";
+  Future<void> _showAlertDialog() {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -87,55 +88,247 @@ class _QuizPageState extends State<QuizPage> {
               ],
             ),
           ),
-          actions: <Widget>[
+          actions: [
+            Row(
+              children: <Widget>[
 
-            SizedBox(
-              height: 30,
+                SizedBox(
+                  height: 30,
 
-              width: 150,
-              child: ElevatedButton(
-                style: ButtonStyle(
-                    shape: MaterialStateProperty.all(const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20)))),
-                    backgroundColor:
-                    MaterialStateProperty.all(const Color(0xff494FC7))),
-                child: const Text('Yes'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
+                  width: 150,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        shape: MaterialStateProperty.all(const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20)))),
+                        backgroundColor:
+                        MaterialStateProperty.all(const Color(0xff494FC7))),
+                    child: const Text('Yes'),
+                    onPressed: () {
+                     Get.back();
+                     Get.back();
 
-                  // Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                  //   return const BottomNavBar(page: 0,);
-                  // }));
-                },
-              ),
-            ),
 
-            SizedBox(
-              height: 30,
-              width: 150,
-              child: ElevatedButton(
-                style: ButtonStyle(
-                    shape: MaterialStateProperty.all(const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20)))),
-                    backgroundColor:
-                    MaterialStateProperty.all(Colors.white)),
-                child: const Text('Back',style: TextStyle(color: Colors.black),),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
+                    },
+                  ),
+                ),
+                const SizedBox(width: 10,),
+
+                SizedBox(
+                  height: 30,
+                  width: 150,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      // foregroundColor: MaterialStateProperty.all(Colors.black),
+                      // overlayColor: MaterialStateProperty.all(Colors.black),
+                        // shadowColor: MaterialStateProperty.all(Colors.black),
+                        shape: MaterialStateProperty.all(const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20)))),
+                        backgroundColor:
+                        MaterialStateProperty.all(Colors.white)),
+                    child: const Text('Back',style: TextStyle(color: Colors.black),),
+                    onPressed: () {
+                     Get.back();
+                    },
+                  ),
+                ),
+              ],
             ),
           ],
         );
       },
     );
   }
+
+  AlertDialog showAlertDialogForMusic() {
+    return AlertDialog(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text('Music', textAlign: TextAlign.center),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+            children: [
+              Container(
+                height: 35,
+                decoration: const BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      blurRadius: 3.5,
+                    ),
+                  ],
+                  color:  Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(25)),
+                ),
+                child: MaterialButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  onPressed: () {
+                  },
+                  child: const Center(
+                    child: Text(
+                      "Fast-Tempo",
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Container(
+                height: 35,
+                decoration: const BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      blurRadius: 3.5,
+                    ),
+                  ],
+                  color:   Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(25)),
+                ),
+                child: MaterialButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  onPressed: () {
+                  },
+                  child: const Center(
+                    child: Text(
+                      "Medium-Tempo",
+                      style: TextStyle(
+                        color:  Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                height: 35,
+                decoration: const BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      blurRadius: 3.5,
+                    ),
+                  ],
+                  color:  Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(25)),
+                ),
+                child: MaterialButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  onPressed: () {
+                  },
+                  child: const Center(
+                    child: Text(
+                      "Slow-Tempo",
+                      style: TextStyle(
+                        color:  Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Container(
+                height: 35,
+                decoration: const BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      blurRadius: 3.5,
+                    ),
+                  ],
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(25)),
+                ),
+                child: MaterialButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  onPressed: () {
+                  },
+                  child: const Center(
+                    child: Text(
+                      "Add Spotify",
+                      style: TextStyle(
+                        color:  Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 120,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    backgroundColor: MaterialStateProperty.all(const Color(0xff494FC7)),
+                  ),
+                  child: const Text('Done'),
+                  onPressed: () {
+                    Get.back();
+                  },
+                ),
+              ),
+              const SizedBox(height: 10),
+              SizedBox(
+                width: 120,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    backgroundColor: MaterialStateProperty.all(Colors.white),
+                  ),
+                  child: const Text('Back', style: TextStyle(color: Colors.black)),
+                  onPressed: () {
+                    Get.back();
+                  },
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+
   bool shouldRevealAnswer = false;
   List<Question> questionList = getQuestions();
   int currentQuestionIndex = 0;
   int score = 0;
   Answer? selectedAnswer;
+  bool selected = false;
 
   @override
   Widget build(BuildContext context) {
@@ -173,8 +366,8 @@ class _QuizPageState extends State<QuizPage> {
                             child: Padding(
                               padding: const EdgeInsets.all(2.0),
                               child: Container(
-                                height: 30,
-                                width: 30,
+                                height: 25,
+                                width: 25,
                                 decoration: const BoxDecoration(
                                     color: Colors.white,
                                     borderRadius:
@@ -182,17 +375,17 @@ class _QuizPageState extends State<QuizPage> {
                                 child: const Center(
                                     child: Icon(
                                   Icons.arrow_back_ios,
-                                  size: 18,
+                                  size: 15,
                                 )),
                               ),
                             ),
                           ),
                           const SizedBox(
-                            width: 10,
+                            width: 8,
                           ),
                           const Text(
                             "Programming test",
-                            style: TextStyle(color: Colors.white, fontSize: 17),
+                            style: TextStyle(color: Colors.white, fontSize: 15),
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(
@@ -252,8 +445,6 @@ class _QuizPageState extends State<QuizPage> {
                       ),
                     ),
                   ),
-                  Text("${score}"),
-
                   Container(
                     height: 35,
                     width: 35,
@@ -265,7 +456,14 @@ class _QuizPageState extends State<QuizPage> {
                         borderRadius: BorderRadius.all(Radius.circular(100))),
                     child: Center(
                         child: IconButton(
-                      onPressed: () {},
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return showAlertDialogForMusic();
+                              },
+                            );
+                          },
                       icon: const Icon(Icons.music_note),
                     )),
                   )
@@ -341,41 +539,47 @@ class _QuizPageState extends State<QuizPage> {
                               borderRadius: BorderRadius.all(Radius.circular(20)),
                             ),
                           ),
-                          backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                               backgroundColor: MaterialStateProperty.resolveWith<Color>(
                                 (Set<MaterialState> states) {
-                              if (states.contains(MaterialState.pressed)) {
-                                // Button is pressed
-                                return color;
-                              } else if (shouldRevealAnswer) {
-                                // Reveal the correct answer
-                                if (answer.isCorrect) {
-                                  return Colors.green;
-                                } else {
-                                  return Colors.red;
-                                }
-                              } else if (selectedAnswer != null && answer == selectedAnswer) {
-                                // Selected answer
-                                return color;
-                              } else {
-                                // Default color
-                                return color;
-                              }
+                                  if (states.contains(MaterialState.pressed)) {
+                                    // Button is pressed
+                                    return color;
+                                  } else if (shouldRevealAnswer) {
+                                    // Reveal the correct answer
+                                    if (answer.isCorrect) {
+                                      return Colors.green;
+                                    } else if (selectedAnswer == answer) {
+                                      // Selected answer and it is wrong
+                                      return Colors.black;
+                                    } else {
+                                      return Colors.red;
+                                    }
+                                  } else if (selectedAnswer != null && answer == selectedAnswer) {
+                                    // Selected answer
+                                    return Colors.black;
+                                  } else {
+                                    // Default color
+                                    return color;
+                                  }
                             },
                           ),
 
                         ),
                         onPressed: () {
+                          if(selected){
 
-                          setState(() {
-                            selectedAnswer = answer;
-                          });
-                          shouldRevealAnswer = true;
-                          if(selectedAnswer?.isCorrect == true){
+                          }else {
+                            setState(() {
+                              selectedAnswer = answer;
+                              choose = "answer";
+                              selected = true;
+                            });
+                            shouldRevealAnswer = true;
+                            if (selectedAnswer?.isCorrect == true) {
+                              score++;
+                            } else {
 
-                            score++;
-
-                        }else{
-
+                            }
                           }
                         },
                         child: Center(
@@ -406,17 +610,25 @@ class _QuizPageState extends State<QuizPage> {
                             MaterialStateProperty.all(const Color(0xff494FC7))),
                     onPressed: () {
                      // print( questionList.length);
-                      if(currentQuestionIndex + 1 == questionList.length ){
+                      if(choose != "") {
+                        if (currentQuestionIndex + 1 == questionList.length) {}
+                        else {
+                          setState(() {
+                            // print(questionList[currentQuestionIndex].answersList[currentQuestionIndex].answerText);
+                            currentQuestionIndex++;
+                            colorSelect();
+                            shouldRevealAnswer = false;
+                            choose = "";
+                            selected = false;
+                          });
+                        }
                       }
-                      else {
-                        setState(() {
-                        // print(questionList[currentQuestionIndex].answersList[currentQuestionIndex].answerText);
-                        currentQuestionIndex++;
-                        colorSelect();
-                        shouldRevealAnswer = false;
+                      else{
+                        ScaffoldMessenger.of(context).showSnackBar( const SnackBar(
+                          content: Text('Please Select an Answer'),
+                          duration: Duration(seconds: 1),
 
-
-                        });
+                        ));
                       }
                     },
                     child: currentQuestionIndex + 1 == questionList.length ? const Text(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
+import 'package:get/get.dart';
 import 'ChooseYourStudyforQuize.dart';
 
 class HomePage extends StatefulWidget {
@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
                   alignment: Alignment.topRight,
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pop();
+                      Get.back();
                     },
                     child: const Icon(
                       Icons.close,
@@ -52,10 +52,10 @@ class _HomePageState extends State<HomePage> {
                             const Color(0xff494FC7))),
                     child: const Text('Play Solo'),
                     onPressed: () {
-                      Navigator.of(context).pop();
-                      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                        return const ChooseYourStudyForQuiz();
-                      }));
+                      Get.back();
+                      Get.to( () =>  const ChooseYourStudyForQuiz());
+
+
                     },
                   ),
                 ),
@@ -77,11 +77,8 @@ class _HomePageState extends State<HomePage> {
                       style: TextStyle(color: Colors.white),
                     ),
                     onPressed: () {
-                      Navigator.of(context).pop();
-
-                      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                        return const ChooseYourStudyForQuiz();
-                      }));
+                      Get.back();
+                      Get.to(() =>  const ChooseYourStudyForQuiz());
                     },
                   ),
                 ),
@@ -103,11 +100,9 @@ class _HomePageState extends State<HomePage> {
                       style: TextStyle(color: Colors.white),
                     ),
                     onPressed: () {
-                      Navigator.of(context).pop();
-
-                      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                        return const ChooseYourStudyForQuiz();
-                      }));                    },
+                      Get.back();
+                      Get.to(() =>  const ChooseYourStudyForQuiz());
+                      },
                   ),
                 ),
               ],

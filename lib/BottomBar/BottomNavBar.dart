@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'AllPages/HomePage.dart';
 import 'AllPages/MainPeoplePage.dart';
-import 'AllPages/QuizePage.dart';
+import 'AllPages/dashBoardPage.dart';
 import 'AllPages/SettingsPage.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -20,7 +20,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   static const List<Widget> _widgetOptions = <Widget>[
     HomePage(),
     MainPeoplePage(),
-    QuizPage(),
+    DashPage(),
     SettingPage()
 
   ];

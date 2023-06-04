@@ -41,7 +41,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
                       child: const Text('Yes'),
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                          return BottomNavBar(page: 0,);
+                          return const BottomNavBar(page: 0,);
                         }));
                       },
                     ),

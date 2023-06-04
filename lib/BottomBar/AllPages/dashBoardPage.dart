@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class QuizPage extends StatefulWidget {
-  const QuizPage({Key? key}) : super(key: key);
+class DashPage extends StatefulWidget {
+  const DashPage({Key? key}) : super(key: key);
 
   @override
-  State<QuizPage> createState() => _QuizPageState();
+  State<DashPage> createState() => _DashPageState();
 }
 
-class _QuizPageState extends State<QuizPage> {
+class _DashPageState extends State<DashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +22,7 @@ class _QuizPageState extends State<QuizPage> {
               Align(
                 alignment: Alignment.topLeft,
                 child: Container(
-                  width: MediaQuery.of(context).size.width * 0.5,
+                  width: MediaQuery.of(context).size.width * 0.4,
                   height: 35,
                   decoration: const BoxDecoration(
                       boxShadow: [
@@ -34,8 +34,8 @@ class _QuizPageState extends State<QuizPage> {
                       color: Color(0xff494FC7)),
                   child: const Center(
                       child: Text(
-                    "Recently Played",
-                    style: TextStyle(color: Colors.white, fontSize: 18),
+                    "DashBoard",
+                    style: TextStyle(color: Colors.white, fontSize: 17),
                     textAlign: TextAlign.center,
                   )),
                 ),
@@ -43,7 +43,10 @@ class _QuizPageState extends State<QuizPage> {
               const SizedBox(
                 width: 20,
               ),
-              SvgPicture.asset("assets/logo.svg"),
+              SvgPicture.asset("assets/logo.svg",fit: BoxFit.scaleDown,),
+              const SizedBox(
+                width: 10,
+              ),
             ],
           ),
           const SizedBox(
@@ -78,7 +81,7 @@ class _QuizPageState extends State<QuizPage> {
                             color: Color(0xffC3D7A2)),
                         child: const Center(
                             child: Text(
-                          "Quiz History",
+                          "Dash History",
                           style: TextStyle(color: Colors.white, fontSize: 16),
                         )),
                       ),

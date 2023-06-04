@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
         return AlertDialog(
 
           // <-- SEE HERE
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(20))),
 
           content: SingleChildScrollView(
@@ -31,14 +31,14 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {
                       Navigator.of(context).pop();
                     },
-                    child: Icon(
+                    child: const Icon(
                       Icons.close,
                       color: Colors.grey,
                     ),
                   ),
                 ),
 
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
                 SizedBox(
                   height: 30,
                   width: 180,
@@ -54,12 +54,12 @@ class _HomePageState extends State<HomePage> {
                     onPressed: () {
                       Navigator.of(context).pop();
                       Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                        return ChooseYourStudyForQuiz();
+                        return const ChooseYourStudyForQuiz();
                       }));
                     },
                   ),
                 ),
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
 
                 SizedBox(
                   height: 30,
@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(20)))),
                         backgroundColor:
-                            MaterialStateProperty.all(Color(0xffC94905))),
+                            MaterialStateProperty.all(const Color(0xffC94905))),
                     child: const Text(
                       'Invite a Friend',
                       style: TextStyle(color: Colors.white),
@@ -80,12 +80,12 @@ class _HomePageState extends State<HomePage> {
                       Navigator.of(context).pop();
 
                       Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                        return ChooseYourStudyForQuiz();
+                        return const ChooseYourStudyForQuiz();
                       }));
                     },
                   ),
                 ),
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
 
                 SizedBox(
                   height: 30,
@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(20)))),
                         backgroundColor:
-                            MaterialStateProperty.all(Color(0xff138F60))),
+                            MaterialStateProperty.all(const Color(0xff138F60))),
                     child: const Text(
                       'Matchmaking',
                       style: TextStyle(color: Colors.white),
@@ -106,7 +106,7 @@ class _HomePageState extends State<HomePage> {
                       Navigator.of(context).pop();
 
                       Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                        return ChooseYourStudyForQuiz();
+                        return const ChooseYourStudyForQuiz();
                       }));                    },
                   ),
                 ),
@@ -131,7 +131,7 @@ class _HomePageState extends State<HomePage> {
               Align(
                 alignment: Alignment.topLeft,
                 child: Container(
-                  width: MediaQuery.of(context).size.width * 0.5,
+                  width: MediaQuery.of(context).size.width * 0.4,
                   height: 35,
                   decoration: const BoxDecoration(
                       boxShadow: [
@@ -144,7 +144,7 @@ class _HomePageState extends State<HomePage> {
                   child: const Center(
                       child: Text(
                     "Recently Played",
-                    style: TextStyle(color: Colors.white, fontSize: 18),
+                    style: TextStyle(color: Colors.white, fontSize: 17),
                     textAlign: TextAlign.center,
                   )),
                 ),
@@ -152,59 +152,36 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(
                 width: 20,
               ),
-              SvgPicture.asset("assets/logo.svg"),
+              SvgPicture.asset("assets/logo.svg",fit: BoxFit.scaleDown,),
+              const SizedBox(
+                width: 10,
+              ),
             ],
           ),
           const SizedBox(
             height: 30,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(35)),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(color: Colors.grey, blurRadius: 3.5)
-                    ]),
-                height: 40,
-                width: MediaQuery.sizeOf(context).width * 0.7,
-                child: Center(
-                  child: TextFormField(
-                    decoration: const InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: Colors.grey,
-                        ),
-                        hintText: "Find and replay chapters",
-                        // contentPadding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                        border: InputBorder.none),
-                  ),
-                ),
+          Container(
+            decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(35)),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(color: Colors.grey, blurRadius: 3.5)
+                ]),
+            height: 40,
+            width: MediaQuery.sizeOf(context).width * 0.8,
+            child: Center(
+              child: TextFormField(
+                decoration: const InputDecoration(
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: Colors.grey,
+                    ),
+                    hintText: "Find and replay chapters",
+                    // contentPadding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                    border: InputBorder.none),
               ),
-              const SizedBox(
-                width: 20,
-              ),
-              SizedBox(
-                  height: 38,
-                  width: 50,
-                  child: ElevatedButton(
-                      style: ButtonStyle(
-                          shape: MaterialStateProperty.all(
-                              const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)))),
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.white)),
-                      onPressed: () {
-                      },
-                      child: const Center(
-                          child: Icon(
-                        Icons.delete,
-                        color: Colors.grey,
-                      ))))
-            ],
+            ),
           ),
           const SizedBox(
             height: 35,
@@ -214,7 +191,6 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               children: [
                 SizedBox(
-                    height: 80,
                     width: MediaQuery.sizeOf(context).width * 0.6,
                     child: ElevatedButton(
                         style: ButtonStyle(
@@ -228,35 +204,38 @@ class _HomePageState extends State<HomePage> {
                           _showAlertDialog();
 
                         },
-                        child: const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Geography VG1 & Science",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w300),
-                            ),
-                            Text(
-                              "12 Chapters",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w300),
-                            ),
-                            Text(
-                              "Price:12kr",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w300),
-                            ),
-                          ],
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Geography VG1 & Science",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w300),
+                              ),
+                              Text(
+                                "12 Chapters",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w300),
+                              ),
+                              Text(
+                                "Price:12kr",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w300),
+                              ),
+                            ],
+                          ),
                         ))),
                 const SizedBox(
-                  width: 10,
+                  width: 20,
                 ),
                 Container(
                   decoration: BoxDecoration(
@@ -267,7 +246,7 @@ class _HomePageState extends State<HomePage> {
                       borderRadius:
                           const BorderRadius.all(Radius.circular(100))),
                   height: 80,
-                  width: MediaQuery.sizeOf(context).width * 0.3 - 20,
+                  width: MediaQuery.sizeOf(context).width * 0.2,
                 )
               ],
             ),
@@ -277,7 +256,6 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               children: [
                 SizedBox(
-                    height: 80,
                     width: MediaQuery.sizeOf(context).width * 0.6,
                     child: ElevatedButton(
                         style: ButtonStyle(
@@ -291,35 +269,38 @@ class _HomePageState extends State<HomePage> {
 
 
                         },
-                        child: const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Religion and Philosophy",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w300),
-                            ),
-                            Text(
-                              "12 Chapters",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w300),
-                            ),
-                            Text(
-                              "Price:23kr",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w300),
-                            ),
-                          ],
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Religion and Philosophy",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w300),
+                              ),
+                              Text(
+                                "12 Chapters",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w300),
+                              ),
+                              Text(
+                                "Price:23kr",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w300),
+                              ),
+                            ],
+                          ),
                         ))),
                 const SizedBox(
-                  width: 10,
+                  width: 20,
                 ),
                 Container(
                   decoration: BoxDecoration(
@@ -330,7 +311,7 @@ class _HomePageState extends State<HomePage> {
                       borderRadius:
                           const BorderRadius.all(Radius.circular(100))),
                   height: 80,
-                  width: MediaQuery.sizeOf(context).width * 0.3 - 20,
+                  width: MediaQuery.sizeOf(context).width * 0.2,
                 )
               ],
             ),
@@ -340,7 +321,6 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               children: [
                 SizedBox(
-                    height: 80,
                     width: MediaQuery.sizeOf(context).width * 0.6,
                     child: ElevatedButton(
                         style: ButtonStyle(
@@ -354,35 +334,38 @@ class _HomePageState extends State<HomePage> {
                           _showAlertDialog();
 
                         },
-                        child: const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "History And Economics",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w300),
-                            ),
-                            Text(
-                              "12 Chapters",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w300),
-                            ),
-                            Text(
-                              "Price:52kr",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w300),
-                            ),
-                          ],
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "History And Economics",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w300),
+                              ),
+                              Text(
+                                "12 Chapters",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w300),
+                              ),
+                              Text(
+                                "Price:52kr",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w300),
+                              ),
+                            ],
+                          ),
                         ))),
                 const SizedBox(
-                  width: 10,
+                  width: 20,
                 ),
                 Container(
                   decoration: BoxDecoration(
@@ -393,7 +376,7 @@ class _HomePageState extends State<HomePage> {
                       borderRadius:
                           const BorderRadius.all(Radius.circular(100))),
                   height: 80,
-                  width: MediaQuery.sizeOf(context).width * 0.3 - 20,
+                  width: MediaQuery.sizeOf(context).width * 0.2,
                 )
               ],
             ),
@@ -403,7 +386,6 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               children: [
                 SizedBox(
-                    height: 80,
                     width: MediaQuery.sizeOf(context).width * 0.6,
                     child: ElevatedButton(
                         style: ButtonStyle(
@@ -417,35 +399,38 @@ class _HomePageState extends State<HomePage> {
                           _showAlertDialog();
 
                         },
-                        child: const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Religion and Philosophy",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w300),
-                            ),
-                            Text(
-                              "12 Chapters",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w300),
-                            ),
-                            Text(
-                              "Price:12kr",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w300),
-                            ),
-                          ],
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Religion and Philosophy",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w300),
+                              ),
+                              Text(
+                                "12 Chapters",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w300),
+                              ),
+                              Text(
+                                "Price:12kr",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w300),
+                              ),
+                            ],
+                          ),
                         ))),
                 const SizedBox(
-                  width: 10,
+                  width: 20,
                 ),
                 Container(
                   decoration: BoxDecoration(
@@ -456,66 +441,11 @@ class _HomePageState extends State<HomePage> {
                       borderRadius:
                           const BorderRadius.all(Radius.circular(100))),
                   height: 80,
-                  width: MediaQuery.sizeOf(context).width * 0.3 - 20,
+                  width: MediaQuery.sizeOf(context).width * 0.2,
                 )
               ],
             ),
           ),
-
-          // Expanded(
-          //   child: ListView.builder(
-          //     physics: ScrollPhysics(),
-          //     shrinkWrap: true,
-          //     itemCount: _items.length,
-          //     itemBuilder: (context, index) {
-          //       final item = _items[index];
-          //       var isSelected = _selectedItems.contains(item);
-          //       return Padding(
-          //         padding:
-          //             const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          //         child: Row(
-          //           children: [
-          //             SizedBox(
-          //                 height: 80,
-          //                 width: MediaQuery.sizeOf(context).width * 0.6,
-          //                 child: ElevatedButton(
-          //                     style: ButtonStyle(
-          //                         shape: MaterialStateProperty.all(const RoundedRectangleBorder(
-          //                             borderRadius: BorderRadius.all(Radius.circular(20)))),
-          //                         backgroundColor:
-          //                         MaterialStateProperty.all(const Color(0xffFBED21))),
-          //                     onPressed: (){
-          //
-          //                     }, child: const Column(
-          //                   mainAxisAlignment: MainAxisAlignment.center,
-          //                   crossAxisAlignment: CrossAxisAlignment.start,
-          //                   children: [
-          //                     Text("Geography VG1",style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.w300),),
-          //                     Text("12 Chapters",style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.w300),),
-          //                     Text("Price:12kr",style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.w300),),
-          //                   ],
-          //                 ))),
-          //             SizedBox(
-          //               width: 10,
-          //             ),
-          //             Container(
-          //               decoration: BoxDecoration(
-          //                   border:
-          //                       Border.all(color: Color(0xffFBED21), width: 5),
-          //                   image: DecorationImage(
-          //                       image: AssetImage("assets/gs.jpg")),
-          //                   borderRadius:
-          //                       BorderRadius.all(Radius.circular(100))),
-          //               height: 80,
-          //               width:  MediaQuery.sizeOf(context).width * 0.3 - 20,
-          //             )
-          //           ],
-          //         ),
-          //       );
-          //     },
-          //   ),
-          // ),
-
           const SizedBox(
             height: 30,
           ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import '../../AddNewFriend/AddFriend.dart';
+import '../BottomNavBar.dart';
 import 'ChooseYourStudyforQuize.dart';
 
 class HomePage extends StatefulWidget {
@@ -78,7 +80,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                     onPressed: () {
                       Get.back();
-                      Get.to(() =>  const ChooseYourStudyForQuiz());
+                      Get.to(() => const BottomNavBar(page: 1,));
+
                     },
                   ),
                 ),
@@ -194,7 +197,7 @@ class _HomePageState extends State<HomePage> {
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(20)))),
                             backgroundColor: MaterialStateProperty.all(
-                                const Color(0xffFBED21))),
+                                const Color(0xffFDF8A6))),
                         onPressed: () {
                           _showAlertDialog();
 
@@ -235,7 +238,7 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   decoration: BoxDecoration(
                       border:
-                          Border.all(color: const Color(0xffFBED21), width: 5),
+                          Border.all(color: const Color(0xffFDF8A6), width: 5),
                       image: const DecorationImage(
                           image: AssetImage("assets/one.jpg")),
                       borderRadius:
@@ -324,7 +327,7 @@ class _HomePageState extends State<HomePage> {
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(20)))),
                             backgroundColor: MaterialStateProperty.all(
-                                const Color(0xffEB4A2A))),
+                                const Color(0xffF6B6A9))),
                         onPressed: () {
                           _showAlertDialog();
 
@@ -365,7 +368,7 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   decoration: BoxDecoration(
                       border:
-                          Border.all(color: const Color(0xffEB4A2A), width: 5),
+                          Border.all(color: const Color(0xffF6B6A9), width: 5),
                       image: const DecorationImage(
                           image: AssetImage("assets/three.jpg")),
                       borderRadius:
@@ -389,7 +392,7 @@ class _HomePageState extends State<HomePage> {
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(20)))),
                             backgroundColor: MaterialStateProperty.all(
-                                const Color(0xffC3D7A2))),
+                                const Color(0xffE6EED9))),
                         onPressed: () {
                           _showAlertDialog();
 
@@ -430,7 +433,7 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   decoration: BoxDecoration(
                       border:
-                          Border.all(color: const Color(0xffC3D7A2), width: 5),
+                          Border.all(color: const Color(0xffE6EED9), width: 5),
                       image: const DecorationImage(
                           image: AssetImage("assets/four.jpg")),
                       borderRadius:

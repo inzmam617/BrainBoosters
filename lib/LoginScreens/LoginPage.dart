@@ -2,7 +2,6 @@ import 'package:brainboosters/ChooseCourseStudy/ChooseCourse.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -18,7 +17,10 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Center(
         child: Column(
           children: [
-            SizedBox(height: MediaQuery.of(context).size.height / 4,),
+            const SizedBox(height: 80,),
+            SvgPicture.asset("assets/logo.svg"),
+
+            SizedBox(height: MediaQuery.of(context).size.height / 5,),
             const Text(
               "Login",
               style: TextStyle(color: Colors.black, fontSize: 28),

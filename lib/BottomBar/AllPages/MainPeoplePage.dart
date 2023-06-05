@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+import '../../AddNewFriend/AddFriend.dart';
+
 class MainPeoplePage extends StatefulWidget {
   const MainPeoplePage({Key? key}) : super(key: key);
 
@@ -10,7 +12,7 @@ class MainPeoplePage extends StatefulWidget {
 }
 
 class _MainPeoplePageState extends State<MainPeoplePage> {
-  List<Color> itemColors = [const Color(0xff494FC7).withOpacity(0.5), const Color(0xff65D0AC).withOpacity(0.5)];
+  List<Color> itemColors = [const Color(0xffEBECF9), const Color(0xffEEFAF6)];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +64,7 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                   padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
                   child: Container(
                     decoration: BoxDecoration(
-                      boxShadow: const [BoxShadow(color: Colors.grey, blurRadius: 3.5)],
+                      boxShadow: const [BoxShadow(color: Colors.grey, blurRadius: 2)],
                       borderRadius: BorderRadius.circular(30),
                       color: itemColor,
                     ),
@@ -84,9 +86,9 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                           const Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text("John Smith" ,style: TextStyle(color: Colors.black,fontSize: 15),),
+                              Text("John Smith" ,style: TextStyle(color: Colors.black,fontSize: 14),),
                               SizedBox(height: 5,),
-                              Text("8/10 - 251"),
+                              Text("8/10 - 251",style: TextStyle(color: Colors.black,fontSize: 11)),
                             ],
                           ),
                           const Spacer(),
@@ -96,7 +98,7 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Text("Active"),
+                                const Text("Active",style: TextStyle(color: Colors.black,fontSize: 12)),
                                 const SizedBox(height: 10,),
                                 Row(
                                   children: [
@@ -189,7 +191,9 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                                     Radius.circular(20)))),
                         backgroundColor:
                         MaterialStateProperty.all(const Color(0xffC94905))),
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.to(() => const AddFriendScreen());
+                    },
                     child: const Text(
                       "Add A Friend",
                       style: TextStyle(

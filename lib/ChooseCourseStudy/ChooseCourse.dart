@@ -28,37 +28,42 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
           ),
             actions: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
 
                       SizedBox(
                         height: 30,
 
-                        width: 150,
                         child: ElevatedButton(
                           style: ButtonStyle(
                               shape: MaterialStateProperty.all(const RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(Radius.circular(20)))),
                               backgroundColor:
                               MaterialStateProperty.all(const Color(0xff494FC7))),
-                          child: const Text('Yes'),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+                            child: const Text('Confirm'),
+                          ),
                           onPressed: () {
                             Get.to(() =>const BottomNavBar(page: 0,));
 
                           },
                         ),
                       ),
+                      SizedBox(width: 10,),
 
                       SizedBox(
                         height: 30,
-                        width: 150,
                         child: ElevatedButton(
                           style: ButtonStyle(
                               shape: MaterialStateProperty.all(const RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(Radius.circular(20)))),
                               backgroundColor:
                               MaterialStateProperty.all(Colors.white)),
-                          child: const Text('Back',style: TextStyle(color: Colors.black),),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+                            child: const Text('Back',style: TextStyle(color: Colors.black),),
+                          ),
                           onPressed: () {
                             Get.back();
                           },
@@ -113,7 +118,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
                             shape: MaterialStateProperty.all(const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(Radius.circular(20)))),
                             backgroundColor:
-                            MaterialStateProperty.all(const Color(0xffCACCEE))),
+                            MaterialStateProperty.all(const Color(0xffE4E5F6))),
                         onPressed: (){
                           _showAlertDialog("General Studies");
 
@@ -121,7 +126,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
                 const SizedBox(width: 10,),
                 Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color:const Color(0xffCACCEE),width: 5),
+                    border: Border.all(color:const Color(0xffE4E5F6),width: 5),
                     image: const DecorationImage(image: AssetImage("assets/gs.jpg")),
 
                     borderRadius: const BorderRadius.all(Radius.circular(100))
@@ -146,7 +151,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
                             shape: MaterialStateProperty.all(const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(Radius.circular(20)))),
                             backgroundColor:
-                            MaterialStateProperty.all(const Color(0xffBF6196))),
+                            MaterialStateProperty.all(const Color(0xffDFAFCA))),
                         onPressed: (){
                           _showAlertDialog("Construction And Civil Engineering");
 
@@ -154,7 +159,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
                 const SizedBox(width: 10,),
                 Container(
                   decoration: BoxDecoration(
-                      border: Border.all(color:const Color(0xffBF6196),width: 5),
+                      border: Border.all(color:const Color(0xffDFAFCA),width: 5),
                       image: const DecorationImage(image: AssetImage("assets/ce.jpg")),
 
                       borderRadius: const BorderRadius.all(Radius.circular(100))
@@ -179,7 +184,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
                             shape: MaterialStateProperty.all(const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(Radius.circular(20)))),
                             backgroundColor:
-                            MaterialStateProperty.all(const Color(0xffF4EA5A))),
+                            MaterialStateProperty.all(const Color(0xffF9F4AC))),
                         onPressed: (){
                           _showAlertDialog("Health Care");
 
@@ -187,7 +192,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
                 const SizedBox(width: 10,),
                 Container(
                   decoration: BoxDecoration(
-                      border: Border.all(color:const Color(0xffF4EA5A),width: 5),
+                      border: Border.all(color:const Color(0xffF9F4AC),width: 5),
                       image: const DecorationImage(image: AssetImage("assets/h.jpg")),
 
                       borderRadius: const BorderRadius.all(Radius.circular(100))
@@ -212,7 +217,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
                             shape: MaterialStateProperty.all(const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(Radius.circular(20)))),
                             backgroundColor:
-                            MaterialStateProperty.all(const Color(0xff48A4E3))),
+                            MaterialStateProperty.all(const Color(0xffA3D1F1))),
                         onPressed: (){
                           _showAlertDialog("English");
 
@@ -220,7 +225,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
                 const SizedBox(width: 10,),
                 Container(
                   decoration: BoxDecoration(
-                      border: Border.all(color:const Color(0xff48A4E3),width: 5),
+                      border: Border.all(color:const Color(0xffA3D1F1),width: 5),
                       image: const DecorationImage(image: AssetImage("assets/e.jpg")),
 
                       borderRadius: const BorderRadius.all(Radius.circular(100))

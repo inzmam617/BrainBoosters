@@ -228,13 +228,13 @@ class _DashPageState extends State<DashPage> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: ListView.builder(
-                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
                           itemCount: 5,
                           itemBuilder: (BuildContext context, int index) {
                             return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              padding: const EdgeInsets.symmetric(vertical: 10),
                               child: Container(
-                                height: 35,
+                                height: MediaQuery.of(context).size.height * 0.04,
                                 width: double.infinity,
                                 decoration: BoxDecoration(
                                     borderRadius:
@@ -249,8 +249,8 @@ class _DashPageState extends State<DashPage> {
                                   child: Row(
                                     children: [
                                       Container(
-                                        height: 25,
-                                        width: 25,
+                                        height: MediaQuery.of(context).size.height * 0.04 - 10,
+                                        width: MediaQuery.of(context).size.height * 0.04 - 10,
                                         decoration: BoxDecoration(
                                           color: Colors.white,
                                           borderRadius: BorderRadius.all(Radius.circular(360)),

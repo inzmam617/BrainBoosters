@@ -64,7 +64,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         ],
         type: BottomNavigationBarType.fixed,
         currentIndex: selectedIndex,
-        selectedItemColor: Color(0xff494FC7),
+        selectedItemColor: const Color(0xff494FC7),
         unselectedItemColor: Colors.grey,
         // selectedIconTheme: const IconThemeData(color: Colors.white),
         onTap: _onItemTapped,

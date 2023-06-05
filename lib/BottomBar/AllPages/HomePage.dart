@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import '../../AddNewFriend/AddFriend.dart';
 import '../BottomNavBar.dart';
 import 'ChooseYourStudyforQuize.dart';
 
@@ -54,11 +53,9 @@ class _HomePageState extends State<HomePage> {
                             const Color(0xff494FC7))),
                     child: const Text('Play Solo'),
                     onPressed: () {
-                      Get.back();
-                      Get.to( () =>  const ChooseYourStudyForQuiz());
-
-
+                      Get.to(() => const BottomNavBar(page: 2));
                     },
+
                   ),
                 ),
                 const SizedBox(height: 20,),
@@ -80,13 +77,14 @@ class _HomePageState extends State<HomePage> {
                     ),
                     onPressed: () {
                       Get.back();
-                      Get.to(() => const BottomNavBar(page: 1,));
-
+                      // Get.to(() => const BottomNavBar(page: 1,));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+                        return const BottomNavBar(page: 1,);
+                      }));
                     },
                   ),
                 ),
                 const SizedBox(height: 20,),
-
                 SizedBox(
                   height: 30,
                   width: 180,
@@ -115,7 +113,6 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,6 +122,7 @@ class _HomePageState extends State<HomePage> {
             height: 35,
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Align(
                 alignment: Alignment.topLeft,
@@ -142,7 +140,7 @@ class _HomePageState extends State<HomePage> {
                   child: const Center(
                       child: Text(
                     "Recently Played",
-                    style: TextStyle(color: Colors.white, fontSize: 17),
+                    style: TextStyle(color: Colors.white, fontSize: 16),
                     textAlign: TextAlign.center,
                   )),
                 ),
@@ -170,7 +168,10 @@ class _HomePageState extends State<HomePage> {
             width: MediaQuery.sizeOf(context).width * 0.8,
             child: Center(
               child: TextFormField(
+
                 decoration: const InputDecoration(
+                  hintStyle: TextStyle(fontSize: 16,),
+
                     prefixIcon: Icon(
                       Icons.search,
                       color: Colors.grey,

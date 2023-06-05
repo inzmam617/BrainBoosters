@@ -11,157 +11,275 @@ class DashPage extends StatefulWidget {
 }
 
 class _DashPageState extends State<DashPage> {
+  List<Color> colors = [
+    Color(0xffFFA412),
+    Color(0xff494FC7),
+    Color(0xffC3D7A2),
+    Color(0xff8E7CC3),
+    Color(0xffBF6196),
+  ];
+  List<String> names = [
+    "John Smith",
+    "Sarah Johnson",
+    "Micheal Williams",
+    "Jessica Davids",
+    "Christopher Brown"
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 35,
-          ),
-          Row(
-            children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.4,
-                  height: 35,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 35,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    height: 35,
+                    decoration: const BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(color: Colors.grey, blurRadius: 3.5)
+                        ],
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(20),
+                            bottomRight: Radius.circular(20)),
+                        color: Color(0xff494FC7)),
+                    child: const Center(
+                        child: Text(
+                      "DashBoard",
+                      style: TextStyle(color: Colors.white, fontSize: 17),
+                      textAlign: TextAlign.center,
+                    )),
+                  ),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                SvgPicture.asset(
+                  "assets/logo.svg",
+                  fit: BoxFit.scaleDown,
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset("assets/boy.svg"),
+                const SizedBox(
+                  width: 20,
+                ),
+                Container(
                   decoration: const BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(color: Colors.grey, blurRadius: 3.5)
-                      ],
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(20),
-                          bottomRight: Radius.circular(20)),
-                      color: Color(0xff494FC7)),
-                  child: const Center(
-                      child: Text(
-                    "DashBoard",
-                    style: TextStyle(color: Colors.white, fontSize: 17),
-                    textAlign: TextAlign.center,
-                  )),
+                    borderRadius: BorderRadius.all(Radius.circular(35)),
+                    boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 3.5)],
+                    color: Colors.white,
+                  ),
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.6,
+                          height: 30,
+                          decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(35),
+                                  topRight: Radius.circular(35)),
+                              color: Color(0xffC3D7A2)),
+                          child: const Center(
+                              child: Text(
+                            "Dash History",
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          )),
+                        ),
+                      ),
+                      const Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Total Play",
+                                  style: TextStyle(color: Colors.green),
+                                ),
+                                Text("205")
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Total Winning",
+                                  style: TextStyle(color: Colors.blue),
+                                ),
+                                Text("205")
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Total Loose",
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                                Text("205")
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Points",
+                                  style: TextStyle(color: Colors.orange),
+                                ),
+                                Row(
+                                  children: [
+                                    Text("205"),
+                                    Icon(
+                                      Icons.star,
+                                      color: Colors.orange,
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(
-                width: 20,
-              ),
-              SvgPicture.asset("assets/logo.svg",fit: BoxFit.scaleDown,),
-              const SizedBox(
-                width: 10,
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SvgPicture.asset("assets/boy.svg"),
-              const SizedBox(
-                width: 20,
-              ),
-              Container(
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(35)),
-                  boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 3.5)],
-                  color: Colors.white,
-                ),
-                width: MediaQuery.of(context).size.width * 0.6,
-
+              ],
+            ),
+            const SizedBox(
+              height: 50,
+            ),
+            SizedBox(
+                height: 35,
+                width: MediaQuery.sizeOf(context).width * 0.5,
+                child: ElevatedButton(
+                    style: ButtonStyle(
+                        shape: MaterialStateProperty.all(
+                            const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)))),
+                        backgroundColor:
+                            MaterialStateProperty.all(const Color(0xff494FC7))),
+                    onPressed: () {
+                      Get.to(() => const QuizPage());
+                    },
+                    child: const Text(
+                      "Play",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w300),
+                    ))),
+            SizedBox(
+              height: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Container(
+                height: MediaQuery.sizeOf(context).height * 0.4,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 3.5)],
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
                 child: Column(
                   children: [
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        height: 30,
-                        decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(35),
-                                topRight: Radius.circular(35)),
-                            color: Color(0xffC3D7A2)),
-                        child: const Center(
-                            child: Text(
-                          "Dash History",
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        )),
-                      ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20, left: 20),
+                      child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Text("Your Last Quiz Result",style: TextStyle(color: Color(0xff494FC7)),)),
                     ),
-                    const Padding(
-                      padding:  EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                      child: Column(
-                        children: [
-                          SizedBox(height: 10,),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Total Play" ,style: TextStyle(color: Colors.green),),
-                              Text("205")
-                            ],
-                          ),
-                          SizedBox(height: 10,),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Total Winning" ,style: TextStyle(color: Colors.blue),),
-                              Text("205")
-                            ],
-                          ),
-                          SizedBox(height: 10,),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Total Loose" ,style: TextStyle(color: Colors.red),),
-                              Text("205")
-                            ],
-                          ),
-                          SizedBox(height: 10,),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Points" ,style: TextStyle(color: Colors.orange),),
-                              Row(
-                                children: [
-                                  Text("205"),
-                                  Icon(Icons.star,color: Colors.orange,)
-                                ],
-                              )
-                            ],
-                          ),
-                        ],
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: 5,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              child: Container(
+                                height: 35,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.grey, blurRadius: 3.5)
+                                    ],
+                                    color: colors[index]),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        height: 25,
+                                        width: 25,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.all(Radius.circular(360)),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.grey,
+                                              blurRadius: 2.5
+                                            )
+                                          ]
+                                        ),
+                                        child: Center(child: Text("${index + 1}",style: TextStyle(color: Colors.black,fontSize: 15),textAlign: TextAlign.center,)),
+                                      ),
+                                      SizedBox(width: 20,),
+                                      Text(names[index],style: TextStyle(color: Colors.white,fontSize: 16),)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                    ),
+                    )
                   ],
                 ),
-
               ),
-            ],
-          ),
-          const SizedBox(height: 50,),
-          SizedBox(
-              height: 35,
-              width: MediaQuery.sizeOf(context).width * 0.5,
-              child: ElevatedButton(
-                  style: ButtonStyle(
-                      shape: MaterialStateProperty.all(
-                          const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(20)))),
-                      backgroundColor:
-                      MaterialStateProperty.all(const Color(0xff494FC7))),
-                  onPressed: () {
-
-                    Get.to(() => const QuizPage());
-                  },
-                  child: const Text(
-                    "Play",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w300),
-                  ))),
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

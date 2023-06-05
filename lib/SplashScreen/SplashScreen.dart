@@ -22,7 +22,6 @@ class _SplashPageState extends State<SplashPage> {
         const Duration(seconds: 4),
             () =>
                 Get.to(() => const LoginScreen())
-
     );
   }
   @override
@@ -68,7 +67,8 @@ class _SplashPageState extends State<SplashPage> {
               displayFullTextOnTap: false,
               stopPauseOnTap: false,
             ),
-          )
+          ),
+
 
 
         ],

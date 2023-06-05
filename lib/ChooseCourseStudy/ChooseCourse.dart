@@ -40,9 +40,9 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
                                   borderRadius: BorderRadius.all(Radius.circular(20)))),
                               backgroundColor:
                               MaterialStateProperty.all(const Color(0xff494FC7))),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
-                            child: const Text('Confirm'),
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+                            child: Text('Confirm'),
                           ),
                           onPressed: () {
                             Get.to(() =>const BottomNavBar(page: 0,));
@@ -50,7 +50,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
                           },
                         ),
                       ),
-                      SizedBox(width: 10,),
+                      const SizedBox(width: 10,),
 
                       SizedBox(
                         height: 30,
@@ -60,9 +60,9 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
                                   borderRadius: BorderRadius.all(Radius.circular(20)))),
                               backgroundColor:
                               MaterialStateProperty.all(Colors.white)),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
-                            child: const Text('Back',style: TextStyle(color: Colors.black),),
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+                            child: Text('Back',style: TextStyle(color: Colors.black),),
                           ),
                           onPressed: () {
                             Get.back();

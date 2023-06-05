@@ -147,11 +147,13 @@ class _ChooseYourChaptersForQuizState extends State<ChooseYourChaptersForQuiz> {
             child: Center(
               child: TextFormField(
                 decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(vertical: 8),
+                  hintStyle: TextStyle(fontSize: 15),
                     prefixIcon: Icon(
                       Icons.search,
                       color: Colors.grey,
                     ),
-                    hintText: "Search for subject ( general studies )",
+                    hintText: "Search for subject (general studies)",
                     // contentPadding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
                     border: InputBorder.none),
               ),

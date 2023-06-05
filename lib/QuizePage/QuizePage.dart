@@ -340,6 +340,7 @@ class _QuizPageState extends State<QuizPage> {
               height: 35,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Align(
                   alignment: Alignment.topLeft,
@@ -456,6 +457,7 @@ class _QuizPageState extends State<QuizPage> {
                         borderRadius: BorderRadius.all(Radius.circular(100))),
                     child: Center(
                         child: IconButton(
+
                           onPressed: () {
                             showDialog(
                               context: context,
@@ -464,7 +466,7 @@ class _QuizPageState extends State<QuizPage> {
                               },
                             );
                           },
-                      icon: const Icon(Icons.music_note),
+                      icon: const Icon(Icons.music_note,size: 20,),
                     )),
                   )
                 ],
@@ -609,27 +611,34 @@ class _QuizPageState extends State<QuizPage> {
                         backgroundColor:
                             MaterialStateProperty.all(const Color(0xff494FC7))),
                     onPressed: () {
-                     // print( questionList.length);
-                      if(choose != "") {
-                        if (currentQuestionIndex + 1 == questionList.length) {}
-                        else {
-                          setState(() {
-                            // print(questionList[currentQuestionIndex].answersList[currentQuestionIndex].answerText);
-                            currentQuestionIndex++;
-                            colorSelect();
-                            shouldRevealAnswer = false;
-                            choose = "";
-                            selected = false;
-                          });
-                        }
-                      }
-                      else{
-                        ScaffoldMessenger.of(context).showSnackBar( const SnackBar(
-                          content: Text('Please Select an Answer'),
-                          duration: Duration(seconds: 1),
 
-                        ));
-                      }
+
+                       if (choose != "") {
+                         if (currentQuestionIndex + 1 == questionList.length) {
+                           Get.back();
+                         }
+                         else {
+
+                             setState(() {
+                               // print(questionList[currentQuestionIndex].answersList[currentQuestionIndex].answerText);
+                               currentQuestionIndex++;
+                               colorSelect();
+                               shouldRevealAnswer = false;
+                               choose = "";
+                               selected = false;
+                             });
+
+                         }
+                       }
+                       else {
+                         ScaffoldMessenger.of(context).showSnackBar(
+                             const SnackBar(
+                               content: Text('Please Select an Answer'),
+                               duration: Duration(seconds: 1),
+
+                             ));
+                       }
+
                     },
                     child: currentQuestionIndex + 1 == questionList.length ? const Text(
                       "Done",

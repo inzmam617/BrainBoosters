@@ -140,6 +140,8 @@ class _ChooseYourStudyForQuizState extends State<ChooseYourStudyForQuiz> {
             child: Center(
               child: TextFormField(
                 decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(vertical: 5),
+                  hintStyle: TextStyle(fontSize: 15),
                     prefixIcon: Icon(
                       Icons.search,
                       color: Colors.grey,
@@ -187,7 +189,7 @@ class _ChooseYourStudyForQuizState extends State<ChooseYourStudyForQuiz> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 20),
                     Container(
                       decoration: BoxDecoration(
                         border: Border.all(color: const Color(0xffCACCEE), width: 5),
@@ -197,7 +199,7 @@ class _ChooseYourStudyForQuizState extends State<ChooseYourStudyForQuiz> {
                         borderRadius: const BorderRadius.all(Radius.circular(100)),
                       ),
                       height: 80,
-                      width: MediaQuery.of(context).size.width * 0.3 - 20,
+                      width: MediaQuery.of(context).size.width * 0.2,
                     ),
                   ],
                 ),

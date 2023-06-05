@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import '../../ChooseCourseStudy/ChooseCourse.dart';
+import '../BottomNavBar.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({Key? key}) : super(key: key);
@@ -52,7 +53,9 @@ class _SettingPageState extends State<SettingPage> {
 
           () {
         print("object");
-        // Function 1
+        Get.to(() => const BottomNavBar(page: 1,));
+
+            // Function 1
         // Add your code here
       },
           () {
@@ -74,7 +77,7 @@ class _SettingPageState extends State<SettingPage> {
       },
           () {
 
-      Get.to(() => const FeedBackScreen() );
+      Get.to(() => const FeedBackScreen());
         // Function6 6
         // Add your code here
       },
@@ -137,7 +140,8 @@ class _SettingPageState extends State<SettingPage> {
                               style: TextStyle(color: Colors.black),
                             ),
                             onPressed: () {
-                              Get.back();                        },
+                              Get.back();
+                              },
                           ),
                         ),
 
@@ -235,7 +239,7 @@ class _SettingPageState extends State<SettingPage> {
                         valueListenable: checkBoxBool,
                         builder: (context, value, child) {
                           return Switch(
-                          activeTrackColor: const Color(0xff494FC7),
+                          activeTrackColor: Colors.grey,
                           inactiveTrackColor: Colors.grey,
                           activeColor: const Color(0xff494FC7),
                           value: value,

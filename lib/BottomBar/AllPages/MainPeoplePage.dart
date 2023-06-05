@@ -23,6 +23,7 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
               height: 35,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Align(
                   alignment: Alignment.topLeft,

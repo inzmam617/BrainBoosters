@@ -51,7 +51,6 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
                         ),
                       ),
                       const SizedBox(width: 10,),
-
                       SizedBox(
                         height: 30,
                         child: ElevatedButton(
@@ -81,7 +80,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
     return Scaffold(
       body: Column(
         children: [
-          const SizedBox(height: 35,),
+          const SizedBox(height: 55,),
           Align(alignment: Alignment.topLeft,
           child: Container(
             width: MediaQuery.of(context).size.width * 0.55,
@@ -102,10 +101,8 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
             child: const Center(child: Text("Choose Your Course",style: TextStyle(color: Colors.white,fontSize: 18),textAlign: TextAlign.center,)),
           ),),
           const SizedBox(height: 30,),
-
           SvgPicture.asset("assets/logo.svg"),
           const SizedBox(height: 30,),
-
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
@@ -138,7 +135,6 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
             ),
           ),
           const SizedBox(height: 30,),
-
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
@@ -171,7 +167,6 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
             ),
           ),
           const SizedBox(height: 30,),
-
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
@@ -204,7 +199,6 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
             ),
           ),
           const SizedBox(height: 30,),
-
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
@@ -236,11 +230,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
               ],
             ),
           ),
-
-
-
         ],
-
       ),
     );
   }

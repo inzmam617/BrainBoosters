@@ -12,11 +12,11 @@ class DashPage extends StatefulWidget {
 
 class _DashPageState extends State<DashPage> {
   List<Color> colors = [
-    Color(0xffFFA412),
-    Color(0xff494FC7),
-    Color(0xffC3D7A2),
-    Color(0xff8E7CC3),
-    Color(0xffBF6196),
+    const Color(0xffFFA412),
+    const Color(0xff494FC7),
+    const Color(0xffC3D7A2),
+    const Color(0xff8E7CC3),
+    const Color(0xffBF6196),
   ];
   List<String> names = [
     "John Smith",
@@ -204,7 +204,7 @@ class _DashPageState extends State<DashPage> {
                           fontSize: 20,
                           fontWeight: FontWeight.w300),
                     ))),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Padding(
@@ -212,14 +212,14 @@ class _DashPageState extends State<DashPage> {
               child: Container(
                 height: MediaQuery.sizeOf(context).height * 0.4,
                 width: double.infinity,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 3.5)],
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(20))),
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20, left: 20),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 20, left: 20),
                       child: Align(
                           alignment: Alignment.topLeft,
                           child: Text("Your Last Quiz Result",style: TextStyle(color: Color(0xff494FC7)),)),
@@ -228,7 +228,7 @@ class _DashPageState extends State<DashPage> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: 5,
                           itemBuilder: (BuildContext context, int index) {
                             return Padding(
@@ -238,8 +238,8 @@ class _DashPageState extends State<DashPage> {
                                 width: double.infinity,
                                 decoration: BoxDecoration(
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
-                                    boxShadow: [
+                                        const BorderRadius.all(Radius.circular(10)),
+                                    boxShadow: const [
                                       BoxShadow(
                                           color: Colors.grey, blurRadius: 3.5)
                                     ],
@@ -251,7 +251,7 @@ class _DashPageState extends State<DashPage> {
                                       Container(
                                         height: MediaQuery.of(context).size.height * 0.04 - 10,
                                         width: MediaQuery.of(context).size.height * 0.04 - 10,
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                           color: Colors.white,
                                           borderRadius: BorderRadius.all(Radius.circular(360)),
                                           boxShadow: [
@@ -261,10 +261,10 @@ class _DashPageState extends State<DashPage> {
                                             )
                                           ]
                                         ),
-                                        child: Center(child: Text("${index + 1}",style: TextStyle(color: Colors.black,fontSize: 15),textAlign: TextAlign.center,)),
+                                        child: Center(child: Text("${index + 1}",style: const TextStyle(color: Colors.black,fontSize: 15),textAlign: TextAlign.center,)),
                                       ),
-                                      SizedBox(width: 20,),
-                                      Text(names[index],style: TextStyle(color: Colors.white,fontSize: 16),)
+                                      const SizedBox(width: 20,),
+                                      Text(names[index],style: const TextStyle(color: Colors.white,fontSize: 16),)
                                     ],
                                   ),
                                 ),

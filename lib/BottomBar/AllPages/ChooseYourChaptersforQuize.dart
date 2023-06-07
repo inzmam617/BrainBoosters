@@ -41,7 +41,7 @@ class _ChooseYourChaptersForQuizState extends State<ChooseYourChaptersForQuiz> {
             child: Stack(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 45),
+                  padding: const EdgeInsets.only(top: 60),
                   child: Align(
                     alignment: Alignment.topLeft,
                     child: Column(
@@ -175,9 +175,7 @@ class _ChooseYourChaptersForQuizState extends State<ChooseYourChaptersForQuiz> {
                   textAlign: TextAlign.start,
                 )),
           ),
-          const SizedBox(
-            height: 10,
-          ),
+
           Expanded(
             child: ListView.builder(
               shrinkWrap: true,

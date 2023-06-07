@@ -20,7 +20,7 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
         child: Column(
           children: [
             const SizedBox(
-              height: 35,
+              height: 55,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -59,7 +59,9 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
 
             SizedBox(
               height: MediaQuery.sizeOf(context).height * 0.65,
-              child: ListView.builder(itemBuilder: (BuildContext context, int index) {
+              child: ListView.builder(
+                itemCount: 5,
+                itemBuilder: (BuildContext context, int index) {
                 final Color itemColor = itemColors[index % itemColors.length];
                 return  Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),

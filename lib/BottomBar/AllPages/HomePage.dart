@@ -119,7 +119,7 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: [
           const SizedBox(
-            height: 35,
+            height: 55,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

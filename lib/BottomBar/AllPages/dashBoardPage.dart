@@ -33,7 +33,7 @@ class _DashPageState extends State<DashPage> {
         child: Column(
           children: [
             const SizedBox(
-              height: 35,
+              height: 55,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -210,7 +210,7 @@ class _DashPageState extends State<DashPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Container(
-                height: MediaQuery.sizeOf(context).height * 0.4,
+                height: MediaQuery.sizeOf(context).height * 0.45,
                 width: double.infinity,
                 decoration: const BoxDecoration(
                     boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 3.5)],

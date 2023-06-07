@@ -33,7 +33,7 @@ class _ChooseYourStudyForQuizState extends State<ChooseYourStudyForQuiz> {
             child: Stack(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 45),
+                  padding: const EdgeInsets.only(top: 60),
                   child: Align(
                     alignment: Alignment.topLeft,
                     child: Column(
@@ -141,7 +141,7 @@ class _ChooseYourStudyForQuizState extends State<ChooseYourStudyForQuiz> {
               child: TextFormField(
                 decoration: const InputDecoration(
                   contentPadding: EdgeInsets.symmetric(vertical: 5),
-                  hintStyle: TextStyle(fontSize: 15),
+                  hintStyle: TextStyle(fontSize: 14),
                     prefixIcon: Icon(
                       Icons.search,
                       color: Colors.grey,
@@ -152,9 +152,7 @@ class _ChooseYourStudyForQuizState extends State<ChooseYourStudyForQuiz> {
               ),
             ),
           ),
-          const SizedBox(
-            height: 20,
-          ),
+
           Expanded(child: ListView.builder(
             itemCount: textList.length,
             itemBuilder: (context, index) {

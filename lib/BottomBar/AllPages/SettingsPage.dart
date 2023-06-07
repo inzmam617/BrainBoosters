@@ -159,7 +159,7 @@ class _SettingPageState extends State<SettingPage> {
       body: Column(
         children: [
           const SizedBox(
-            height: 35,
+            height: 55,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -192,7 +192,7 @@ class _SettingPageState extends State<SettingPage> {
               const SizedBox(width: 10,)
             ],
           ),
-          const SizedBox(height: 20,),
+
 
           Expanded(
             child: ListView.builder(

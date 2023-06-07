@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -22,6 +23,8 @@ class _QuizPageState extends State<QuizPage> {
     super.initState();
     _startTimer();
     colorSelect();
+    _confettiController = ConfettiController(duration: const Duration(seconds: 3));
+
 // Generate a random index within the range of the colorList
 
   }
@@ -38,6 +41,7 @@ class _QuizPageState extends State<QuizPage> {
   @override
   void dispose() {
     _timer?.cancel();
+    _confettiController.dispose();
     super.dispose();
   }
 
@@ -322,6 +326,7 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 
+  late ConfettiController _confettiController;
 
   bool shouldRevealAnswer = false;
   List<Question> questionList = getQuestions();
@@ -337,7 +342,7 @@ class _QuizPageState extends State<QuizPage> {
         child: Column(
           children: [
             const SizedBox(
-              height: 35,
+              height: 55,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -359,39 +364,45 @@ class _QuizPageState extends State<QuizPage> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 2),
                       child: Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          InkWell(
-                            onTap: () {
-                              _showAlertDialog();
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: Container(
-                                height: 25,
-                                width: 25,
-                                decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(360))),
-                                child: const Center(
+                          Padding(
+                            padding: const EdgeInsets.all(2),
+                            child: SizedBox(
+                              width: 35,
+                              child: ElevatedButton(
+                                  style: ButtonStyle(
+                                      shape: MaterialStateProperty.all(
+                                          const RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius.all(
+                                                  Radius.circular(
+                                                      100)))),
+                                      backgroundColor:
+                                      MaterialStateProperty.all(
+                                          Colors.white)),
+                                  onPressed: () {
+                                    _showAlertDialog();
+                                  },
+                                  child: const Center(
                                     child: Icon(
-                                  Icons.arrow_back_ios,
-                                  size: 15,
-                                )),
-                              ),
+                                      Icons.arrow_back_ios,
+                                      color: Colors.black,
+                                      size: 16,
+                                    ),
+                                  )),
                             ),
                           ),
-                          const SizedBox(
-                            width: 8,
-                          ),
+                          SizedBox(width: 5,),
                           const Text(
-                            "Programming test",
-                            style: TextStyle(color: Colors.white, fontSize: 15),
-                            textAlign: TextAlign.center,
+                            "Programming Test",
+                            style: TextStyle(
+                                color: Colors.white, fontSize: 14),
                           ),
-                          const SizedBox(
-                            width: 5,
-                          )
+                          SizedBox(width: 5,),
+
                         ],
                       ),
                     )),
@@ -419,7 +430,7 @@ class _QuizPageState extends State<QuizPage> {
                 children: [
                   Container(
                     height: 30,
-                    width: 120,
+                    width: 130,
                     decoration: const BoxDecoration(
                         boxShadow: [
                           BoxShadow(color: Colors.grey, blurRadius: 3.5)
@@ -429,6 +440,7 @@ class _QuizPageState extends State<QuizPage> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Icon(
                             Icons.timer,
@@ -470,10 +482,11 @@ class _QuizPageState extends State<QuizPage> {
                     )),
                   )
                 ],
+
               ),
             ),
             const SizedBox(
-              height: 50,
+              height: 25,
             ),
             Container(
               decoration: const BoxDecoration(
@@ -516,7 +529,12 @@ class _QuizPageState extends State<QuizPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(25),
+              padding: const EdgeInsets.only(
+                bottom: 25,
+                left: 25,
+                right: 25,
+                top: 10
+              ),
               child: SizedBox(
                 height: MediaQuery.sizeOf(context).height * 0.28,
                 child: GridView.builder(
@@ -541,31 +559,63 @@ class _QuizPageState extends State<QuizPage> {
                               borderRadius: BorderRadius.all(Radius.circular(20)),
                             ),
                           ),
-                               backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                                (Set<MaterialState> states) {
-                                  if (states.contains(MaterialState.pressed)) {
-                                    // Button is pressed
-                                    return color;
-                                  } else if (shouldRevealAnswer) {
-                                    // Reveal the correct answer
-                                    if (answer.isCorrect) {
-                                      return Colors.green;
-                                    } else if (selectedAnswer == answer) {
-                                      // Selected answer and it is wrong
-                                      return Colors.black;
-                                    } else {
-                                      return Colors.red;
-                                    }
-                                  } else if (selectedAnswer != null && answer == selectedAnswer) {
-                                    // Selected answer
+                          //      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                          //       (Set<MaterialState> states) {
+                          //         if (states.contains(MaterialState.pressed)) {
+                          //           // Button is pressed
+                          //           return color;
+                          //         } else if (shouldRevealAnswer) {
+                          //           // Reveal the correct answer
+                          //           if (answer.isCorrect) {
+                          //
+                          //             return Colors.green;
+                          //           } else if (selectedAnswer == answer) {
+                          //             // Selected answer and it is wrong
+                          //             return Colors.black;
+                          //           } else {
+                          //             return Colors.red;
+                          //           }
+                          //         } else if (selectedAnswer != null && answer == selectedAnswer) {
+                          //           // Selected answer
+                          //           return Colors.black;
+                          //         } else {
+                          //           // Default color
+                          //           return color;
+                          //         }
+                          //   },
+                          // ),
+                            backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                  (Set<MaterialState> states) {
+                                if (states.contains(MaterialState.pressed)) {
+                                  // Button is pressed
+                                  return color;
+                                } else if (shouldRevealAnswer) {
+                                  // Reveal the correct answer
+                                  if (answer.isCorrect && selectedAnswer == answer) {
+                                    // Selected answer is correct
+                                    _confettiController.play(); // Play confetti effect
+                                    Future.delayed(const Duration(seconds: 4), () {
+                                      _confettiController.stop(); // Stop confetti effect after 4 seconds
+                                    });
+                                    return Colors.green;
+                                  } else if (answer.isCorrect) {
+                                    // Correct answer, but it's not selected
+                                    return Colors.green;
+                                  } else if (selectedAnswer == answer) {
+                                    // Selected answer and it is wrong
                                     return Colors.black;
                                   } else {
-                                    // Default color
-                                    return color;
+                                    return Colors.red;
                                   }
-                            },
-                          ),
-
+                                } else if (selectedAnswer != null && answer == selectedAnswer) {
+                                  // Selected answer
+                                  return Colors.black;
+                                } else {
+                                  // Default color
+                                  return color;
+                                }
+                              },
+                            ),
                         ),
                         onPressed: () {
                           if(selected){
@@ -599,6 +649,22 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
             ),
+            ConfettiWidget(
+              confettiController: _confettiController,
+              blastDirection: -pi / 2, // Confetti direction (upwards)
+              emissionFrequency: 0.05, // How often confetti is emitted
+              numberOfParticles: 20, // Number of particles in each emission
+              gravity: 0.2, // Gravity applied to particles
+              shouldLoop: false, // Stop after a single emission
+              colors: const [
+                Colors.green,
+                Colors.blue,
+                Colors.pink,
+                Colors.orange,
+                Colors.purple,
+              ], // Colors of confetti particles
+            ),
+
             SizedBox(
                 height: 35,
                 width: MediaQuery.sizeOf(context).width * 0.5,

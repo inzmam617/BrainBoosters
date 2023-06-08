@@ -6,7 +6,6 @@ import '../../AddNewFriend/AddFriend.dart';
 
 class MainPeoplePage extends StatefulWidget {
   const MainPeoplePage({Key? key}) : super(key: key);
-
   @override
   State<MainPeoplePage> createState() => _MainPeoplePageState();
 }
@@ -226,7 +225,6 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                           fontWeight: FontWeight.w300),
                       textAlign: TextAlign.center,
                     ))),
-
           ],
         ),
       ),

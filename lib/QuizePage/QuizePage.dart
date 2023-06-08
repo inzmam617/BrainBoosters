@@ -4,7 +4,6 @@ import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-
 import '../Quiz Model/QuizModelClass.dart';
 
 class QuizPage extends StatefulWidget {
@@ -17,6 +16,8 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   Timer? _timer;
   int _seconds = 127;
+
+  late ConfettiController _confettiController;
 
   @override
   void initState() {
@@ -40,8 +41,9 @@ class _QuizPageState extends State<QuizPage> {
   }
   @override
   void dispose() {
-    _timer?.cancel();
     _confettiController.dispose();
+
+    _timer?.cancel();
     super.dispose();
   }
 
@@ -326,7 +328,6 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 
-  late ConfettiController _confettiController;
 
   bool shouldRevealAnswer = false;
   List<Question> questionList = getQuestions();
@@ -395,13 +396,13 @@ class _QuizPageState extends State<QuizPage> {
                                   )),
                             ),
                           ),
-                          SizedBox(width: 5,),
+                          const SizedBox(width: 5,),
                           const Text(
                             "Programming Test",
                             style: TextStyle(
                                 color: Colors.white, fontSize: 14),
                           ),
-                          SizedBox(width: 5,),
+                          const SizedBox(width: 5,),
 
                         ],
                       ),
@@ -593,9 +594,11 @@ class _QuizPageState extends State<QuizPage> {
                                   // Reveal the correct answer
                                   if (answer.isCorrect && selectedAnswer == answer) {
                                     // Selected answer is correct
-                                    _confettiController.play(); // Play confetti effect
-                                    Future.delayed(const Duration(seconds: 4), () {
+                                    _confettiController.play();
+// Play confetti effect
+                                    Future.delayed(const Duration(seconds: 1), () {
                                       _confettiController.stop(); // Stop confetti effect after 4 seconds
+
                                     });
                                     return Colors.green;
                                   } else if (answer.isCorrect) {
@@ -649,12 +652,15 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
             ),
+
+
             ConfettiWidget(
               confettiController: _confettiController,
-              blastDirection: -pi / 2, // Confetti direction (upwards)
+              blastDirectionality: BlastDirectionality.directional,
+              blastDirection: -pi /2, // Emit confetti at a diagonal direction
               emissionFrequency: 0.05, // How often confetti is emitted
-              numberOfParticles: 20, // Number of particles in each emission
-              gravity: 0.2, // Gravity applied to particles
+              numberOfParticles: 10, // Increase the number of particles
+              gravity: 0.4, // Increase the gravity to make confetti fall faster
               shouldLoop: false, // Stop after a single emission
               colors: const [
                 Colors.green,
@@ -664,6 +670,7 @@ class _QuizPageState extends State<QuizPage> {
                 Colors.purple,
               ], // Colors of confetti particles
             ),
+
 
             SizedBox(
                 height: 35,

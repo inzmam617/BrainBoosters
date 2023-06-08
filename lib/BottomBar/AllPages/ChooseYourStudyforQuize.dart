@@ -5,11 +5,9 @@ import 'ChooseYourChaptersforQuize.dart';
 
 class ChooseYourStudyForQuiz extends StatefulWidget {
   const ChooseYourStudyForQuiz({Key? key}) : super(key: key);
-
   @override
   State<ChooseYourStudyForQuiz> createState() => _ChooseYourStudyForQuizState();
 }
-
 class _ChooseYourStudyForQuizState extends State<ChooseYourStudyForQuiz> {
   final textList = ["Health Care", "Engineering", "Ethics", "G-Studies"];
   final imagePaths = [

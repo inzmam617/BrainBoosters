@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -18,6 +19,7 @@ class _QuizPageState extends State<QuizPage> {
   int _seconds = 127;
 
   late ConfettiController _confettiController;
+  final AssetsAudioPlayer _assetsAudioPlayer = AssetsAudioPlayer();
 
   @override
   void initState() {
@@ -25,7 +27,20 @@ class _QuizPageState extends State<QuizPage> {
     _startTimer();
     colorSelect();
     _confettiController = ConfettiController(duration: const Duration(seconds: 3));
-
+    _assetsAudioPlayer.open(
+      Playlist(
+        audios: [
+          Audio('assets/audio/medieval-fanfare-6826.mp3'),
+          Audio('assets/audio/let-it-go-12279.mp3'),
+          Audio('assets/audio/fast tempo.mp3'),
+          Audio('assets/audio/medium tempo.mp3'),
+          // Add more audio tracks here...
+        ],
+      ),
+      showNotification: true,
+      autoStart: false,
+      loopMode: LoopMode.single
+    );
 // Generate a random index within the range of the colorList
 
   }
@@ -96,12 +111,12 @@ class _QuizPageState extends State<QuizPage> {
           ),
           actions: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
 
                 SizedBox(
                   height: 30,
 
-                  width: 150,
                   child: ElevatedButton(
                     style: ButtonStyle(
                         shape: MaterialStateProperty.all(const RoundedRectangleBorder(
@@ -112,16 +127,17 @@ class _QuizPageState extends State<QuizPage> {
                     onPressed: () {
                      Get.back();
                      Get.back();
+                     _assetsAudioPlayer.stop();
+
 
 
                     },
                   ),
                 ),
-                const SizedBox(width: 10,),
+                const SizedBox(width: 20,),
 
                 SizedBox(
                   height: 30,
-                  width: 150,
                   child: ElevatedButton(
                     style: ButtonStyle(
                       // foregroundColor: MaterialStateProperty.all(Colors.black),
@@ -177,6 +193,8 @@ class _QuizPageState extends State<QuizPage> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   onPressed: () {
+                    _assetsAudioPlayer.playlistPlayAtIndex(2);
+
                   },
                   child: const Center(
                     child: Text(
@@ -206,6 +224,9 @@ class _QuizPageState extends State<QuizPage> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   onPressed: () {
+                    _assetsAudioPlayer.playlistPlayAtIndex(3);
+
+
                   },
                   child: const Center(
                     child: Text(
@@ -240,6 +261,8 @@ class _QuizPageState extends State<QuizPage> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   onPressed: () {
+                    _assetsAudioPlayer.playlistPlayAtIndex(1);
+
                   },
                   child: const Center(
                     child: Text(
@@ -269,10 +292,12 @@ class _QuizPageState extends State<QuizPage> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   onPressed: () {
+                    _assetsAudioPlayer.stop();
+
                   },
                   child: const Center(
                     child: Text(
-                      "Add Spotify",
+                      "  Stop All  ",
                       style: TextStyle(
                         color:  Colors.black,
                       ),
@@ -409,9 +434,7 @@ class _QuizPageState extends State<QuizPage> {
                     )),
                   ),
                 ),
-                const SizedBox(
-                  width: 10,
-                ),
+
                 SvgPicture.asset(
                   "assets/logo.svg",
                   fit: BoxFit.scaleDown,

@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../AddNewFriend/AddFriend.dart';
+import '../../ChatScreen/ChatScreen.dart';
 
 class MainPeoplePage extends StatefulWidget {
   const MainPeoplePage({Key? key}) : super(key: key);
@@ -140,6 +141,7 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                                               MaterialStateProperty.all(
                                                   Colors.white)),
                                           onPressed: () {
+                                            Get.to(()=> ChatScreen(myUserId: '1', otherUserId: '2', name: 'asd',));
                                           },
                                           child: const Center(
                                             child: Text("Chat" ,style: TextStyle(color: Colors.green,fontSize: 10),),

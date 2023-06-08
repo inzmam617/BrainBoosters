@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../BottomNavBar.dart';
 import 'ChooseYourStudyforQuize.dart';
 
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -12,6 +13,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
   Future<void> _showAlertDialog() async {
     return showDialog<void>(
       context: context,
@@ -447,6 +449,7 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(
             height: 30,
           ),
+
         ],
       ),
     );

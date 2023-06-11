@@ -98,7 +98,7 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
                   BoxShadow(color: Colors.grey, blurRadius: 3.5)
                 ]),
             height: 40,
-            width: MediaQuery.sizeOf(context).width * 0.8,
+            width: MediaQuery.of(context).size.width * 0.8,
             child: Center(
               child: TextFormField(
                 decoration: const InputDecoration(
@@ -117,7 +117,7 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
             height: 15,
           ),
           Expanded(child: SizedBox(
-            height: MediaQuery.sizeOf(context).height * 0.65,
+            height: MediaQuery.of(context).size.height * 0.65,
             child: ListView.builder(itemBuilder: (BuildContext context, int index) {
               return  Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
@@ -128,7 +128,7 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
                     color: Colors.white,
                   ),
                   height: 65,
-                  width: MediaQuery.sizeOf(context).width * 0.9,
+                  width: MediaQuery.of(context).size.width * 0.9,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Row(
@@ -142,7 +142,7 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
                               borderRadius: BorderRadius.all(Radius.circular(100))),
                         ),
                         const SizedBox(width: 10,),
-                        const Column(
+                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text("John Smith" ,style: TextStyle(color: Colors.black,fontSize: 13),),

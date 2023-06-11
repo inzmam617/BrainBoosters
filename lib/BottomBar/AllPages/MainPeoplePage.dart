@@ -58,7 +58,7 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
 
 
             SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.65,
+              height: MediaQuery.of(context).size.height * 0.65,
               child: ListView.builder(
                 itemCount: 5,
                 itemBuilder: (BuildContext context, int index) {
@@ -72,7 +72,7 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                       color: itemColor,
                     ),
                     height: 80,
-                    width: MediaQuery.sizeOf(context).width * 0.9,
+                    width: MediaQuery.of(context).size.width * 0.9,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Row(
@@ -86,7 +86,7 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                                 borderRadius: BorderRadius.all(Radius.circular(100))),
                           ),
                           const SizedBox(width: 10,),
-                          const Column(
+                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text("John Smith" ,style: TextStyle(color: Colors.black,fontSize: 14),),
@@ -165,7 +165,7 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
 
             SizedBox(
                 height: 35,
-                width: MediaQuery.sizeOf(context).width * 0.5,
+                width: MediaQuery.of(context).size.width * 0.5,
                 child: ElevatedButton(
                     style: ButtonStyle(
                         shape: MaterialStateProperty.all(
@@ -186,7 +186,7 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
 
             SizedBox(
                 height: 35,
-                width: MediaQuery.sizeOf(context).width * 0.5,
+                width: MediaQuery.of(context).size.width * 0.5,
                 child: ElevatedButton(
                     style: ButtonStyle(
                         shape: MaterialStateProperty.all(
@@ -209,7 +209,7 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
 
             SizedBox(
                 height: 35,
-                width: MediaQuery.sizeOf(context).width * 0.5,
+                width: MediaQuery.of(context).size.width * 0.5,
                 child: ElevatedButton(
                     style: ButtonStyle(
                         shape: MaterialStateProperty.all(

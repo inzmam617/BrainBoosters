@@ -109,7 +109,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
               children: [
                 SizedBox(
                   height: 100,
-                    width: MediaQuery.sizeOf(context).width * 0.6,
+                    width: MediaQuery.of(context).size.width * 0.6,
                     child: ElevatedButton(
                         style: ButtonStyle(
                             shape: MaterialStateProperty.all(const RoundedRectangleBorder(
@@ -129,7 +129,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
                     borderRadius: const BorderRadius.all(Radius.circular(100))
                   ),
                   height: 100,
-                  width: MediaQuery.sizeOf(context).width * 0.3 - 20,
+                  width: MediaQuery.of(context).size.width * 0.3 - 20,
                 )
               ],
             ),
@@ -141,7 +141,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
               children: [
                 SizedBox(
                   height: 100,
-                    width: MediaQuery.sizeOf(context).width * 0.6,
+                    width: MediaQuery.of(context).size.width * 0.6,
                     child: ElevatedButton(
                         style: ButtonStyle(
                             shape: MaterialStateProperty.all(const RoundedRectangleBorder(
@@ -161,7 +161,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
                       borderRadius: const BorderRadius.all(Radius.circular(100))
                   ),
                   height: 100,
-                  width: MediaQuery.sizeOf(context).width * 0.3 - 20,
+                  width: MediaQuery.of(context).size.width * 0.3 - 20,
                 )
               ],
             ),
@@ -173,7 +173,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
               children: [
                 SizedBox(
                   height: 100,
-                    width: MediaQuery.sizeOf(context).width * 0.6,
+                    width: MediaQuery.of(context).size.width * 0.6,
                     child: ElevatedButton(
                         style: ButtonStyle(
                             shape: MaterialStateProperty.all(const RoundedRectangleBorder(
@@ -193,7 +193,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
                       borderRadius: const BorderRadius.all(Radius.circular(100))
                   ),
                   height: 100,
-                  width: MediaQuery.sizeOf(context).width * 0.3 - 20,
+                  width: MediaQuery.of(context).size.width * 0.3 - 20,
                 )
               ],
             ),
@@ -205,7 +205,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
               children: [
                 SizedBox(
                   height: 100,
-                    width: MediaQuery.sizeOf(context).width * 0.6,
+                    width: MediaQuery.of(context).size.width * 0.6,
                     child: ElevatedButton(
                         style: ButtonStyle(
                             shape: MaterialStateProperty.all(const RoundedRectangleBorder(
@@ -225,7 +225,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
                       borderRadius: const BorderRadius.all(Radius.circular(100))
                   ),
                   height: 100,
-                  width: MediaQuery.sizeOf(context).width * 0.3 - 20,
+                  width: MediaQuery.of(context).size.width * 0.3 - 20,
                 )
               ],
             ),

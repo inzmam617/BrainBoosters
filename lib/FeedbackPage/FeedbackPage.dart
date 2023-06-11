@@ -75,8 +75,8 @@ class _FeedBackScreenState extends State<FeedBackScreen> {
             height: 50,
           ),
           Container(
-            height: MediaQuery.sizeOf(context).height * 0.32,
-            width: MediaQuery.sizeOf(context).height * 0.32,
+            height: MediaQuery.of(context).size.height * 0.32,
+            width: MediaQuery.of(context).size.height * 0.32,
             decoration: const BoxDecoration(
                 boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 3.5)],
                 color: Colors.white,

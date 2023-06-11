@@ -166,7 +166,7 @@ class _HomePageState extends State<HomePage> {
                   BoxShadow(color: Colors.grey, blurRadius: 3.5)
                 ]),
             height: 40,
-            width: MediaQuery.sizeOf(context).width * 0.8,
+            width: MediaQuery.of(context).size.width * 0.8,
             child: Center(
               child: TextFormField(
 
@@ -191,7 +191,7 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               children: [
                 SizedBox(
-                    width: MediaQuery.sizeOf(context).width * 0.6,
+                    width: MediaQuery.of(context).size.width * 0.6,
                     child: ElevatedButton(
                         style: ButtonStyle(
                             shape: MaterialStateProperty.all(
@@ -204,7 +204,7 @@ class _HomePageState extends State<HomePage> {
                           _showAlertDialog();
 
                         },
-                        child: const Padding(
+                        child:  Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -246,7 +246,7 @@ class _HomePageState extends State<HomePage> {
                       borderRadius:
                           const BorderRadius.all(Radius.circular(100))),
                   height: 80,
-                  width: MediaQuery.sizeOf(context).width * 0.2,
+                  width: MediaQuery.of(context).size.width * 0.2,
                 )
               ],
             ),
@@ -256,7 +256,7 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               children: [
                 SizedBox(
-                    width: MediaQuery.sizeOf(context).width * 0.6,
+                    width: MediaQuery.of(context).size.width * 0.6,
                     child: ElevatedButton(
                         style: ButtonStyle(
                             shape: MaterialStateProperty.all(
@@ -269,7 +269,7 @@ class _HomePageState extends State<HomePage> {
 
 
                         },
-                        child: const Padding(
+                        child:  Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -311,7 +311,7 @@ class _HomePageState extends State<HomePage> {
                       borderRadius:
                           const BorderRadius.all(Radius.circular(100))),
                   height: 80,
-                  width: MediaQuery.sizeOf(context).width * 0.2,
+                  width: MediaQuery.of(context).size.width * 0.2,
                 )
               ],
             ),
@@ -321,7 +321,7 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               children: [
                 SizedBox(
-                    width: MediaQuery.sizeOf(context).width * 0.6,
+                    width: MediaQuery.of(context).size.width * 0.6,
                     child: ElevatedButton(
                         style: ButtonStyle(
                             shape: MaterialStateProperty.all(
@@ -334,7 +334,7 @@ class _HomePageState extends State<HomePage> {
                           _showAlertDialog();
 
                         },
-                        child: const Padding(
+                        child:  Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -376,7 +376,7 @@ class _HomePageState extends State<HomePage> {
                       borderRadius:
                           const BorderRadius.all(Radius.circular(100))),
                   height: 80,
-                  width: MediaQuery.sizeOf(context).width * 0.2,
+                  width: MediaQuery.of(context).size.width * 0.2,
                 )
               ],
             ),
@@ -386,7 +386,7 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               children: [
                 SizedBox(
-                    width: MediaQuery.sizeOf(context).width * 0.6,
+                    width: MediaQuery.of(context).size.width * 0.6,
                     child: ElevatedButton(
                         style: ButtonStyle(
                             shape: MaterialStateProperty.all(
@@ -399,7 +399,7 @@ class _HomePageState extends State<HomePage> {
                           _showAlertDialog();
 
                         },
-                        child: const Padding(
+                        child:  Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -441,7 +441,7 @@ class _HomePageState extends State<HomePage> {
                       borderRadius:
                           const BorderRadius.all(Radius.circular(100))),
                   height: 80,
-                  width: MediaQuery.sizeOf(context).width * 0.2,
+                  width: MediaQuery.of(context).size.width * 0.2,
                 )
               ],
             ),

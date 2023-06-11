@@ -23,7 +23,7 @@ class _ChooseYourStudyForQuizState extends State<ChooseYourStudyForQuiz> {
       body: Column(
         children: [
           Container(
-            height: MediaQuery.sizeOf(context).height / 4,
+            height: MediaQuery.of(context).size.height / 4,
             decoration: const BoxDecoration(
                 color: Color(0xff494FC7),
                 borderRadius:
@@ -43,7 +43,7 @@ class _ChooseYourStudyForQuizState extends State<ChooseYourStudyForQuiz> {
                                   topRight: Radius.circular(20),
                                   bottomRight: Radius.circular(20))),
                           height: 30,
-                          width: MediaQuery.sizeOf(context).width * 0.6,
+                          width: MediaQuery.of(context).size.width * 0.6,
                           child: Center(
                             child: Row(
                               mainAxisAlignment:
@@ -109,7 +109,7 @@ class _ChooseYourStudyForQuizState extends State<ChooseYourStudyForQuiz> {
                 Align(
                     alignment: Alignment.bottomRight,
                     child: SizedBox(
-                      height: MediaQuery.sizeOf(context).height / 3,
+                      height: MediaQuery.of(context).size.height / 3,
                       child: Transform.translate(
                           offset: const Offset(25, 0),
                           child: SvgPicture.asset(
@@ -134,7 +134,7 @@ class _ChooseYourStudyForQuizState extends State<ChooseYourStudyForQuiz> {
                 color: Colors.white,
                 boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 3.5)]),
             height: 40,
-            width: MediaQuery.sizeOf(context).width * 0.8,
+            width: MediaQuery.of(context).size.width * 0.8,
             child: Center(
               child: TextFormField(
                 decoration: const InputDecoration(

@@ -92,7 +92,7 @@ class _SettingPageState extends State<SettingPage> {
               builder: (BuildContext dialogContext) {
                 return AlertDialog(
                   title: const Icon(Icons.person, color: Colors.black),
-                  content: const SingleChildScrollView(
+                  content:  SingleChildScrollView(
                     child: ListBody(
                       children: <Widget>[
                         Text('Are you sure you want to Logout?'),
@@ -213,7 +213,7 @@ class _SettingPageState extends State<SettingPage> {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: SizedBox(
         height: 45,
-        width: MediaQuery.sizeOf(context).width,
+        width: MediaQuery.of(context).size.width,
             child: ElevatedButton(
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.white)

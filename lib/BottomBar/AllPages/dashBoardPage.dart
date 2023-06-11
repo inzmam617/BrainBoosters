@@ -107,7 +107,7 @@ class _DashPageState extends State<DashPage> {
                           )),
                         ),
                       ),
-                      const Padding(
+                       Padding(
                         padding:
                             EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                         child: Column(
@@ -185,7 +185,7 @@ class _DashPageState extends State<DashPage> {
             ),
             SizedBox(
                 height: 35,
-                width: MediaQuery.sizeOf(context).width * 0.5,
+                width: MediaQuery.of(context).size.width * 0.5,
                 child: ElevatedButton(
                     style: ButtonStyle(
                         shape: MaterialStateProperty.all(
@@ -210,7 +210,7 @@ class _DashPageState extends State<DashPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Container(
-                height: MediaQuery.sizeOf(context).height * 0.45,
+                height: MediaQuery.of(context).size.height * 0.45,
                 width: double.infinity,
                 decoration: const BoxDecoration(
                     boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 3.5)],

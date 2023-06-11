@@ -1,11 +1,28 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import '../Quiz Model/QuizModelClass.dart';
+// import '../Quiz Model/QuizModelClass.dart';
+
+import 'package:http/http.dart' as http;
+
+class Question {
+  final String questionText;
+  final List<Answer> answersList;
+
+  Question(this.questionText, this.answersList);
+}
+
+class Answer {
+  final String answerText;
+  final bool isCorrect;
+
+  Answer(this.answerText, this.isCorrect);
+}
 
 class QuizPage extends StatefulWidget {
   const QuizPage({Key? key}) : super(key: key);
@@ -24,6 +41,8 @@ class _QuizPageState extends State<QuizPage> {
   @override
   void initState() {
     super.initState();
+    fetchQuestions();
+
     _startTimer();
     colorSelect();
     _confettiController = ConfettiController(duration: const Duration(seconds: 3));
@@ -102,7 +121,7 @@ class _QuizPageState extends State<QuizPage> {
       builder: (BuildContext context) {
         return AlertDialog( // <-- SEE HERE
           title: const Text('Confirm'),
-          content: const SingleChildScrollView(
+          content:  SingleChildScrollView(
             child: ListBody(
               children:  <Widget>[
                 Text('Are you sure want to Leave Quiz?'),
@@ -354,8 +373,42 @@ class _QuizPageState extends State<QuizPage> {
   }
 
 
+
+  Future<void> fetchQuestions() async {
+    print("object");
+    final response = await http.get(Uri.parse('http://192.168.0.75:6222/getChapters'));
+    print("this is the body" + response.body);
+
+
+    if (response.statusCode == 200) {
+      print("this is the body" + response.body);
+      final data = jsonDecode(response.body);
+      List<Question> fetchedQuestions = [];
+
+      for (var questionData in data) {
+        String questionText = questionData['questionText'];
+        List<Answer> answersList = [];
+
+        for (var answerData in questionData['answersList']) {
+          String answerText = answerData['answerText'];
+          bool isCorrect = answerData['isCorrect'];
+
+          answersList.add(Answer(answerText, isCorrect));
+        }
+
+        fetchedQuestions.add(Question(questionText, answersList));
+      }
+
+      setState(() {
+        questionList = fetchedQuestions;
+      });
+    } else {
+      throw Exception('Failed to fetch questions');
+    }
+  }
+
   bool shouldRevealAnswer = false;
-  List<Question> questionList = getQuestions();
+  List<Question> questionList = [];
   int currentQuestionIndex = 0;
   int score = 0;
   Answer? selectedAnswer;
@@ -517,7 +570,7 @@ class _QuizPageState extends State<QuizPage> {
                   boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 3.5)],
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(20))),
-              width: MediaQuery.sizeOf(context).width * 0.85,
+              width: MediaQuery.of(context).size.width * 0.85,
               height: 150,
               child: Column(
                 children: [
@@ -530,7 +583,7 @@ class _QuizPageState extends State<QuizPage> {
                         borderRadius: BorderRadius.only(
                             topRight: Radius.circular(20),
                             topLeft: Radius.circular(20))),
-                    width: MediaQuery.sizeOf(context).width * 0.95,
+                    width: MediaQuery.of(context).size.width * 0.95,
                     height: 35,
                     child: Center(
                       child: Text(
@@ -560,7 +613,7 @@ class _QuizPageState extends State<QuizPage> {
                 top: 10
               ),
               child: SizedBox(
-                height: MediaQuery.sizeOf(context).height * 0.28,
+                height: MediaQuery.of(context).size.height * 0.28,
                 child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
@@ -573,7 +626,7 @@ class _QuizPageState extends State<QuizPage> {
                     Answer answer = questionList[currentQuestionIndex].answersList[index];
 
                     return SizedBox(
-                      width: MediaQuery.sizeOf(context).width *
+                      width: MediaQuery.of(context).size.width *
                           0.4, // Adjust the width as needed
                       height: 200, // Adjust the height as needed
                       child: ElevatedButton(
@@ -583,65 +636,65 @@ class _QuizPageState extends State<QuizPage> {
                               borderRadius: BorderRadius.all(Radius.circular(20)),
                             ),
                           ),
-                          //      backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                          //       (Set<MaterialState> states) {
-                          //         if (states.contains(MaterialState.pressed)) {
-                          //           // Button is pressed
-                          //           return color;
-                          //         } else if (shouldRevealAnswer) {
-                          //           // Reveal the correct answer
-                          //           if (answer.isCorrect) {
-                          //
-                          //             return Colors.green;
-                          //           } else if (selectedAnswer == answer) {
-                          //             // Selected answer and it is wrong
-                          //             return Colors.black;
-                          //           } else {
-                          //             return Colors.red;
-                          //           }
-                          //         } else if (selectedAnswer != null && answer == selectedAnswer) {
-                          //           // Selected answer
-                          //           return Colors.black;
-                          //         } else {
-                          //           // Default color
-                          //           return color;
-                          //         }
-                          //   },
-                          // ),
-                            backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                                  (Set<MaterialState> states) {
-                                if (states.contains(MaterialState.pressed)) {
-                                  // Button is pressed
-                                  return color;
-                                } else if (shouldRevealAnswer) {
-                                  // Reveal the correct answer
-                                  if (answer.isCorrect && selectedAnswer == answer) {
-                                    // Selected answer is correct
-                                    _confettiController.play();
-// Play confetti effect
-                                    Future.delayed(const Duration(seconds: 1), () {
-                                      _confettiController.stop(); // Stop confetti effect after 4 seconds
+                               backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                (Set<MaterialState> states) {
+                                  if (states.contains(MaterialState.pressed)) {
+                                    // Button is pressed
+                                    return color;
+                                  } else if (shouldRevealAnswer) {
+                                    // Reveal the correct answer
+                                    if (answer.isCorrect) {
 
-                                    });
-                                    return Colors.green;
-                                  } else if (answer.isCorrect) {
-                                    // Correct answer, but it's not selected
-                                    return Colors.green;
-                                  } else if (selectedAnswer == answer) {
-                                    // Selected answer and it is wrong
+                                      return Colors.green;
+                                    } else if (selectedAnswer == answer) {
+                                      // Selected answer and it is wrong
+                                      return Colors.black;
+                                    } else {
+                                      return Colors.red;
+                                    }
+                                  } else if (selectedAnswer != null && answer == selectedAnswer) {
+                                    // Selected answer
                                     return Colors.black;
                                   } else {
-                                    return Colors.red;
+                                    // Default color
+                                    return color;
                                   }
-                                } else if (selectedAnswer != null && answer == selectedAnswer) {
-                                  // Selected answer
-                                  return Colors.black;
-                                } else {
-                                  // Default color
-                                  return color;
-                                }
-                              },
-                            ),
+                            },
+                          ),
+//                             backgroundColor: MaterialStateProperty.resolveWith<Color>(
+//                                   (Set<MaterialState> states) {
+//                                 if (states.contains(MaterialState.pressed)) {
+//                                   // Button is pressed
+//                                   return color;
+//                                 } else if (shouldRevealAnswer) {
+//                                   // Reveal the correct answer
+//                                   if (answer.isCorrect && selectedAnswer == answer) {
+//                                     // Selected answer is correct
+//                                     _confettiController.play();
+// // Play confetti effect
+//                                     Future.delayed(const Duration(seconds: 1), () {
+//                                       _confettiController.stop(); // Stop confetti effect after 4 seconds
+//
+//                                     });
+//                                     return Colors.green;
+//                                   } else if (answer.isCorrect) {
+//                                     // Correct answer, but it's not selected
+//                                     return Colors.green;
+//                                   } else if (selectedAnswer == answer) {
+//                                     // Selected answer and it is wrong
+//                                     return Colors.black;
+//                                   } else {
+//                                     return Colors.red;
+//                                   }
+//                                 } else if (selectedAnswer != null && answer == selectedAnswer) {
+//                                   // Selected answer
+//                                   return Colors.black;
+//                                 } else {
+//                                   // Default color
+//                                   return color;
+//                                 }
+//                               },
+//                             ),
                         ),
                         onPressed: () {
                           if(selected){
@@ -697,7 +750,7 @@ class _QuizPageState extends State<QuizPage> {
 
             SizedBox(
                 height: 35,
-                width: MediaQuery.sizeOf(context).width * 0.5,
+                width: MediaQuery.of(context).size.width * 0.5,
                 child: ElevatedButton(
                     style: ButtonStyle(
                         shape: MaterialStateProperty.all(

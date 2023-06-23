@@ -10,19 +10,21 @@ import 'package:get/get.dart';
 
 import 'package:http/http.dart' as http;
 
-class Question {
-  final String questionText;
-  final List<Answer> answersList;
+import '../Quiz Model/QuizModelClass.dart';
 
-  Question(this.questionText, this.answersList);
-}
-
-class Answer {
-  final String answerText;
-  final bool isCorrect;
-
-  Answer(this.answerText, this.isCorrect);
-}
+// class Question {
+//   final String questionText;
+//   final List<Answer> answersList;
+//
+//   Question(this.questionText, this.answersList);
+// }
+//
+// class Answer {
+//   final String answerText;
+//   final bool isCorrect;
+//
+//   Answer(this.answerText, this.isCorrect);
+// }
 
 class QuizPage extends StatefulWidget {
   const QuizPage({Key? key}) : super(key: key);
@@ -41,7 +43,8 @@ class _QuizPageState extends State<QuizPage> {
   @override
   void initState() {
     super.initState();
-    fetchQuestions();
+    // fetchQuestions();
+    questionList = getQuestions();
 
     _startTimer();
     colorSelect();
@@ -374,38 +377,38 @@ class _QuizPageState extends State<QuizPage> {
 
 
 
-  Future<void> fetchQuestions() async {
-    print("object");
-    final response = await http.get(Uri.parse('http://192.168.0.75:6222/getChapters'));
-    print("this is the body" + response.body);
-
-
-    if (response.statusCode == 200) {
-      print("this is the body" + response.body);
-      final data = jsonDecode(response.body);
-      List<Question> fetchedQuestions = [];
-
-      for (var questionData in data) {
-        String questionText = questionData['questionText'];
-        List<Answer> answersList = [];
-
-        for (var answerData in questionData['answersList']) {
-          String answerText = answerData['answerText'];
-          bool isCorrect = answerData['isCorrect'];
-
-          answersList.add(Answer(answerText, isCorrect));
-        }
-
-        fetchedQuestions.add(Question(questionText, answersList));
-      }
-
-      setState(() {
-        questionList = fetchedQuestions;
-      });
-    } else {
-      throw Exception('Failed to fetch questions');
-    }
-  }
+  // Future<void> fetchQuestions() async {
+  //   print("object");
+  //   final response = await http.get(Uri.parse('http://192.168.0.75:6222/getChapters'));
+  //   print("this is the body" + response.body);
+  //
+  //
+  //   if (response.statusCode == 200) {
+  //     print("this is the body" + response.body);
+  //     final data = jsonDecode(response.body);
+  //     List<Question> fetchedQuestions = [];
+  //
+  //     for (var questionData in data) {
+  //       String questionText = questionData['questionText'];
+  //       List<Answer> answersList = [];
+  //
+  //       for (var answerData in questionData['answersList']) {
+  //         String answerText = answerData['answerText'];
+  //         bool isCorrect = answerData['isCorrect'];
+  //
+  //         answersList.add(Answer(answerText, isCorrect));
+  //       }
+  //
+  //       fetchedQuestions.add(Question(questionText, answersList));
+  //     }
+  //
+  //     setState(() {
+  //       questionList = fetchedQuestions;
+  //     });
+  //   } else {
+  //     throw Exception('Failed to fetch questions');
+  //   }
+  // }
 
   bool shouldRevealAnswer = false;
   List<Question> questionList = [];

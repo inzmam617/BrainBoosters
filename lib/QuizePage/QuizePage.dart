@@ -12,19 +12,6 @@ import 'package:http/http.dart' as http;
 
 import '../Quiz Model/QuizModelClass.dart';
 
-// class Question {
-//   final String questionText;
-//   final List<Answer> answersList;
-//
-//   Question(this.questionText, this.answersList);
-// }
-//
-// class Answer {
-//   final String answerText;
-//   final bool isCorrect;
-//
-//   Answer(this.answerText, this.isCorrect);
-// }
 
 class QuizPage extends StatefulWidget {
   const QuizPage({Key? key}) : super(key: key);
@@ -147,9 +134,10 @@ class _QuizPageState extends State<QuizPage> {
                         MaterialStateProperty.all(const Color(0xff494FC7))),
                     child: const Text('Yes'),
                     onPressed: () {
+                      _assetsAudioPlayer.stop();
                      Get.back();
                      Get.back();
-                     _assetsAudioPlayer.stop();
+
 
 
 
@@ -376,40 +364,6 @@ class _QuizPageState extends State<QuizPage> {
   }
 
 
-
-  // Future<void> fetchQuestions() async {
-  //   print("object");
-  //   final response = await http.get(Uri.parse('http://192.168.0.75:6222/getChapters'));
-  //   print("this is the body" + response.body);
-  //
-  //
-  //   if (response.statusCode == 200) {
-  //     print("this is the body" + response.body);
-  //     final data = jsonDecode(response.body);
-  //     List<Question> fetchedQuestions = [];
-  //
-  //     for (var questionData in data) {
-  //       String questionText = questionData['questionText'];
-  //       List<Answer> answersList = [];
-  //
-  //       for (var answerData in questionData['answersList']) {
-  //         String answerText = answerData['answerText'];
-  //         bool isCorrect = answerData['isCorrect'];
-  //
-  //         answersList.add(Answer(answerText, isCorrect));
-  //       }
-  //
-  //       fetchedQuestions.add(Question(questionText, answersList));
-  //     }
-  //
-  //     setState(() {
-  //       questionList = fetchedQuestions;
-  //     });
-  //   } else {
-  //     throw Exception('Failed to fetch questions');
-  //   }
-  // }
-
   bool shouldRevealAnswer = false;
   List<Question> questionList = [];
   int currentQuestionIndex = 0;
@@ -420,6 +374,8 @@ class _QuizPageState extends State<QuizPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xff6768b0),
+
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -664,40 +620,7 @@ class _QuizPageState extends State<QuizPage> {
                                   }
                             },
                           ),
-//                             backgroundColor: MaterialStateProperty.resolveWith<Color>(
-//                                   (Set<MaterialState> states) {
-//                                 if (states.contains(MaterialState.pressed)) {
-//                                   // Button is pressed
-//                                   return color;
-//                                 } else if (shouldRevealAnswer) {
-//                                   // Reveal the correct answer
-//                                   if (answer.isCorrect && selectedAnswer == answer) {
-//                                     // Selected answer is correct
-//                                     _confettiController.play();
-// // Play confetti effect
-//                                     Future.delayed(const Duration(seconds: 1), () {
-//                                       _confettiController.stop(); // Stop confetti effect after 4 seconds
-//
-//                                     });
-//                                     return Colors.green;
-//                                   } else if (answer.isCorrect) {
-//                                     // Correct answer, but it's not selected
-//                                     return Colors.green;
-//                                   } else if (selectedAnswer == answer) {
-//                                     // Selected answer and it is wrong
-//                                     return Colors.black;
-//                                   } else {
-//                                     return Colors.red;
-//                                   }
-//                                 } else if (selectedAnswer != null && answer == selectedAnswer) {
-//                                   // Selected answer
-//                                   return Colors.black;
-//                                 } else {
-//                                   // Default color
-//                                   return color;
-//                                 }
-//                               },
-//                             ),
+
                         ),
                         onPressed: () {
                           if(selected){
@@ -772,7 +695,7 @@ class _QuizPageState extends State<QuizPage> {
                          else {
 
                              setState(() {
-                               // print(questionList[currentQuestionIndex].answersList[currentQuestionIndex].answerText);
+
                                currentQuestionIndex++;
                                colorSelect();
                                shouldRevealAnswer = false;

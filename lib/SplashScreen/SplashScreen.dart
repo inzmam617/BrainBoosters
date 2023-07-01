@@ -29,27 +29,9 @@ class _SplashPageState extends State<SplashPage> {
     return Scaffold(
       backgroundColor: const Color(0xff494FC7),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height / 2,
-            child: Stack(
-              children: [
-                Transform.translate(
-                    offset: const Offset(-120, -180),
-                    child: SvgPicture.asset("assets/ring.svg")),
-                Transform.translate(
-                    offset: const Offset(-120, -120),
-                    child: Container(
-                      height: 300,
-                      width: 300,
-                      decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(360)),
-                          color: Colors.white12),
-                    )),
-              ],
-            ),
-          ),
-          // const Center(child: Text("Welcome to BrainBoosters",style: TextStyle(color: Colors.white,fontSize: 40),textAlign: TextAlign.center,),),
 
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),

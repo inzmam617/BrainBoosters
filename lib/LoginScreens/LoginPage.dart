@@ -18,9 +18,12 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           children: [
             const SizedBox(height: 80,),
-            SvgPicture.asset("assets/logo.svg"),
+            SizedBox(
+              height: 35,
+              width: MediaQuery.of(context).size.width / 1.7,
+                child: SvgPicture.asset("assets/logo.svg",fit: BoxFit.cover,)),
 
-            SizedBox(height: MediaQuery.of(context).size.height / 5,),
+            SizedBox(height: MediaQuery.of(context).size.height / 8,),
             const Text(
               "Login",
               style: TextStyle(color: Colors.black, fontSize: 28),

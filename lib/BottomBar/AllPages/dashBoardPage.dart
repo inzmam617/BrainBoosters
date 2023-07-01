@@ -30,6 +30,8 @@ class _DashPageState extends State<DashPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+
+        physics: ScrollPhysics(),
         child: Column(
           children: [
             const SizedBox(
@@ -107,7 +109,7 @@ class _DashPageState extends State<DashPage> {
                           )),
                         ),
                       ),
-                       Padding(
+                      const Padding(
                         padding:
                             EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                         child: Column(
@@ -207,77 +209,208 @@ class _DashPageState extends State<DashPage> {
             const SizedBox(
               height: 20,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.45,
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                    boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 3.5)],
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
-                child: Column(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(top: 20, left: 20),
-                      child: Align(
-                          alignment: Alignment.topLeft,
-                          child: Text("Your Last Quiz Result",style: TextStyle(color: Color(0xff494FC7)),)),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: 5,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: Container(
-                                height: MediaQuery.of(context).size.height * 0.04,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                        const BorderRadius.all(Radius.circular(10)),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                          color: Colors.grey, blurRadius: 3.5)
-                                    ],
-                                    color: colors[index]),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        height: MediaQuery.of(context).size.height * 0.04 - 10,
-                                        width: MediaQuery.of(context).size.height * 0.04 - 10,
-                                        decoration: const BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.all(Radius.circular(360)),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.grey,
-                                              blurRadius: 2.5
-                                            )
-                                          ]
-                                        ),
-                                        child: Center(child: Text("${index + 1}",style: const TextStyle(color: Colors.black,fontSize: 15),textAlign: TextAlign.center,)),
-                                      ),
-                                      const SizedBox(width: 20,),
-                                      Text(names[index],style: const TextStyle(color: Colors.white,fontSize: 16),)
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
+            // ListView(
+            //   shrinkWrap: true,
+            //   physics: ScrollPhysics(),
+            //   children: [
+            //     Padding(
+            //       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            //       child: Container(
+            //         height: MediaQuery.of(context).size.height * 0.45,
+            //         width: double.infinity,
+            //         decoration: const BoxDecoration(
+            //             boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 3.5)],
+            //             color: Colors.white,
+            //             borderRadius: BorderRadius.all(Radius.circular(20))),
+            //         child: Column(
+            //           children: [
+            //             const Padding(
+            //               padding: EdgeInsets.only(top: 20, left: 20),
+            //               child: Align(
+            //                   alignment: Alignment.topLeft,
+            //                   child: Text(
+            //                     "Your Last Quiz Result",
+            //                     style: TextStyle(color: Color(0xff494FC7)),
+            //                   )),
+            //             ),
+            //             Padding(
+            //               padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            //               child: Flexible(
+            //                 child: ListView.builder(
+            //                   shrinkWrap: true,
+            //                   itemCount: 5,
+            //                   itemBuilder: (BuildContext context, int index) {
+            //                     return Padding(
+            //                       padding: const EdgeInsets.symmetric(vertical: 10),
+            //                       child: Container(
+            //                         height:
+            //                             MediaQuery.of(context).size.height * 0.04,
+            //                         width: double.infinity,
+            //                         decoration: BoxDecoration(
+            //                             borderRadius: const BorderRadius.all(
+            //                                 Radius.circular(10)),
+            //                             boxShadow: const [
+            //                               BoxShadow(
+            //                                   color: Colors.grey, blurRadius: 3.5)
+            //                             ],
+            //                             color: colors[index]),
+            //                         child: Padding(
+            //                           padding: const EdgeInsets.symmetric(
+            //                               horizontal: 20),
+            //                           child: Row(
+            //                             children: [
+            //                               Container(
+            //                                 height:
+            //                                     MediaQuery.of(context).size.height *
+            //                                             0.04 -
+            //                                         10,
+            //                                 width:
+            //                                     MediaQuery.of(context).size.height *
+            //                                             0.04 -
+            //                                         10,
+            //                                 decoration: const BoxDecoration(
+            //                                     color: Colors.white,
+            //                                     borderRadius: BorderRadius.all(
+            //                                         Radius.circular(360)),
+            //                                     boxShadow: [
+            //                                       BoxShadow(
+            //                                           color: Colors.grey,
+            //                                           blurRadius: 2.5)
+            //                                     ]),
+            //                                 child: Center(
+            //                                     child: Text(
+            //                                   "${index + 1}",
+            //                                   style: const TextStyle(
+            //                                       color: Colors.black,
+            //                                       fontSize: 15),
+            //                                   textAlign: TextAlign.center,
+            //                                 )),
+            //                               ),
+            //                               const SizedBox(
+            //                                 width: 20,
+            //                               ),
+            //                               Text(
+            //                                 names[index],
+            //                                 style: const TextStyle(
+            //                                     color: Colors.white, fontSize: 16),
+            //                               )
+            //                             ],
+            //                           ),
+            //                         ),
+            //                       ),
+            //                     );
+            //                   },
+            //                 ),
+            //               ),
+            //             )
+            //           ],
+            //         ),
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            SingleChildScrollView(
+              physics: ScrollPhysics(),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.50,
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                        boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 3.5)],
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
                       ),
-                    )
-                  ],
-                ),
+                      child: Column(
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(top: 20, left: 20),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                "Your Last Quiz Result",
+                                style: TextStyle(color: Color(0xff494FC7)),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: 5,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 10),
+                                  child: Container(
+                                    height: MediaQuery.of(context).size.height * 0.04,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                      boxShadow: const [
+                                        BoxShadow(color: Colors.grey, blurRadius: 3.5),
+                                      ],
+                                      color: colors[index],
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            height: MediaQuery.of(context).size.height * 0.04 - 10,
+                                            width: MediaQuery.of(context).size.height * 0.04 - 10,
+                                            decoration: const BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.all(Radius.circular(360)),
+                                              boxShadow: [
+                                                BoxShadow(color: Colors.grey, blurRadius: 2.5),
+                                              ],
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                "${index + 1}",
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 15,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 20),
+                                          Text(
+                                            names[index],
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+
+
+
+                ],
               ),
-            )
+            ),
+
+
+            SizedBox(
+              height: 100,
+            ),
           ],
         ),
       ),

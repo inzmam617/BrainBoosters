@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "852632874780",
+    "project_id": "brainboosters-6d9a1",
+    "storage_bucket": "brainboosters-6d9a1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852632874780:android:e4b57614b3c6e02aae94d9",
+        "android_client_info": {
+          "package_name": "com.example.brainboosters"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "852632874780-j2aj28mi0nebehm3g2m0sp48oui5l06u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdO93adH2h7FTpJ8rfRUhi7wNEzH6ioqw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "852632874780-j2aj28mi0nebehm3g2m0sp48oui5l06u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

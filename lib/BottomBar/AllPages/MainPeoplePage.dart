@@ -49,118 +49,253 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                 const SizedBox(
                   width: 20,
                 ),
-                SvgPicture.asset("assets/logo.svg",fit: BoxFit.scaleDown,),
+
                 const SizedBox(
                   width: 10,
                 ),
               ],
             ),
-
-
+            const SizedBox(
+              height: 30,
+            ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.65,
-              child: ListView.builder(
-                itemCount: 5,
-                itemBuilder: (BuildContext context, int index) {
-                final Color itemColor = itemColors[index % itemColors.length];
-                return  Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      boxShadow: const [BoxShadow(color: Colors.grey, blurRadius: 2)],
-                      borderRadius: BorderRadius.circular(30),
-                      color: itemColor,
-                    ),
-                    height: 80,
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Row(
-                        children: [
-                          Container(
-                            height: 60,
-                            width: 60,
-                            decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage("assets/profile.png")),
-                                borderRadius: BorderRadius.all(Radius.circular(100))),
-                          ),
-                          const SizedBox(width: 10,),
-                           Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("John Smith" ,style: TextStyle(color: Colors.black,fontSize: 14),),
-                              SizedBox(height: 5,),
-                              Text("8/10 - 251",style: TextStyle(color: Colors.black,fontSize: 11)),
-                            ],
-                          ),
-                          const Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text("Active",style: TextStyle(color: Colors.black,fontSize: 12)),
-                                const SizedBox(height: 10,),
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      height: 25,
-                                      width: 60,
-                                      child: ElevatedButton(
-                                          style: ButtonStyle(
-                                              shape: MaterialStateProperty.all(
-                                                  const RoundedRectangleBorder(
-                                                      borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              10)))),
-                                              backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  Colors.white)),
-                                          onPressed: () {
-                                          },
-                                          child: const Center(
-                                            child: Text("Invite" ,style: TextStyle(color: Colors.red,fontSize: 10),),
-                                          )),
-                                    ),
-                                    const SizedBox(width: 10,),
-                                    SizedBox(
-                                      height: 25,
-                                      width: 60,
-                                      child: ElevatedButton(
-                                          style: ButtonStyle(
-                                              shape: MaterialStateProperty.all(
-                                                  const RoundedRectangleBorder(
-                                                      borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              10)))),
-                                              backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  Colors.white)),
-                                          onPressed: () {
-                                            Get.to(()=> ChatScreen(myUserId: '1', otherUserId: '2', name: 'asd',));
-                                          },
-                                          child: const Center(
-                                            child: Text("Chat" ,style: TextStyle(color: Colors.green,fontSize: 10),),
+                height: 35,
+                width: MediaQuery.of(context).size.width / 1.7,
+                child: SvgPicture.asset("assets/logo.svg",fit: BoxFit.cover,)),
 
-                                          )),
+
+            // SizedBox(
+            //   height: MediaQuery.of(context).size.height / 2,
+            //   child: ListView.builder(
+            //     itemCount: 5,
+            //     itemBuilder: (BuildContext context, int index) {
+            //     final Color itemColor = itemColors[index % itemColors.length];
+            //     return  Padding(
+            //       padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+            //       child: Container(
+            //         decoration: BoxDecoration(
+            //           boxShadow: const [BoxShadow(color: Colors.grey, blurRadius: 2)],
+            //           borderRadius: BorderRadius.circular(30),
+            //           color: itemColor,
+            //         ),
+            //         height: 80,
+            //         width: MediaQuery.of(context).size.width * 0.9,
+            //         child: Padding(
+            //           padding: const EdgeInsets.symmetric(horizontal: 18),
+            //           child: Row(
+            //             children: [
+            //               Container(
+            //                 height: 60,
+            //                 width: 60,
+            //                 decoration: const BoxDecoration(
+            //                     image: DecorationImage(
+            //                         image: AssetImage("assets/profile.png")),
+            //                     borderRadius: BorderRadius.all(Radius.circular(100))),
+            //               ),
+            //               const SizedBox(width: 10,),
+            //                const Column(
+            //                 crossAxisAlignment: CrossAxisAlignment.start,
+            //                 mainAxisAlignment: MainAxisAlignment.center,
+            //                 children: [
+            //                   Text("John Smith" ,style: TextStyle(color: Colors.black,fontSize: 14),),
+            //                   SizedBox(height: 5,),
+            //                   Text("8/10 - 251",style: TextStyle(color: Colors.black,fontSize: 10)),
+            //                 ],
+            //               ),
+            //               const Spacer(),
+            //               Padding(
+            //                 padding: const EdgeInsets.only(right: 20),
+            //                 child: Column(
+            //                   crossAxisAlignment: CrossAxisAlignment.end,
+            //                   mainAxisAlignment: MainAxisAlignment.center,
+            //                   children: [
+            //                     const Text("Active",style: TextStyle(color: Colors.black,fontSize: 12)),
+            //                     const SizedBox(height: 10,),
+            //                     Row(
+            //                       children: [
+            //                         SizedBox(
+            //                           height: 24,
+            //                           width: 60,
+            //                           child: ElevatedButton(
+            //                               style: ButtonStyle(
+            //                                   shape: MaterialStateProperty.all(
+            //                                       const RoundedRectangleBorder(
+            //                                           borderRadius:
+            //                                           BorderRadius.all(
+            //                                               Radius.circular(
+            //                                                   10)))),
+            //                                   backgroundColor:
+            //                                   MaterialStateProperty.all(
+            //                                       Colors.white)),
+            //                               onPressed: () {
+            //                               },
+            //                               child: const Center(
+            //                                 child: Text("Invite" ,style: TextStyle(color: Colors.red,fontSize: 10),),
+            //                               )),
+            //                         ),
+            //                         const SizedBox(width: 10,),
+            //                         SizedBox(
+            //                           height: 25,
+            //                           width: 60,
+            //                           child: ElevatedButton(
+            //                               style: ButtonStyle(
+            //                                   shape: MaterialStateProperty.all(
+            //                                       const RoundedRectangleBorder(
+            //                                           borderRadius:
+            //                                           BorderRadius.all(
+            //                                               Radius.circular(
+            //                                                   10)))),
+            //                                   backgroundColor:
+            //                                   MaterialStateProperty.all(
+            //                                       Colors.white)),
+            //                               onPressed: () {
+            //                                 Get.to(()=> const ChatScreen(myUserId: '1', otherUserId: '2', name: 'asd',));
+            //                               },
+            //                               child: const Center(
+            //                                 child: Text("Chat" ,style: TextStyle(color: Colors.green,fontSize: 10),),
+            //
+            //                               )),
+            //                         ),
+            //                       ],
+            //                     )
+            //                   ],
+            //                 ),
+            //               )
+            //             ],
+            //           ),
+            //         ),
+            //       ),
+            //     );
+            //
+            //   },),
+            // ),
+            SingleChildScrollView(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height / 2,
+                child: Padding(
+                  padding: EdgeInsets.zero,
+                  child: ListView.builder(
+                    physics: ScrollPhysics(),
+                    itemCount: 5,
+                    itemBuilder: (BuildContext context, int index) {
+                      final Color itemColor = itemColors[index % itemColors.length];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            boxShadow: const [BoxShadow(color: Colors.grey, blurRadius: 2)],
+                            borderRadius: BorderRadius.circular(30),
+                            color: itemColor,
+                          ),
+                          height: 80,
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 18),
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: 60,
+                                  width: 60,
+                                  decoration: const BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage("assets/profile.png"),
+                                    ),
+                                    borderRadius: BorderRadius.all(Radius.circular(100)),
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "John Smith",
+                                      style: TextStyle(color: Colors.black, fontSize: 14),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      "8/10 - 251",
+                                      style: TextStyle(color: Colors.black, fontSize: 10),
                                     ),
                                   ],
-                                )
+                                ),
+                                const Spacer(),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 20),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Text(
+                                        "Active",
+                                        style: TextStyle(color: Colors.black, fontSize: 12),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            height: 24,
+                                            width: 60,
+                                            child: ElevatedButton(
+                                              style: ButtonStyle(
+                                                shape: MaterialStateProperty.all(
+                                                  const RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                                                  ),
+                                                ),
+                                                backgroundColor: MaterialStateProperty.all(Colors.white),
+                                              ),
+                                              onPressed: () {},
+                                              child: const Center(
+                                                child: Text(
+                                                  "Invite",
+                                                  style: TextStyle(color: Colors.red, fontSize: 10),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          SizedBox(
+                                            height: 25,
+                                            width: 60,
+                                            child: ElevatedButton(
+                                              style: ButtonStyle(
+                                                shape: MaterialStateProperty.all(
+                                                  const RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                                                  ),
+                                                ),
+                                                backgroundColor: MaterialStateProperty.all(Colors.white),
+                                              ),
+                                              onPressed: () {
+                                                Get.to(() => const ChatScreen(myUserId: '1', otherUserId: '2', name: 'asd',));
+                                              },
+                                              child: const Center(
+                                                child: Text(
+                                                  "Chat",
+                                                  style: TextStyle(color: Colors.green, fontSize: 10),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
-                          )
-                        ],
-                      ),
-                    ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                );
-
-              },),
+                ),
+              ),
             ),
+
+
+
             const SizedBox(height: 10,),
 
             SizedBox(

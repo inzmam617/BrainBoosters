@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import '../../ApiServices/ApiForgettingAlltheCourses.dart';
+import '../../Models/CoursesModels.dart';
 import '../BottomNavBar.dart';
 import 'ChooseYourStudyforQuize.dart';
 
 
 class HomePage extends StatefulWidget {
+
   const HomePage({Key? key}) : super(key: key);
 
   @override
@@ -14,7 +17,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  Future<void> _showAlertDialog() async {
+
+  List <String> names  = [];
+  Future<void> _showAlertDialog(final textList) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -103,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     onPressed: () {
                       Get.back();
-                      Get.to(() =>  const ChooseYourStudyForQuiz());
+                      Get.to(() =>  ChooseYourStudyForQuiz(textList : names ));
                       },
                   ),
                 ),
@@ -113,6 +118,11 @@ class _HomePageState extends State<HomePage> {
         );
       },
     );
+  }
+
+  Stream<List<Course>> getOrderStream() {
+    // Adjust this according to your implementation, e.g., using a stream controller or a stream from a provider.
+    return ApiServices.getAllCourses().asStream();
   }
   @override
   Widget build(BuildContext context) {
@@ -149,303 +159,405 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(
                 width: 20,
               ),
-              SvgPicture.asset("assets/logo.svg",fit: BoxFit.scaleDown,),
+
               const SizedBox(
                 width: 10,
               ),
             ],
           ),
+          // const SizedBox(
+          //   height: 30,
+          // ),
+          // Container(
+          //   decoration: const BoxDecoration(
+          //       borderRadius: BorderRadius.all(Radius.circular(35)),
+          //       color: Colors.white,
+          //       boxShadow: [
+          //         BoxShadow(color: Colors.grey, blurRadius: 3.5)
+          //       ]),
+          //   height: 40,
+          //   width: MediaQuery.of(context).size.width * 0.8,
+          //   child: Center(
+          //     child: TextFormField(
+          //
+          //       decoration: const InputDecoration(
+          //         hintStyle: TextStyle(fontSize: 16,),
+          //
+          //           prefixIcon: Icon(
+          //             Icons.search,
+          //             color: Colors.grey,
+          //           ),
+          //           hintText: "Find and replay chapters",
+          //           // contentPadding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+          //           border: InputBorder.none),
+          //     ),
+          //   ),
+          // ),
           const SizedBox(
             height: 30,
           ),
-          Container(
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(35)),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(color: Colors.grey, blurRadius: 3.5)
-                ]),
-            height: 40,
-            width: MediaQuery.of(context).size.width * 0.8,
-            child: Center(
-              child: TextFormField(
-
-                decoration: const InputDecoration(
-                  hintStyle: TextStyle(fontSize: 16,),
-
-                    prefixIcon: Icon(
-                      Icons.search,
-                      color: Colors.grey,
-                    ),
-                    hintText: "Find and replay chapters",
-                    // contentPadding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                    border: InputBorder.none),
-              ),
-            ),
-          ),
+          SizedBox(
+              height: 35,
+              width: MediaQuery.of(context).size.width / 1.7,
+              child: SvgPicture.asset("assets/logo.svg",fit: BoxFit.cover,)),
           const SizedBox(
             height: 35,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            child: Row(
-              children: [
-                SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.6,
-                    child: ElevatedButton(
-                        style: ButtonStyle(
-                            shape: MaterialStateProperty.all(
-                                const RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20)))),
-                            backgroundColor: MaterialStateProperty.all(
-                                const Color(0xffFDF8A6))),
-                        onPressed: () {
-                          _showAlertDialog();
+          Expanded(
 
-                        },
-                        child:  Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Geography VG1 & Science",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w300),
-                              ),
-                              Text(
-                                "12 Chapters",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w300),
-                              ),
-                              Text(
-                                "Price:12kr",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w300),
-                              ),
-                            ],
-                          ),
-                        ))),
-                const SizedBox(
-                  width: 20,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      border:
-                          Border.all(color: const Color(0xffFDF8A6), width: 5),
-                      image: const DecorationImage(
-                          image: AssetImage("assets/one.jpg")),
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(100))),
-                  height: 80,
-                  width: MediaQuery.of(context).size.width * 0.2,
-                )
-              ],
+            child:
+            StreamBuilder<List<Course>>(
+              stream: getOrderStream(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final courses = snapshot.data;
+                  return ListView.builder(
+                    itemCount: courses!.length,
+                    itemBuilder: (context, index) {
+                      final course = courses[index];
+                      // String names = course.subCourses[index].toString();
+                      //
+                      // print(names);
+
+
+                      return  Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.6,
+                                child: ElevatedButton(
+                                    style: ButtonStyle(
+                                        shape: MaterialStateProperty.all(
+                                            const RoundedRectangleBorder(
+                                                borderRadius:
+                                                BorderRadius.all(Radius.circular(20)))),
+                                        backgroundColor: MaterialStateProperty.all(
+                                            const Color(0xffE6EED9))),
+                                    onPressed: () {
+                                      _showAlertDialog(course.subCourses);
+
+                                    },
+                                    child:   Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+
+                                            course.name,
+                                            style: TextStyle(
+
+
+
+                                                color: Colors.black,
+
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w300),
+                                          ),
+                                          Text(
+                                            "${course.subCourses.length} Chapters",
+                                            style: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w300),
+                                          ),
+
+                                        ],
+                                      ),
+                                    ))),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  border:
+                                  Border.all(color: const Color(0xffE6EED9), width: 5),
+                                  image: const DecorationImage(
+                                      image: AssetImage("assets/four.jpg")),
+                                  borderRadius:
+                                  const BorderRadius.all(Radius.circular(100))),
+                              height: 80,
+                              width: MediaQuery.of(context).size.width * 0.2,
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error: ${snapshot.error}'),
+                  );
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            child: Row(
-              children: [
-                SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.6,
-                    child: ElevatedButton(
-                        style: ButtonStyle(
-                            shape: MaterialStateProperty.all(
-                                const RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20)))),
-                            backgroundColor: MaterialStateProperty.all(
-                                const Color(0xffF4F4FB))),
-                        onPressed: () {                        _showAlertDialog();
-
-
-                        },
-                        child:  Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Religion and Philosophy",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w300),
-                              ),
-                              Text(
-                                "12 Chapters",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w300),
-                              ),
-                              Text(
-                                "Price:23kr",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w300),
-                              ),
-                            ],
-                          ),
-                        ))),
-                const SizedBox(
-                  width: 20,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      border:
-                          Border.all(color: const Color(0xffF4F4FB), width: 5),
-                      image: const DecorationImage(
-                          image: AssetImage("assets/two.jpg")),
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(100))),
-                  height: 80,
-                  width: MediaQuery.of(context).size.width * 0.2,
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            child: Row(
-              children: [
-                SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.6,
-                    child: ElevatedButton(
-                        style: ButtonStyle(
-                            shape: MaterialStateProperty.all(
-                                const RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20)))),
-                            backgroundColor: MaterialStateProperty.all(
-                                const Color(0xffF6B6A9))),
-                        onPressed: () {
-                          _showAlertDialog();
-
-                        },
-                        child:  Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "History And Economics",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w300),
-                              ),
-                              Text(
-                                "12 Chapters",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w300),
-                              ),
-                              Text(
-                                "Price:52kr",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w300),
-                              ),
-                            ],
-                          ),
-                        ))),
-                const SizedBox(
-                  width: 20,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      border:
-                          Border.all(color: const Color(0xffF6B6A9), width: 5),
-                      image: const DecorationImage(
-                          image: AssetImage("assets/three.jpg")),
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(100))),
-                  height: 80,
-                  width: MediaQuery.of(context).size.width * 0.2,
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            child: Row(
-              children: [
-                SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.6,
-                    child: ElevatedButton(
-                        style: ButtonStyle(
-                            shape: MaterialStateProperty.all(
-                                const RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20)))),
-                            backgroundColor: MaterialStateProperty.all(
-                                const Color(0xffE6EED9))),
-                        onPressed: () {
-                          _showAlertDialog();
-
-                        },
-                        child:  Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Religion and Philosophy",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w300),
-                              ),
-                              Text(
-                                "12 Chapters",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w300),
-                              ),
-                              Text(
-                                "Price:12kr",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w300),
-                              ),
-                            ],
-                          ),
-                        ))),
-                const SizedBox(
-                  width: 20,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      border:
-                          Border.all(color: const Color(0xffE6EED9), width: 5),
-                      image: const DecorationImage(
-                          image: AssetImage("assets/four.jpg")),
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(100))),
-                  height: 80,
-                  width: MediaQuery.of(context).size.width * 0.2,
-                )
-              ],
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          //   child: Row(
+          //     children: [
+          //       SizedBox(
+          //           width: MediaQuery.of(context).size.width * 0.6,
+          //           child: ElevatedButton(
+          //               style: ButtonStyle(
+          //                   shape: MaterialStateProperty.all(
+          //                       const RoundedRectangleBorder(
+          //                           borderRadius:
+          //                               BorderRadius.all(Radius.circular(20)))),
+          //                   backgroundColor: MaterialStateProperty.all(
+          //                       const Color(0xffFDF8A6))),
+          //               onPressed: () {
+          //                 _showAlertDialog();
+          //
+          //               },
+          //               child:  const Padding(
+          //                 padding: EdgeInsets.all(8.0),
+          //                 child: Column(
+          //                   mainAxisAlignment: MainAxisAlignment.center,
+          //                   crossAxisAlignment: CrossAxisAlignment.start,
+          //                   children: [
+          //                     Text(
+          //                       "Geography VG1 & Science",
+          //                       style: TextStyle(
+          //                           color: Colors.black,
+          //                           fontSize: 15,
+          //                           fontWeight: FontWeight.w300),
+          //                     ),
+          //                     Text(
+          //                       "12 Chapters",
+          //                       style: TextStyle(
+          //                           color: Colors.black,
+          //                           fontSize: 14,
+          //                           fontWeight: FontWeight.w300),
+          //                     ),
+          //                     Text(
+          //                       "Price:12kr",
+          //                       style: TextStyle(
+          //                           color: Colors.black,
+          //                           fontSize: 14,
+          //                           fontWeight: FontWeight.w300),
+          //                     ),
+          //                   ],
+          //                 ),
+          //               ))),
+          //       const SizedBox(
+          //         width: 20,
+          //       ),
+          //       Container(
+          //         decoration: BoxDecoration(
+          //             border:
+          //                 Border.all(color: const Color(0xffFDF8A6), width: 5),
+          //             image: const DecorationImage(
+          //                 image: AssetImage("assets/one.jpg")),
+          //             borderRadius:
+          //                 const BorderRadius.all(Radius.circular(100))),
+          //         height: 80,
+          //         width: MediaQuery.of(context).size.width * 0.2,
+          //       )
+          //     ],
+          //   ),
+          // ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          //   child: Row(
+          //     children: [
+          //       SizedBox(
+          //           width: MediaQuery.of(context).size.width * 0.6,
+          //           child: ElevatedButton(
+          //               style: ButtonStyle(
+          //                   shape: MaterialStateProperty.all(
+          //                       const RoundedRectangleBorder(
+          //                           borderRadius:
+          //                               BorderRadius.all(Radius.circular(20)))),
+          //                   backgroundColor: MaterialStateProperty.all(
+          //                       const Color(0xffF4F4FB))),
+          //               onPressed: () {                        _showAlertDialog();
+          //
+          //
+          //               },
+          //               child:  const Padding(
+          //                 padding: EdgeInsets.all(8.0),
+          //                 child: Column(
+          //                   mainAxisAlignment: MainAxisAlignment.center,
+          //                   crossAxisAlignment: CrossAxisAlignment.start,
+          //                   children: [
+          //                     Text(
+          //                       "Religion and Philosophy",
+          //                       style: TextStyle(
+          //                           color: Colors.black,
+          //                           fontSize: 15,
+          //                           fontWeight: FontWeight.w300),
+          //                     ),
+          //                     Text(
+          //                       "12 Chapters",
+          //                       style: TextStyle(
+          //                           color: Colors.black,
+          //                           fontSize: 14,
+          //                           fontWeight: FontWeight.w300),
+          //                     ),
+          //                     Text(
+          //                       "Price:23kr",
+          //                       style: TextStyle(
+          //                           color: Colors.black,
+          //                           fontSize: 14,
+          //                           fontWeight: FontWeight.w300),
+          //                     ),
+          //                   ],
+          //                 ),
+          //               ))),
+          //       const SizedBox(
+          //         width: 20,
+          //       ),
+          //       Container(
+          //         decoration: BoxDecoration(
+          //             border:
+          //                 Border.all(color: const Color(0xffF4F4FB), width: 5),
+          //             image: const DecorationImage(
+          //                 image: AssetImage("assets/two.jpg")),
+          //             borderRadius:
+          //                 const BorderRadius.all(Radius.circular(100))),
+          //         height: 80,
+          //         width: MediaQuery.of(context).size.width * 0.2,
+          //       )
+          //     ],
+          //   ),
+          // ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          //   child: Row(
+          //     children: [
+          //       SizedBox(
+          //           width: MediaQuery.of(context).size.width * 0.6,
+          //           child: ElevatedButton(
+          //               style: ButtonStyle(
+          //                   shape: MaterialStateProperty.all(
+          //                       const RoundedRectangleBorder(
+          //                           borderRadius:
+          //                               BorderRadius.all(Radius.circular(20)))),
+          //                   backgroundColor: MaterialStateProperty.all(
+          //                       const Color(0xffF6B6A9))),
+          //               onPressed: () {
+          //                 _showAlertDialog();
+          //
+          //               },
+          //               child:  const Padding(
+          //                 padding: EdgeInsets.all(8.0),
+          //                 child: Column(
+          //                   mainAxisAlignment: MainAxisAlignment.center,
+          //                   crossAxisAlignment: CrossAxisAlignment.start,
+          //                   children: [
+          //                     Text(
+          //                       "History And Economics",
+          //                       style: TextStyle(
+          //                           color: Colors.black,
+          //                           fontSize: 15,
+          //                           fontWeight: FontWeight.w300),
+          //                     ),
+          //                     Text(
+          //                       "12 Chapters",
+          //                       style: TextStyle(
+          //                           color: Colors.black,
+          //                           fontSize: 14,
+          //                           fontWeight: FontWeight.w300),
+          //                     ),
+          //                     Text(
+          //                       "Price:52kr",
+          //                       style: TextStyle(
+          //                           color: Colors.black,
+          //                           fontSize: 14,
+          //                           fontWeight: FontWeight.w300),
+          //                     ),
+          //                   ],
+          //                 ),
+          //               ))),
+          //       const SizedBox(
+          //         width: 20,
+          //       ),
+          //       Container(
+          //         decoration: BoxDecoration(
+          //             border:
+          //                 Border.all(color: const Color(0xffF6B6A9), width: 5),
+          //             image: const DecorationImage(
+          //                 image: AssetImage("assets/three.jpg")),
+          //             borderRadius:
+          //                 const BorderRadius.all(Radius.circular(100))),
+          //         height: 80,
+          //         width: MediaQuery.of(context).size.width * 0.2,
+          //       )
+          //     ],
+          //   ),
+          // ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          //   child: Row(
+          //     children: [
+          //       SizedBox(
+          //           width: MediaQuery.of(context).size.width * 0.6,
+          //           child: ElevatedButton(
+          //               style: ButtonStyle(
+          //                   shape: MaterialStateProperty.all(
+          //                       const RoundedRectangleBorder(
+          //                           borderRadius:
+          //                               BorderRadius.all(Radius.circular(20)))),
+          //                   backgroundColor: MaterialStateProperty.all(
+          //                       const Color(0xffE6EED9))),
+          //               onPressed: () {
+          //                 _showAlertDialog();
+          //
+          //               },
+          //               child:  const Padding(
+          //                 padding: EdgeInsets.all(8.0),
+          //                 child: Column(
+          //                   mainAxisAlignment: MainAxisAlignment.center,
+          //                   crossAxisAlignment: CrossAxisAlignment.start,
+          //                   children: [
+          //                     Text(
+          //                       "Religion and Philosophy",
+          //                       style: TextStyle(
+          //                           color: Colors.black,
+          //                           fontSize: 15,
+          //                           fontWeight: FontWeight.w300),
+          //                     ),
+          //                     Text(
+          //                       "12 Chapters",
+          //                       style: TextStyle(
+          //                           color: Colors.black,
+          //                           fontSize: 14,
+          //                           fontWeight: FontWeight.w300),
+          //                     ),
+          //                     Text(
+          //                       "Price:12kr",
+          //                       style: TextStyle(
+          //                           color: Colors.black,
+          //                           fontSize: 14,
+          //                           fontWeight: FontWeight.w300),
+          //                     ),
+          //                   ],
+          //                 ),
+          //               ))),
+          //       const SizedBox(
+          //         width: 20,
+          //       ),
+          //       Container(
+          //         decoration: BoxDecoration(
+          //             border:
+          //                 Border.all(color: const Color(0xffE6EED9), width: 5),
+          //             image: const DecorationImage(
+          //                 image: AssetImage("assets/four.jpg")),
+          //             borderRadius:
+          //                 const BorderRadius.all(Radius.circular(100))),
+          //         height: 80,
+          //         width: MediaQuery.of(context).size.width * 0.2,
+          //       )
+          //     ],
+          //   ),
+          // ),
           const SizedBox(
             height: 30,
           ),

@@ -3,14 +3,20 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'ChooseYourChaptersforQuize.dart';
 
+
 class ChooseYourStudyForQuiz extends StatefulWidget {
-  const ChooseYourStudyForQuiz({Key? key}) : super(key: key);
+  final textList;
+  const ChooseYourStudyForQuiz({Key? key, this.textList}) : super(key: key);
   @override
   State<ChooseYourStudyForQuiz> createState() => _ChooseYourStudyForQuizState();
 }
 class _ChooseYourStudyForQuizState extends State<ChooseYourStudyForQuiz> {
-  final textList = ["Health Care", "Engineering", "Ethics", "G-Studies"];
+  final textList = ["Health Care", "Engineering", "Ethics", "G-Studies","Health Care", "Engineering", "Ethics", "G-Studies"];
   final imagePaths = [
+    "assets/gs.jpg",
+    "assets/ce.jpg",
+    "assets/h.jpg",
+    "assets/e.jpg",
     "assets/gs.jpg",
     "assets/ce.jpg",
     "assets/h.jpg",
@@ -19,6 +25,7 @@ class _ChooseYourStudyForQuizState extends State<ChooseYourStudyForQuiz> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.textList[0]);
     return Scaffold(
       body: Column(
         children: [
@@ -123,8 +130,10 @@ class _ChooseYourStudyForQuizState extends State<ChooseYourStudyForQuiz> {
           const SizedBox(
             height: 20,
           ),
-          SvgPicture.asset("assets/logo.svg"),
-
+          SizedBox(
+              height: 35,
+              width: MediaQuery.of(context).size.width / 1.7,
+              child: SvgPicture.asset("assets/logo.svg",fit: BoxFit.cover,)),
           const SizedBox(
             height: 20,
           ),
@@ -151,6 +160,7 @@ class _ChooseYourStudyForQuizState extends State<ChooseYourStudyForQuiz> {
             ),
           ),
 
+          const SizedBox(height: 20,),
           Expanded(child: ListView.builder(
             itemCount: textList.length,
             itemBuilder: (context, index) {
@@ -171,7 +181,7 @@ class _ChooseYourStudyForQuizState extends State<ChooseYourStudyForQuiz> {
                           backgroundColor: MaterialStateProperty.all(Colors.white),
                         ),
                         onPressed: () {
-                                          Get.to(() =>  const ChooseYourChaptersForQuiz());
+                          Get.to(() =>  const ChooseYourChaptersForQuiz());
 
                         },
                         child: Text(

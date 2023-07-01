@@ -133,7 +133,10 @@ class _ChooseYourChaptersForQuizState extends State<ChooseYourChaptersForQuiz> {
           const SizedBox(
             height: 20,
           ),
-          SvgPicture.asset("assets/logo.svg"),
+          SizedBox(
+              height: 35,
+              width: MediaQuery.of(context).size.width / 1.7,
+              child: SvgPicture.asset("assets/logo.svg",fit: BoxFit.cover,)),
           const SizedBox(
             height: 20,
           ),

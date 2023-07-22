@@ -2,8 +2,9 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
-
 import '../Models/CoursesModels.dart';
+import '../QuizePage/QuizePage.dart';
+import '../const.dart';
 import 'AllPages/HomePage.dart';
 import 'AllPages/MainPeoplePage.dart';
 import 'AllPages/dashBoardPage.dart';
@@ -26,15 +27,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   late IO.Socket socket;
 
+
   void connectToServer() {
     try {
-      // Configure socket transports must be specified
       print("starting");
-      socket = IO.io('http://192.168.0.172:3000/',IO.OptionBuilder().setTransports(['websocket']).disableAutoConnect().build());
+      socket = IO.io(baseUrl,IO.OptionBuilder().setTransports(['websocket']).disableAutoConnect().build());
       socket.connect();
 
     } catch (e) {
-      // print("hello");
       print(e.toString());
     }
   }
@@ -50,28 +50,35 @@ class _BottomNavBarState extends State<BottomNavBar> {
         'receiverId': data['receiverId'],
         'roomId': data['roomId'].toString(),
       };
-      if(message["senderId"] == id){
-        print("this is id" +  id);
+      if(message["receiverId"] == id){
+        // _assetsAudioPlayer.playlistPlayAtIndex(1);
+        print("this is id$id");
         _dialogBuilder(context, message);
-
       }
       print(message);
     });
 
   }
   void _handleStartingQuize(data) {
-    print("Coming");
     setState(() {
-      Map<String, String> message = {
-        'roomId': data['roomId'].toString(),
-      };
-      print(message);
-
-      // print(message);
+      String quizData =data["quizData"];
+      // print(quizData.split('courseName: ')[1].split(',')[0]);
+      // print(quizData.split('subcourseName: ')[1].split(',')[0]);
+      // print(quizData.split('chapterName: ')[1].split(',')[0].split('}')[0]);
+      String roomId =data["roomId"];
+      String senderId =data["senderId"];
+      String receiverId =data["receiverId"];
+      if((roomId ==   senderId+receiverId&&id==senderId)||(roomId ==   senderId+receiverId&&id==receiverId)){
+        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+          return QuizPage(courseName :quizData.split('courseName: ')[1].split(',')[0],
+            roomId: roomId,
+            Id:id,
+              MatchType: "1v1",
+              subcourseName :quizData.split('subcourseName: ')[1].split(',')[0],chapterName:quizData.split('chapterName: ')[1].split(',')[0].split('}')[0] ,);
+        }));
+      }
     });
-
   }
-
    String id = "";
   initialize() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -79,20 +86,21 @@ class _BottomNavBarState extends State<BottomNavBar> {
       id =  prefs.getString("id").toString();
     });
   }
-  Future<void> _dialogBuilder(BuildContext context,Map<String, String> message  ) {
-    return showDialog<void>(
+  Future<void> _dialogBuilder(BuildContext context, Map<String, String> message) async {
+    showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
+        // Show the dialog
+        AlertDialog dialog = AlertDialog(
           title: const Text('Basic dialog title'),
-          content:  SingleChildScrollView(
+          content: SingleChildScrollView(
             child: Column(
               children: [
-                Text( message[ "senderId"]!
-                ),
-                Text(message[ "roomId"]!)
-
-
+                const Text("You Have 10 sec to accept otherwise it will be rejected",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                SizedBox(height: 10,),
+                Text( "${message["senderId"]!}wants to send you invitation to quiz"),
+                SizedBox(height: 10,),
+                Text( "Room Id: ${message["roomId"]!}"),
               ],
             ),
           ),
@@ -103,14 +111,18 @@ class _BottomNavBarState extends State<BottomNavBar> {
               ),
               child: const Text('Accept'),
               onPressed: () {
+                Map<String, String> quizData = {
+                  "courseName": "Physics",
+                  "subcourseName": "Mechanics",
+                  "chapterName": "Motion",
+                };
                 Map<String, String> Accept = {
-                'roomId': message[ "roomId"]!,
+                  'roomId': message["roomId"]!,
+                  "quizData": quizData.toString(),
                 };
                 _assetsAudioPlayer.stop();
-
-                socket.emit("accept_invite" ,Accept);
+                socket.emit("accept_invite", Accept);
                 Navigator.of(context).pop();
-
               },
             ),
             TextButton(
@@ -125,26 +137,31 @@ class _BottomNavBarState extends State<BottomNavBar> {
             ),
           ],
         );
+
+        // Automatically close the dialog after 10 seconds
+        Future.delayed(const Duration(seconds: 10), () {
+          Navigator.pop(context);
+          ScaffoldMessenger.of(context).showSnackBar( const SnackBar(
+            content: Text('Invitation Has been rejected'),
+          ));
+
+        });
+
+        return dialog;
       },
     );
   }
   final AssetsAudioPlayer _assetsAudioPlayer = AssetsAudioPlayer();
-
   @override
   void initState() {
     super.initState();
     connectToServer();
     initialize();
-    socket.on("a", _handleStartingQuize);
-
+    socket.on("quiz_started", _handleStartingQuize);
     _assetsAudioPlayer.open(
         Playlist(
           audios: [
-            Audio('assets/audio/medieval-fanfare-6826.mp3'),
-            Audio('assets/audio/let-it-go-12279.mp3'),
-            Audio('assets/audio/fast tempo.mp3'),
-            Audio('assets/audio/medium tempo.mp3'),
-            // Add more audio tracks here...
+            Audio('assets/audio/popup.wav'),
           ],
         ),
         showNotification: true,
@@ -156,23 +173,23 @@ class _BottomNavBarState extends State<BottomNavBar> {
     selectedIndex = widget.page;
     subcourses = widget.subcourses;
     courseName = widget.courseName;
-    print("courseName"+courseName.toString());
+    print("courseName$courseName");
     setState(() {
 
       _widgetOptions = <Widget>[
         HomePage(subcourses : subcourses ,courseName : courseName),
-        MainPeoplePage(),
+        MainPeoplePage(subcourses : subcourses ,courseName : courseName),
         DashPage(subcourses : subcourses ,courseName : courseName),
-        SettingPage()
+        const SettingPage()
       ];
     });
   }
 
    late List<Widget> _widgetOptions = <Widget>[
     HomePage(subcourses : subcourses ,courseName : courseName),
-    MainPeoplePage(),
+    MainPeoplePage(subcourses : subcourses ,courseName : courseName),
     DashPage(subcourses : subcourses ,courseName : courseName),
-     SettingPage()
+     const SettingPage()
 
    ];
   void _onItemTapped(int index) {

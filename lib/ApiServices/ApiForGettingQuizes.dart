@@ -8,6 +8,7 @@ import '../const.dart';
 class QuizApiService {
   static Future<List<QuizQuestion>> getQuizQuestions(String CourseName ,String SubCoursename ,String ChapterName) async {
     String URL = "${baseUrl}getMcqs/${CourseName}/${SubCoursename}/${ChapterName}";
+    print(URL);
     final response = await http.get(Uri.parse(URL));
 
     if (response.statusCode == 200) {

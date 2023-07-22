@@ -80,7 +80,7 @@ List <SubCourse> sub = [];
                       Get.back();
 
                       Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                        return  QuizPage(subcourses: widget.subcourses,courseName: widget.courseName,);
+                        return  QuizPage(subcourses: widget.subcourses,courseName: widget.courseName,MatchType : "solo" );
                       }));
                     },
 
@@ -105,9 +105,9 @@ List <SubCourse> sub = [];
                     ),
                     onPressed: () {
                       Get.back();
-                      // Get.to(() => const BottomNavBar(page: 1,));
+
                       Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                        return  BottomNavBar(page: 1,);
+                        return  BottomNavBar(page: 1,subcourses: widget.subcourses,courseName: widget.courseName,);
                       }));
                     },
                   ),

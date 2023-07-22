@@ -4,7 +4,7 @@ import "package:http/http.dart" as http;
 
 import '../Models/CoursesModels.dart';
 
-class ApiServices {
+class ApiServicesforCourses {
 
   static Future<List<Course>> getAllCourses() async {
     String URL = "${baseUrl}getAllCourses";

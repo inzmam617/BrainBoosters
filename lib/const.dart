@@ -1,2 +1,2 @@
-const baseUrl = "http://192.168.0.172:3000/";
+const baseUrl = "https://brainbooster.azurewebsites.net/";
 

@@ -49,7 +49,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       backgroundColor:
                           MaterialStateProperty.all(const Color(0xff494FC7))),
                   onPressed: () {
-                    Get.to(()  =>const ChooseCoursePage());
+                    // Get.to(()  =>const ChooseCoursePage());
+                    _showMyDialog();
 
 
                   },
@@ -75,13 +76,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       backgroundColor:
                           MaterialStateProperty.all(Colors.white)),
                   onPressed: () async {
-                    final User? user = await _signInWithGoogle();
-                    // Do something with the signed-in user, such as storing it in the app's state
-                    if (user != null) {
-                      // User signed in successfully
-                    } else {
-                      // Sign in failed
-                    }
+                    // final User? user = await _signInWithGoogle();
+                    // // Do something with the signed-in user, such as storing it in the app's state
+                    // if (user != null) {
+                    //   // User signed in successfully
+                    // } else {
+                    //   // Sign in failed
+                    // }
+                    _showMyDialog();
                   },
                   child: Row(
                     children: [
@@ -105,8 +107,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       backgroundColor:
                           MaterialStateProperty.all(Colors.black)),
                   onPressed: () {
-                    Get.to(()  =>const ChooseCoursePage());
+                    // Get.to(()  =>const ChooseCoursePage());
 
+                    _showMyDialog();
                   },
                   child: Row(
                     children: [
@@ -174,6 +177,40 @@ class _LoginScreenState extends State<LoginScreen> {
       print('Error signing in with Google: $error');
       return null;
     }
+  }
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Feature'),
+          content: const SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Feature Coming Soon..'),
+                SizedBox(height: 20,),
+                Text('Please Try With Email and Password'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Okay'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
 }

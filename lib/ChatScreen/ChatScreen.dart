@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:brainboosters/const.dart';
 import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:http/http.dart' as http;
@@ -34,7 +35,7 @@ class _ChatScreenState extends State<ChatScreen> {
       });
       try {
         final response = await http.get(
-          Uri.parse('http://192.168.0.172:3000/messages/${widget.myUserId}/${widget.otherUserId}/$_page/?lastMessageId=$_lastMessageId'),
+          Uri.parse( '${baseUrl}messages/${widget.myUserId}/${widget.otherUserId}/$_page/?lastMessageId=$_lastMessageId'),
           headers: {"Content-Type": "application/json"},
         );
         final data = jsonDecode(response.body);
@@ -76,7 +77,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void connectToServer() {
     try {
       // Configure socket transports must be specified
-      socket = IO.io('http://192.168.0.172:3000/',IO.OptionBuilder().setTransports(['websocket']).disableAutoConnect().build());
+      socket = IO.io(baseUrl,IO.OptionBuilder().setTransports(['websocket']).disableAutoConnect().build());
       socket.connect();
 
     } catch (e) {

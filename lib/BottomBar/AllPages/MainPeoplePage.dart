@@ -5,12 +5,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../AddNewFriend/AddFriend.dart';
 import '../../ApiServices/ApiServiceToGetAllUsers.dart';
 import '../../ChatScreen/ChatScreen.dart';
+import '../../Models/CoursesModels.dart';
 import '../../Models/FriendsListsModel.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+import '../../QuizePage/QuizePage.dart';
+import '../../const.dart';
 import '../FriendRequestPage.dart';
 
 class MainPeoplePage extends StatefulWidget {
-  const MainPeoplePage({Key? key}) : super(key: key);
+  final List<SubCourse>?  subcourses;
+  final String? courseName;
+  const MainPeoplePage({Key? key, this.subcourses, this.courseName}) : super(key: key);
   @override
   State<MainPeoplePage> createState() => _MainPeoplePageState();
 }
@@ -30,7 +35,7 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
   void connectToServer() {
     try {
       print("starting");
-      socket = IO.io('http://192.168.0.172:3000/',IO.OptionBuilder().setTransports(['websocket']).disableAutoConnect().build());
+      socket =  IO.io(baseUrl,IO.OptionBuilder().setTransports(['websocket']).disableAutoConnect().build());
       socket.connect();
     } catch (e) {
       print(e.toString());
@@ -69,10 +74,10 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                         color: Color(0xff494FC7)),
                     child: const Center(
                         child: Text(
-                      "My Main People",
-                      style: TextStyle(color: Colors.white, fontSize: 17),
-                      textAlign: TextAlign.center,
-                    )),
+                          "My Main People",
+                          style: TextStyle(color: Colors.white, fontSize: 17),
+                          textAlign: TextAlign.center,
+                        )),
                   ),
                 ),
                 const SizedBox(
@@ -83,7 +88,6 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                     return const RequestPage();
                   }));
                 }, child: const Text("See Request")),
-
               ],
             ),
             const SizedBox(
@@ -93,11 +97,8 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                 height: 35,
                 width: MediaQuery.of(context).size.width / 1.7,
                 child: SvgPicture.asset("assets/logo.svg",fit: BoxFit.cover,)),
-
-
-
             FutureBuilder<FriendsListsModel>(
-              future: ApiServices.getUsersData(),
+              future: ApiServicesforGetFriendsandNonFriends.getUsersData(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -119,7 +120,7 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                       child: Padding(
                         padding: EdgeInsets.zero,
                         child: ListView.builder(
-                          physics: ScrollPhysics(),
+                          physics: const ScrollPhysics(),
                           itemCount: friendsList.length,
                           itemBuilder: (BuildContext context, int index) {
                             final Color itemColor = itemColors[index % itemColors.length];
@@ -149,24 +150,28 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                                         ),
                                       ),
                                       const SizedBox(width: 10),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            user.name,
-                                            style: TextStyle(color: Colors.black, fontSize: 14),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Text(
+                                      SizedBox(
+                                        width: MediaQuery.of(context).size.width * 0.35,
+
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              user.name,
+                                              style: TextStyle(color: Colors.black, fontSize: 14),
+                                            ),
+                                            const SizedBox(height: 5),
+                                            Text(
                                               user.email,
-                                            style: TextStyle(color: Colors.black, fontSize: 10),
-                                          ),
-                                        ],
+                                              style: TextStyle(color: Colors.black, fontSize: 10),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      const Spacer(),
+
                                       Padding(
-                                        padding: const EdgeInsets.only(right: 20),
+                                        padding: const EdgeInsets.only(right: 10),
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(vertical: 5),
                                           child: Column(
@@ -176,7 +181,7 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
 
                                               SizedBox(
                                                 height: 28,
-                                                width: 65,
+                                                width: 60,
                                                 child: ElevatedButton(
                                                   style: ButtonStyle(
                                                     shape: MaterialStateProperty.all(
@@ -187,12 +192,25 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                                                     backgroundColor: MaterialStateProperty.all(Colors.white),
                                                   ),
                                                   onPressed: () {
+                                                    Map<String, String> quizData = {
+                                                      "courseName": widget.courseName!,
+                                                      "subcourseName": "Mechanics",
+                                                      "chapterName": "Motion"
+                                                    };
                                                     Map<String, String> message = {
                                                       'senderId': id,
+
                                                       'receiverId': user.id,
                                                       'roomId': id+user.id,
+                                                      "quizData" : quizData.toString()
                                                     };
-                                                    socket.emit("invite" ,message );
+
+                                                    socket.emit("invite" ,message);
+
+                                                    // ScaffoldMessenger.of(context).showSnackBar( const SnackBar(
+                                                    //   content: Text('Invitation Has been sent Please wait for response'),
+                                                    // ));
+                                                    _showFriendsDialog();
                                                   },
                                                   child: const Center(
                                                     child: Text(
@@ -205,7 +223,7 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                                               const SizedBox(height: 8),
                                               SizedBox(
                                                 height: 28,
-                                                width: 65,
+                                                width: 60,
                                                 child: ElevatedButton(
                                                   style: ButtonStyle(
                                                     shape: MaterialStateProperty.all(
@@ -240,24 +258,14 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                       ),
                     ),
                   )
-                ;
+                  ;
                 } else {
                   // If data is null or empty, show a message or return an empty widget.
                   return const Center(child: Text('No data available.'));
                 }
               },
             ),
-
-
-
-
-
-
-
-
-
-            const SizedBox(height: 10,),
-
+           const SizedBox(height: 10,),
             SizedBox(
                 height: 35,
                 width: MediaQuery.of(context).size.width * 0.5,
@@ -269,7 +277,20 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                                     Radius.circular(20)))),
                         backgroundColor:
                         MaterialStateProperty.all(const Color(0xff494FC7))),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+                        return QuizPage(
+                            courseName : widget.courseName,
+                            subcourses: widget.subcourses,
+                            chapterName: widget.subcourses?[0].name,
+                            Id : id,
+                            MatchType : "solo"
+
+
+                        );
+                      }));
+
+                    },
                     child: const Text(
                       "Play Solo",
                       style: TextStyle(
@@ -313,7 +334,9 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                                     Radius.circular(20)))),
                         backgroundColor:
                         MaterialStateProperty.all(const Color(0xff138F60))),
-                    onPressed: () {},
+                    onPressed: () {
+                      _showMyDialog();
+                    },
                     child: const Text(
                       "Matchmaking",
                       style: TextStyle(
@@ -327,4 +350,96 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
       ),
     );
   }
+  Future<void> _showMyDialog() async {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        // Show the dialog
+        AlertDialog dialog = AlertDialog(
+          title: const Text('Invite has been sent'),
+          content: const SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Waiting for 30 people to join'),
+                SizedBox(height: 20,),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 50),
+                  child: CircularProgressIndicator(
+                    color: Colors.red,
+                  ),
+                )
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Okay'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+
+        // Automatically close the dialog after 10 seconds
+        Future.delayed(const Duration(seconds: 10), () {
+          Navigator.pop(context);
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Room could not be filed'),
+          ));
+        });
+
+        return dialog;
+      },
+    );
+  }
+
+
+  Future<void> _showFriendsDialog() async {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        // Show the dialog
+        AlertDialog dialog = AlertDialog(
+          title: const Text('Invite has been sent'),
+          content: const SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Invitation Has been sent Please wait for response..'),
+                SizedBox(height: 20,),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 50),
+                  child: CircularProgressIndicator(
+                    color: Colors.red,
+                  ),
+                )
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Okay'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+
+        // Automatically close the dialog after 10 seconds
+        Future.delayed(const Duration(seconds: 11), () {
+          Navigator.pop(context);
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Request Rejected'),
+          ));
+        });
+
+        return dialog;
+      },
+    );
+  }
+
+
 }

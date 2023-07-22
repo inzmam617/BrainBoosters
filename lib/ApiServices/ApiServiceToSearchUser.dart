@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../Models/FriendsModels.dart';
 import '../const.dart';
 
-class ApiService {
+class ApiServiceGetAllStudents {
   static Future<StudentList> getAllStudents() async {
     const String URL = "${baseUrl}getAllStudents"; // Replace 'baseUrl' with your actual base URL.
 

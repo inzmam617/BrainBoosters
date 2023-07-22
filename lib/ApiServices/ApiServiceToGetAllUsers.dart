@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../Models/FriendsListsModel.dart';
 import '../const.dart';
 
-class ApiServices {
+class ApiServicesforGetFriendsandNonFriends {
   static Future<FriendsListsModel> getUsersData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String id = prefs.getString("id").toString();
@@ -25,4 +25,3 @@ class ApiServices {
     }
   }
 }
-

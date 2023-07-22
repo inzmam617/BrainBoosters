@@ -20,7 +20,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
 
   Stream<List<Course>> getOrderStream() {
 
-    return ApiServices.getAllCourses().asStream();
+    return ApiServicesforCourses.getAllCourses().asStream();
   }
 
 

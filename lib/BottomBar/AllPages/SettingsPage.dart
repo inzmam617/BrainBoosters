@@ -19,8 +19,8 @@ class _SettingPageState extends State<SettingPage> {
   List<IconData> icons = [
     Icons.music_note,
     Icons.color_lens_outlined,
-    Icons.phone_android,
-    Icons.notifications,
+    // Icons.phone_android,
+    // Icons.notifications,
     Icons.book_outlined,
     Icons.star,
     Icons.share,
@@ -29,8 +29,8 @@ class _SettingPageState extends State<SettingPage> {
   List text = [
     "Music",
     "Toggle the colorblind tool",
-    "Toggle Shakes in the phone",
-    "Toggle Push Notification",
+    // "Toggle Shakes in the phone",
+    // "Toggle Push Notification",
     "Change Course of Study",
     "Send Feedback",
     "Share App",
@@ -41,8 +41,8 @@ class _SettingPageState extends State<SettingPage> {
   List<ValueNotifier<bool>> boolean = [
     ValueNotifier<bool>(true),
     ValueNotifier<bool>(true),
-    ValueNotifier<bool>(true),
-    ValueNotifier<bool>(true),
+    // ValueNotifier<bool>(true),
+    // ValueNotifier<bool>(true),
     ValueNotifier<bool>(false),
     ValueNotifier<bool>(false),
     ValueNotifier<bool>(false),
@@ -64,14 +64,14 @@ class _SettingPageState extends State<SettingPage> {
         // Function 2
         // Add your code here
       },
-          () {
-        // Function 3
-        // Add your code here
-      },
-          () {
-        // Function 4
-        // Add your code here
-      },
+      //     () {
+      //   // Function 3
+      //   // Add your code here
+      // },
+      //     () {
+      //   // Function 4
+      //   // Add your code here
+      // },
           () {
         Get.to(() => const ChooseCoursePage());
         // Function 5
@@ -94,7 +94,7 @@ class _SettingPageState extends State<SettingPage> {
           builder: (BuildContext dialogContext) {
             return AlertDialog(
               title: const Icon(Icons.person, color: Colors.black),
-              content:  SingleChildScrollView(
+              content:  const SingleChildScrollView(
                 child: ListBody(
                   children: <Widget>[
                     Text('Are you sure you want to Logout?'),
@@ -127,6 +127,7 @@ class _SettingPageState extends State<SettingPage> {
 
 
                               prefs.remove("id");
+
                               Get.to(() => const LoginScreen());
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                 content: Text(value.message.toString() ),
@@ -235,9 +236,9 @@ class _SettingPageState extends State<SettingPage> {
 
           Expanded(
             child: ListView.builder(
-              itemCount: 8,
+              itemCount: 6,
               itemBuilder: (BuildContext context, int index) {
-                bool isTrue = index < 4;
+                bool isTrue = index < 2;
 
                 return button(icons[index] ,text[index] , onPressedFunctions[index] , isTrue , boolean[index]);
               },),
@@ -269,8 +270,6 @@ class _SettingPageState extends State<SettingPage> {
                       Icon(icons,color: Colors.black,),
                       const SizedBox(width: 10,),
                       Text(text,style: const TextStyle(color: Colors.black),),
-
-
                     ],
                   ),
                   check == true

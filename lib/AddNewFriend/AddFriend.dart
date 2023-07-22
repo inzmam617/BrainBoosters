@@ -4,8 +4,10 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../ApiServices/ApiServiceForHandlingReq.dart';
+import '../ApiServices/ApiServiceToGetAllUsers.dart';
 import '../ApiServices/ApiServiceToSearchUser.dart';
 import '../BottomBar/BottomNavBar.dart';
+import '../Models/FriendsListsModel.dart';
 import '../Models/FriendsModels.dart';
 class AddFriendScreen extends StatefulWidget {
   const AddFriendScreen({Key? key}) : super(key: key);
@@ -140,132 +142,128 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
             height: 15,
           ),
 
-          FutureBuilder<StudentList>(
-            future: ApiService.getAllStudents(),
+          FutureBuilder<FriendsListsModel>(
+            future: ApiServicesforGetFriendsandNonFriends.getUsersData(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
                 return Center(child: Text('Error: ${snapshot.error}'));
-              } else {
-                final studentList = snapshot.data;
-                if (studentList == null || studentList.students.isEmpty) {
-                  return Center(child: Text('No students found.'));
+              }
+              else if (snapshot.hasData) { // Add this condition to check if data is available
+                final List<User> friendsList = snapshot.data?.nonFriends ?? [];
+
+                if (friendsList.isEmpty) {
+                  return const Padding(
+                    padding: EdgeInsets.only(top: 150.0, bottom: 150),
+                    child: Center(child: Text('No friends found.')),
+                  );
                 }
-                // Use the studentList to display the students in your UI.
-
-                return Expanded(
-
-                  child: Padding(
-                    padding: EdgeInsets.zero,
-                    child: ListView.builder(
-                      physics: const ScrollPhysics(),
-                      itemCount: studentList.students.length,
-                      itemBuilder: (BuildContext context, int index) {
-
-                        final Color itemColor = itemColors[index % itemColors.length];
-                              Student student = studentList.students[index];
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              boxShadow: const [BoxShadow(color: Colors.grey, blurRadius: 2)],
-                              borderRadius: BorderRadius.circular(30),
-                              color: itemColor,
-                            ),
-                            height: 80,
-                            width: MediaQuery.of(context).size.width * 0.9,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 18),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    height: 60,
-                                    width: 60,
-                                    decoration: const BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage("assets/profile.png"),
+                return SingleChildScrollView(
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height / 2,
+                    child: Padding(
+                      padding: EdgeInsets.zero,
+                      child: ListView.builder(
+                        physics: const ScrollPhysics(),
+                        itemCount: friendsList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final Color itemColor = itemColors[index % itemColors.length];
+                          final user = friendsList[index];
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                boxShadow: const [BoxShadow(color: Colors.grey, blurRadius: 2)],
+                                borderRadius: BorderRadius.circular(30),
+                                color: itemColor,
+                              ),
+                              height: 80,
+                              width: MediaQuery.of(context).size.width * 0.9,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 18),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: 60,
+                                      width: 60,
+                                      decoration: const BoxDecoration(
+                                        image: DecorationImage(
+                                          image: AssetImage("assets/profile.png"),
+                                        ),
+                                        borderRadius: BorderRadius.all(Radius.circular(100)),
                                       ),
-                                      borderRadius: BorderRadius.all(Radius.circular(100)),
                                     ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  SizedBox(
-
-                                    width: MediaQuery.of(context).size.width * 0.3,
-                                    child: Column(
+                                    const SizedBox(width: 10),
+                                    Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          student.name,
-                                          style: const TextStyle(color: Colors.black, fontSize: 20),
+                                          user.name,
+                                          style: const TextStyle(color: Colors.black, fontSize: 14),
                                         ),
                                         const SizedBox(height: 5),
                                         Text(
-                                            student.email,
-                                          style: const TextStyle(color: Colors.black, fontSize: 13),
+                                          user.email,
+                                          style: const TextStyle(color: Colors.black, fontSize: 10),
                                         ),
                                       ],
                                     ),
-                                  ),
-                                  const Spacer(),
-                                  id ==   student.id ? const SizedBox(
-                                    child: Text("Hey its you!"),
-                                  )  : SizedBox(
-                                    height: 35,
-                                    width: 100,
-                                    child: ElevatedButton(
-                                      style: ButtonStyle(
-                                        shape: MaterialStateProperty.all(
-                                          const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                                          ),
-                                        ),
-                                        backgroundColor: MaterialStateProperty.all(Colors.white),
-                                      ),
-                                      onPressed: () {
-                                        ApiServiceForHandlingRequests.sendUserReq(student.id).then((value) =>
-                                        {
-                                        Get.to(() =>  BottomNavBar(page: 1)),
+                                    const Spacer(),
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 20),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 5),
+                                        child: SizedBox(
+                                          height: 35,
+                                          width: 100,
+                                          child: ElevatedButton(
+                                            style: ButtonStyle(
+                                              shape: MaterialStateProperty.all(
+                                                const RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                                                ),
+                                              ),
+                                              backgroundColor: MaterialStateProperty.all(Colors.white),
+                                            ),
+                                            onPressed: () {
+                                              ApiServiceForHandlingRequests.sendUserReq(user.id).then((value) =>
+                                              {
+                                                Get.to(() =>  BottomNavBar(page: 1)),
 
-                                            print("this is the data:" +   value.toString())
-                                        });
-                                      },
-                                      child: const Center(
-                                        child: Text(
-                                          "Send Request",
-                                          style: TextStyle(color: Colors.red, fontSize: 10),
+                                                print("this is the data:" +   value.toString())
+                                              });
+
+                                            },
+                                            child: const Center(
+                                              child: Text(
+                                                "Sent Req",
+                                                style: TextStyle(color: Colors.red, fontSize: 12),
+                                              ),
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
                   ),
-                );
-
-                //   Expanded(
-                //   child: ListView.builder(
-                //     itemCount: studentList.students.length,
-                //     itemBuilder: (context, index) {
-                //       Student student = studentList.students[index];
-                //       return ListTile(
-                //         title: Text(student.name),
-                //         subtitle: Text(student.email),
-                //         // Add more fields as needed in the ListTile.
-                //       );
-                //     },
-                //   ),
-                // );
+                )
+                ;
+              } else {
+                // If data is null or empty, show a message or return an empty widget.
+                return const Center(child: Text('No data available.'));
               }
             },
-          )
+          ),
+
 
           // Expanded(child: SizedBox(
           //   height: MediaQuery.of(context).size.height * 0.65,

@@ -8,26 +8,27 @@ class User {
   User({
     required this.id,
     required this.name,
-     this.friends,
-     this.friendRequests,
+    this.friends,
+    this.friendRequests,
     required this.email,
 
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
+    print(json);
     if(json.containsKey('friends')){
       return User(
-        id: json['_id'],
-        name: json['name'],
-        email: json['email'],
+        id: json['_id']!=null?json['_id']:"",
+        name: json['name']!=null?json['name']:"",
+        email: json['email']!=null?json['email']:"",
         friends: json['friends']!=[]?List<String>.from(json['friends']):[],
 
       );
     }
     return User(
-      id: json['_id'],
-      name: json['name'],
-      email: json['email'],
+      id: json['_id']!=null?json['_id']:"",
+      name: json['name']!=null?json['name']:"",
+      email: json['email']!=null?json['email']:"",
       friendRequests: json['friendRequests']!=[]?List<String>.from(json['friendRequests']):[],
 
     );

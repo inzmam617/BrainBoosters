@@ -42,6 +42,8 @@ class ApiServicesforSignIn_Out {
 
       // headers: {"Content-Type": "application/json"},
     );
+    prefs.remove("id");
+
     print(response.body);
     final String res = response.body;
     if (res != 'null') {

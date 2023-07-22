@@ -1,12 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../ApiServices/ApiServiceForHandlingReq.dart';
+import '../ApiServices/ApiServiceToSearchUser.dart';
+import '../BottomBar/BottomNavBar.dart';
+import '../Models/FriendsModels.dart';
 class AddFriendScreen extends StatefulWidget {
   const AddFriendScreen({Key? key}) : super(key: key);
   @override
   State<AddFriendScreen> createState() => _AddFriendScreenState();
 }
 class _AddFriendScreenState extends State<AddFriendScreen> {
+  List<Color> itemColors = [const Color(0xffEBECF9), const Color(0xffEEFAF6)];
+
+  late String id;
+  @override
+  void initState(){
+    super.initState();
+    initialize();
+
+
+  }
+  initialize() async {
+    // For example, you can use a ListView.builder to display each student.
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      id =  prefs.getString("id").toString();
+
+
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,9 +103,7 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
                   ),
                 ),
               ),
-              const SizedBox(
-                width: 20,
-              ),
+
               SvgPicture.asset("assets/logo.svg",fit: BoxFit.scaleDown,),
               const SizedBox(
                 width: 5,
@@ -116,151 +139,279 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
           const SizedBox(
             height: 15,
           ),
-          Expanded(child: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.65,
-            child: ListView.builder(itemBuilder: (BuildContext context, int index) {
-              return  Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                child: Container(
-                  decoration: BoxDecoration(
-                    boxShadow: const [BoxShadow(color: Colors.grey, blurRadius: 2)],
-                    borderRadius: BorderRadius.circular(25),
-                    color: Colors.white,
-                  ),
-                  height: 65,
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      children: [
-                        Container(
-                          height: 45,
-                          width: 45,
-                          decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage("assets/profile.png")),
-                              borderRadius: BorderRadius.all(Radius.circular(100))),
-                        ),
-                        const SizedBox(width: 10,),
-                         Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("John Smith" ,style: TextStyle(color: Colors.black,fontSize: 13),),
-                            SizedBox(height: 5,),
-                            Text("8/10 - 251",style: TextStyle(color: Colors.black,fontSize: 11)),
-                          ],
-                        ),
-                        const Spacer(),
-                        SizedBox(
-                          height: 30,
-                          width: 100,
-                          child: ElevatedButton(
-                              style: ButtonStyle(
-                                  shape: MaterialStateProperty.all(
-                                      const RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.all(
-                                              Radius.circular(
-                                                  10)))),
-                                  backgroundColor:
-                                  MaterialStateProperty.all(
-                                      Colors.white)),
-                              onPressed: () {
-                                Get.defaultDialog(
-                                  title:
-                                    "Add a friend",
-                                  middleText: "",
-                                  actions: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          SizedBox(
-                                            height: 30,
-                                            child: ElevatedButton(
-                                              style: ButtonStyle(
-                                                shape: MaterialStateProperty.all(
-                                                  const RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                                                  ),
-                                                ),
-                                                backgroundColor: MaterialStateProperty.all(const Color(0xff494FC7)),
-                                              ),
-                                              onPressed: () {
-                                                Get.back();
-                                                Get.showSnackbar(
-                                                  const GetSnackBar(
-                                                    message: 'Request Sent Successfully',
-                                                    // icon: const Icon(Icons.refresh),
-                                                    duration: Duration(seconds: 3),
-                                                  ),
-                                                );
-                                              },
-                                              child: const Padding(
-                                                padding: EdgeInsets.symmetric(horizontal: 10),
-                                                child: Center(
-                                                  child: Text(
-                                                    "Confirm",
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 12,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 30,
-                                            child: ElevatedButton(
-                                              style: ButtonStyle(
-                                                shape: MaterialStateProperty.all(
-                                                  const RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                                                  ),
-                                                ),
-                                                backgroundColor: MaterialStateProperty.all(Colors.white),
-                                              ),
-                                              onPressed: () {
-                                                Get.back();
 
-                                              },
-                                              child: const Padding(
-                                                padding: EdgeInsets.symmetric(horizontal: 10),
-                                                child: Center(
-                                                  child: Text(
-                                                    "Back  ",
-                                                    style: TextStyle(
-                                                      color: Colors.blue,
-                                                      fontSize: 12,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+          FutureBuilder<StudentList>(
+            future: ApiService.getAllStudents(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else {
+                final studentList = snapshot.data;
+                if (studentList == null || studentList.students.isEmpty) {
+                  return Center(child: Text('No students found.'));
+                }
+                // Use the studentList to display the students in your UI.
+
+                return Expanded(
+
+                  child: Padding(
+                    padding: EdgeInsets.zero,
+                    child: ListView.builder(
+                      physics: const ScrollPhysics(),
+                      itemCount: studentList.students.length,
+                      itemBuilder: (BuildContext context, int index) {
+
+                        final Color itemColor = itemColors[index % itemColors.length];
+                              Student student = studentList.students[index];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              boxShadow: const [BoxShadow(color: Colors.grey, blurRadius: 2)],
+                              borderRadius: BorderRadius.circular(30),
+                              color: itemColor,
+                            ),
+                            height: 80,
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 18),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: 60,
+                                    width: 60,
+                                    decoration: const BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage("assets/profile.png"),
                                       ),
-                                    )
-                                  ],
-                                  backgroundColor: Colors.white,
-                                  titleStyle: const TextStyle(color: Colors.black,fontWeight: FontWeight.normal,),
-                                  radius: 30,
-                                );
-                              },
-                              child: const Center(
-                                child: Text("Add Friend" ,style: TextStyle(color: Colors.blue,fontSize: 12),),
-                              )),
-                        ),
-                      ],
+                                      borderRadius: BorderRadius.all(Radius.circular(100)),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  SizedBox(
+
+                                    width: MediaQuery.of(context).size.width * 0.3,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          student.name,
+                                          style: const TextStyle(color: Colors.black, fontSize: 20),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Text(
+                                            student.email,
+                                          style: const TextStyle(color: Colors.black, fontSize: 13),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  id ==   student.id ? const SizedBox(
+                                    child: Text("Hey its you!"),
+                                  )  : SizedBox(
+                                    height: 35,
+                                    width: 100,
+                                    child: ElevatedButton(
+                                      style: ButtonStyle(
+                                        shape: MaterialStateProperty.all(
+                                          const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                                          ),
+                                        ),
+                                        backgroundColor: MaterialStateProperty.all(Colors.white),
+                                      ),
+                                      onPressed: () {
+                                        ApiServiceForHandlingRequests.sendUserReq(student.id).then((value) =>
+                                        {
+                                        Get.to(() =>  BottomNavBar(page: 1)),
+
+                                            print("this is the data:" +   value.toString())
+                                        });
+                                      },
+                                      child: const Center(
+                                        child: Text(
+                                          "Send Request",
+                                          style: TextStyle(color: Colors.red, fontSize: 10),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
-                ),
-              );
-            },),
-          ),
+                );
+
+                //   Expanded(
+                //   child: ListView.builder(
+                //     itemCount: studentList.students.length,
+                //     itemBuilder: (context, index) {
+                //       Student student = studentList.students[index];
+                //       return ListTile(
+                //         title: Text(student.name),
+                //         subtitle: Text(student.email),
+                //         // Add more fields as needed in the ListTile.
+                //       );
+                //     },
+                //   ),
+                // );
+              }
+            },
           )
+
+          // Expanded(child: SizedBox(
+          //   height: MediaQuery.of(context).size.height * 0.65,
+          //   child: ListView.builder(itemBuilder: (BuildContext context, int index) {
+          //     return  Padding(
+          //       padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+          //       child: Container(
+          //         decoration: BoxDecoration(
+          //           boxShadow: const [BoxShadow(color: Colors.grey, blurRadius: 2)],
+          //           borderRadius: BorderRadius.circular(25),
+          //           color: Colors.white,
+          //         ),
+          //         height: 65,
+          //         width: MediaQuery.of(context).size.width * 0.9,
+          //         child: Padding(
+          //           padding: const EdgeInsets.symmetric(horizontal: 20),
+          //           child: Row(
+          //             children: [
+          //               Container(
+          //                 height: 45,
+          //                 width: 45,
+          //                 decoration: const BoxDecoration(
+          //                     image: DecorationImage(
+          //                         image: AssetImage("assets/profile.png")),
+          //                     borderRadius: BorderRadius.all(Radius.circular(100))),
+          //               ),
+          //               const SizedBox(width: 10,),
+          //                Column(
+          //                 mainAxisAlignment: MainAxisAlignment.center,
+          //                 children: [
+          //                   Text("John Smith" ,style: TextStyle(color: Colors.black,fontSize: 13),),
+          //                   SizedBox(height: 5,),
+          //                   Text("8/10 - 251",style: TextStyle(color: Colors.black,fontSize: 11)),
+          //                 ],
+          //               ),
+          //               const Spacer(),
+          //               SizedBox(
+          //                 height: 30,
+          //                 width: 100,
+          //                 child: ElevatedButton(
+          //                     style: ButtonStyle(
+          //                         shape: MaterialStateProperty.all(
+          //                             const RoundedRectangleBorder(
+          //                                 borderRadius:
+          //                                 BorderRadius.all(
+          //                                     Radius.circular(
+          //                                         10)))),
+          //                         backgroundColor:
+          //                         MaterialStateProperty.all(
+          //                             Colors.white)),
+          //                     onPressed: () {
+          //                       Get.defaultDialog(
+          //                         title:
+          //                           "Add a friend",
+          //                         middleText: "",
+          //                         actions: [
+          //                           Padding(
+          //                             padding: const EdgeInsets.symmetric(horizontal: 10),
+          //                             child: Row(
+          //                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //                               children: [
+          //                                 SizedBox(
+          //                                   height: 30,
+          //                                   child: ElevatedButton(
+          //                                     style: ButtonStyle(
+          //                                       shape: MaterialStateProperty.all(
+          //                                         const RoundedRectangleBorder(
+          //                                           borderRadius: BorderRadius.all(Radius.circular(10)),
+          //                                         ),
+          //                                       ),
+          //                                       backgroundColor: MaterialStateProperty.all(const Color(0xff494FC7)),
+          //                                     ),
+          //                                     onPressed: () {
+          //                                       Get.back();
+          //                                       Get.showSnackbar(
+          //                                         const GetSnackBar(
+          //                                           message: 'Request Sent Successfully',
+          //                                           // icon: const Icon(Icons.refresh),
+          //                                           duration: Duration(seconds: 3),
+          //                                         ),
+          //                                       );
+          //                                     },
+          //                                     child: const Padding(
+          //                                       padding: EdgeInsets.symmetric(horizontal: 10),
+          //                                       child: Center(
+          //                                         child: Text(
+          //                                           "Confirm",
+          //                                           style: TextStyle(
+          //                                             color: Colors.white,
+          //                                             fontSize: 12,
+          //                                           ),
+          //                                         ),
+          //                                       ),
+          //                                     ),
+          //                                   ),
+          //                                 ),
+          //                                 SizedBox(
+          //                                   height: 30,
+          //                                   child: ElevatedButton(
+          //                                     style: ButtonStyle(
+          //                                       shape: MaterialStateProperty.all(
+          //                                         const RoundedRectangleBorder(
+          //                                           borderRadius: BorderRadius.all(Radius.circular(10)),
+          //                                         ),
+          //                                       ),
+          //                                       backgroundColor: MaterialStateProperty.all(Colors.white),
+          //                                     ),
+          //                                     onPressed: () {
+          //                                       Get.back();
+          //
+          //                                     },
+          //                                     child: const Padding(
+          //                                       padding: EdgeInsets.symmetric(horizontal: 10),
+          //                                       child: Center(
+          //                                         child: Text(
+          //                                           "Back  ",
+          //                                           style: TextStyle(
+          //                                             color: Colors.blue,
+          //                                             fontSize: 12,
+          //                                           ),
+          //                                         ),
+          //                                       ),
+          //                                     ),
+          //                                   ),
+          //                                 ),
+          //                               ],
+          //                             ),
+          //                           )
+          //                         ],
+          //                         backgroundColor: Colors.white,
+          //                         titleStyle: const TextStyle(color: Colors.black,fontWeight: FontWeight.normal,),
+          //                         radius: 30,
+          //                       );
+          //                     },
+          //                     child: const Center(
+          //                       child: Text("Add Friend" ,style: TextStyle(color: Colors.blue,fontSize: 12),),
+          //                     )),
+          //               ),
+          //             ],
+          //           ),
+          //         ),
+          //       ),
+          //     );
+          //   },),
+          // ),
+          // )
         ],
       ),
     );

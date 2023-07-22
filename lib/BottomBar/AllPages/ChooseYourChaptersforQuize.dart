@@ -189,7 +189,7 @@ class _ChooseYourChaptersForQuizState extends State<ChooseYourChaptersForQuiz> {
               return GestureDetector(
                 onTap: (){
 
-                  Get.to(() => const BottomNavBar(page: 2));
+                  Get.to(() =>  BottomNavBar(page: 2));
                 },
                 child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),

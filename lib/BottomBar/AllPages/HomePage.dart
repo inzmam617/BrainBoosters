@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import '../../ApiServices/ApiForGettingQuizes.dart';
 import '../../ApiServices/ApiForgettingAlltheCourses.dart';
 import '../../Models/CoursesModels.dart';
+import '../../Models/QuizModels.dart';
+import '../../QuizePage/QuizePage.dart';
 import '../BottomNavBar.dart';
 import 'ChooseYourStudyforQuize.dart';
 
 
 class HomePage extends StatefulWidget {
+  final List<SubCourse>?  subcourses;
+  final String? courseName;
 
-  const HomePage({Key? key}) : super(key: key);
+
+  HomePage({Key? key, this.subcourses, this.courseName}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -17,9 +23,21 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
+List <SubCourse> sub = [];
+@override
+  void initState(){
+  super.initState();
+  setState(() {
+    sub.addAll( widget.subcourses!);
+  });
+
+  // QuizApiService.getQuizQuestions((widget.courseName!).toString(), (widget. subcourses![0].name).toString(), (widget.subcourses![0].chapters[0].name).toString());
+
+
+}
 
   List <String> names  = [];
-  Future<void> _showAlertDialog(final textList) async {
+  Future<void> _showAlertDialog() async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -59,7 +77,11 @@ class _HomePageState extends State<HomePage> {
                             const Color(0xff494FC7))),
                     child: const Text('Play Solo'),
                     onPressed: () {
-                      Get.to(() => const BottomNavBar(page: 2));
+                      Get.back();
+
+                      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+                        return  QuizPage(subcourses: widget.subcourses,courseName: widget.courseName,);
+                      }));
                     },
 
                   ),
@@ -85,7 +107,7 @@ class _HomePageState extends State<HomePage> {
                       Get.back();
                       // Get.to(() => const BottomNavBar(page: 1,));
                       Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                        return const BottomNavBar(page: 1,);
+                        return  BottomNavBar(page: 1,);
                       }));
                     },
                   ),
@@ -112,6 +134,8 @@ class _HomePageState extends State<HomePage> {
                       },
                   ),
                 ),
+
+
               ],
             ),
           ),
@@ -119,13 +143,44 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
+Future<void> _show3list(List<Chapter> chapters) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        content: SizedBox(
+          width: 150,
+          height: 200,
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: chapters.length,
+            itemBuilder: (context, index) {
+              final chapter = chapters[index];
+              return ListTile(
+                onTap: (){
+                  print(chapter.name);
+                  Navigator.of(context).pop();
+                  _showAlertDialog();
+                },
+                title: Text(chapter.name),
+              );
+            },
+          ),
+        ),
+      );
 
-  Stream<List<Course>> getOrderStream() {
-    // Adjust this according to your implementation, e.g., using a stream controller or a stream from a provider.
-    return ApiServices.getAllCourses().asStream();
-  }
+    },
+  );
+}
+
+
   @override
   Widget build(BuildContext context) {
+    print(sub[0].name);
     return Scaffold(
       body: Column(
         children: [
@@ -203,362 +258,166 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(
             height: 35,
           ),
-          Expanded(
+          Expanded(child: ListView.builder(
+            itemCount: sub.length,
+            itemBuilder: (context, index) {
+              return  Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                child: Row(
+                  children: [
+                    SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                shape: MaterialStateProperty.all(
+                                    const RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(20)))),
+                                backgroundColor: MaterialStateProperty.all(
+                                    const Color(0xffE6EED9))),
+                            onPressed: () {
+                              _show3list(sub[index].chapters);
 
-            child:
-            StreamBuilder<List<Course>>(
-              stream: getOrderStream(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  final courses = snapshot.data;
-                  return ListView.builder(
-                    itemCount: courses!.length,
-                    itemBuilder: (context, index) {
-                      final course = courses[index];
-                      // String names = course.subCourses[index].toString();
-                      //
-                      // print(names);
+                            },
+                            child:   Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
 
-
-                      return  Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        child: Row(
-                          children: [
-                            SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.6,
-                                child: ElevatedButton(
-                                    style: ButtonStyle(
-                                        shape: MaterialStateProperty.all(
-                                            const RoundedRectangleBorder(
-                                                borderRadius:
-                                                BorderRadius.all(Radius.circular(20)))),
-                                        backgroundColor: MaterialStateProperty.all(
-                                            const Color(0xffE6EED9))),
-                                    onPressed: () {
-                                      _showAlertDialog(course.subCourses);
-
-                                    },
-                                    child:   Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-
-                                            course.name,
-                                            style: TextStyle(
+                                    "${sub[index].name}",
+                                    style: const TextStyle(
 
 
 
-                                                color: Colors.black,
+                                        color: Colors.black,
 
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w300),
-                                          ),
-                                          Text(
-                                            "${course.subCourses.length} Chapters",
-                                            style: const TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w300),
-                                          ),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w300),
+                                  ),
+                                  Text(
+                                    "${sub[index].chapters.length} Chapters",
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w300),
+                                  ),
 
-                                        ],
-                                      ),
-                                    ))),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  border:
-                                  Border.all(color: const Color(0xffE6EED9), width: 5),
-                                  image: const DecorationImage(
-                                      image: AssetImage("assets/four.jpg")),
-                                  borderRadius:
-                                  const BorderRadius.all(Radius.circular(100))),
-                              height: 80,
-                              width: MediaQuery.of(context).size.width * 0.2,
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text('Error: ${snapshot.error}'),
-                  );
-                } else {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              },
-            ),
-          ),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          //   child: Row(
-          //     children: [
-          //       SizedBox(
-          //           width: MediaQuery.of(context).size.width * 0.6,
-          //           child: ElevatedButton(
-          //               style: ButtonStyle(
-          //                   shape: MaterialStateProperty.all(
-          //                       const RoundedRectangleBorder(
-          //                           borderRadius:
-          //                               BorderRadius.all(Radius.circular(20)))),
-          //                   backgroundColor: MaterialStateProperty.all(
-          //                       const Color(0xffFDF8A6))),
-          //               onPressed: () {
-          //                 _showAlertDialog();
+                                ],
+                              ),
+                            ))),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          border:
+                          Border.all(color: const Color(0xffE6EED9), width: 5),
+                          image: const DecorationImage(
+                              image: AssetImage("assets/four.jpg")),
+                          borderRadius:
+                          const BorderRadius.all(Radius.circular(100))),
+                      height: 80,
+                      width: MediaQuery.of(context).size.width * 0.2,
+                    )
+                  ],
+                ),
+              );
+            },
+          )),
+          // Expanded(
           //
-          //               },
-          //               child:  const Padding(
-          //                 padding: EdgeInsets.all(8.0),
-          //                 child: Column(
-          //                   mainAxisAlignment: MainAxisAlignment.center,
-          //                   crossAxisAlignment: CrossAxisAlignment.start,
-          //                   children: [
-          //                     Text(
-          //                       "Geography VG1 & Science",
-          //                       style: TextStyle(
-          //                           color: Colors.black,
-          //                           fontSize: 15,
-          //                           fontWeight: FontWeight.w300),
-          //                     ),
-          //                     Text(
-          //                       "12 Chapters",
-          //                       style: TextStyle(
-          //                           color: Colors.black,
-          //                           fontSize: 14,
-          //                           fontWeight: FontWeight.w300),
-          //                     ),
-          //                     Text(
-          //                       "Price:12kr",
-          //                       style: TextStyle(
-          //                           color: Colors.black,
-          //                           fontSize: 14,
-          //                           fontWeight: FontWeight.w300),
-          //                     ),
-          //                   ],
-          //                 ),
-          //               ))),
-          //       const SizedBox(
-          //         width: 20,
-          //       ),
-          //       Container(
-          //         decoration: BoxDecoration(
-          //             border:
-          //                 Border.all(color: const Color(0xffFDF8A6), width: 5),
-          //             image: const DecorationImage(
-          //                 image: AssetImage("assets/one.jpg")),
-          //             borderRadius:
-          //                 const BorderRadius.all(Radius.circular(100))),
-          //         height: 80,
-          //         width: MediaQuery.of(context).size.width * 0.2,
-          //       )
-          //     ],
+          //   child:
+          //   StreamBuilder<List<Course>>(
+          //     stream: getOrderStream(),
+          //     builder: (context, snapshot) {
+          //       if (snapshot.hasData) {
+          //         final courses = snapshot.data;
+          //         return ListView.builder(
+          //           itemCount: sub.length,
+          //           itemBuilder: (context, index) {
+          //          return  Padding(
+          //               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          //               child: Row(
+          //                 children: [
+          //                   SizedBox(
+          //                       width: MediaQuery.of(context).size.width * 0.6,
+          //                       child: ElevatedButton(
+          //                           style: ButtonStyle(
+          //                               shape: MaterialStateProperty.all(
+          //                                   const RoundedRectangleBorder(
+          //                                       borderRadius:
+          //                                       BorderRadius.all(Radius.circular(20)))),
+          //                               backgroundColor: MaterialStateProperty.all(
+          //                                   const Color(0xffE6EED9))),
+          //                           onPressed: () {
+          //                             _showAlertDialog(course.subCourses);
+          //
+          //                           },
+          //                           child:   Padding(
+          //                             padding: const EdgeInsets.all(8.0),
+          //                             child: Column(
+          //                               mainAxisAlignment: MainAxisAlignment.start,
+          //                               crossAxisAlignment: CrossAxisAlignment.start,
+          //                               children: [
+          //                                 Text(
+          //
+          //                                   course.name,
+          //                                   style: const TextStyle(
+          //
+          //
+          //
+          //                                       color: Colors.black,
+          //
+          //                                       fontSize: 15,
+          //                                       fontWeight: FontWeight.w300),
+          //                                 ),
+          //                                 Text(
+          //                                   "${course.subCourses.length} Chapters",
+          //                                   style: const TextStyle(
+          //                                       color: Colors.black,
+          //                                       fontSize: 14,
+          //                                       fontWeight: FontWeight.w300),
+          //                                 ),
+          //
+          //                               ],
+          //                             ),
+          //                           ))),
+          //                   const SizedBox(
+          //                     width: 20,
+          //                   ),
+          //                   Container(
+          //                     decoration: BoxDecoration(
+          //                         border:
+          //                         Border.all(color: const Color(0xffE6EED9), width: 5),
+          //                         image: const DecorationImage(
+          //                             image: AssetImage("assets/four.jpg")),
+          //                         borderRadius:
+          //                         const BorderRadius.all(Radius.circular(100))),
+          //                     height: 80,
+          //                     width: MediaQuery.of(context).size.width * 0.2,
+          //                   )
+          //                 ],
+          //               ),
+          //             );
+          //           },
+          //         );
+          //       } else if (snapshot.hasError) {
+          //         return Center(
+          //           child: Text('Error: ${snapshot.error}'),
+          //         );
+          //       } else {
+          //         return const Center(
+          //           child: CircularProgressIndicator(),
+          //         );
+          //       }
+          //     },
           //   ),
           // ),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          //   child: Row(
-          //     children: [
-          //       SizedBox(
-          //           width: MediaQuery.of(context).size.width * 0.6,
-          //           child: ElevatedButton(
-          //               style: ButtonStyle(
-          //                   shape: MaterialStateProperty.all(
-          //                       const RoundedRectangleBorder(
-          //                           borderRadius:
-          //                               BorderRadius.all(Radius.circular(20)))),
-          //                   backgroundColor: MaterialStateProperty.all(
-          //                       const Color(0xffF4F4FB))),
-          //               onPressed: () {                        _showAlertDialog();
-          //
-          //
-          //               },
-          //               child:  const Padding(
-          //                 padding: EdgeInsets.all(8.0),
-          //                 child: Column(
-          //                   mainAxisAlignment: MainAxisAlignment.center,
-          //                   crossAxisAlignment: CrossAxisAlignment.start,
-          //                   children: [
-          //                     Text(
-          //                       "Religion and Philosophy",
-          //                       style: TextStyle(
-          //                           color: Colors.black,
-          //                           fontSize: 15,
-          //                           fontWeight: FontWeight.w300),
-          //                     ),
-          //                     Text(
-          //                       "12 Chapters",
-          //                       style: TextStyle(
-          //                           color: Colors.black,
-          //                           fontSize: 14,
-          //                           fontWeight: FontWeight.w300),
-          //                     ),
-          //                     Text(
-          //                       "Price:23kr",
-          //                       style: TextStyle(
-          //                           color: Colors.black,
-          //                           fontSize: 14,
-          //                           fontWeight: FontWeight.w300),
-          //                     ),
-          //                   ],
-          //                 ),
-          //               ))),
-          //       const SizedBox(
-          //         width: 20,
-          //       ),
-          //       Container(
-          //         decoration: BoxDecoration(
-          //             border:
-          //                 Border.all(color: const Color(0xffF4F4FB), width: 5),
-          //             image: const DecorationImage(
-          //                 image: AssetImage("assets/two.jpg")),
-          //             borderRadius:
-          //                 const BorderRadius.all(Radius.circular(100))),
-          //         height: 80,
-          //         width: MediaQuery.of(context).size.width * 0.2,
-          //       )
-          //     ],
-          //   ),
-          // ),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          //   child: Row(
-          //     children: [
-          //       SizedBox(
-          //           width: MediaQuery.of(context).size.width * 0.6,
-          //           child: ElevatedButton(
-          //               style: ButtonStyle(
-          //                   shape: MaterialStateProperty.all(
-          //                       const RoundedRectangleBorder(
-          //                           borderRadius:
-          //                               BorderRadius.all(Radius.circular(20)))),
-          //                   backgroundColor: MaterialStateProperty.all(
-          //                       const Color(0xffF6B6A9))),
-          //               onPressed: () {
-          //                 _showAlertDialog();
-          //
-          //               },
-          //               child:  const Padding(
-          //                 padding: EdgeInsets.all(8.0),
-          //                 child: Column(
-          //                   mainAxisAlignment: MainAxisAlignment.center,
-          //                   crossAxisAlignment: CrossAxisAlignment.start,
-          //                   children: [
-          //                     Text(
-          //                       "History And Economics",
-          //                       style: TextStyle(
-          //                           color: Colors.black,
-          //                           fontSize: 15,
-          //                           fontWeight: FontWeight.w300),
-          //                     ),
-          //                     Text(
-          //                       "12 Chapters",
-          //                       style: TextStyle(
-          //                           color: Colors.black,
-          //                           fontSize: 14,
-          //                           fontWeight: FontWeight.w300),
-          //                     ),
-          //                     Text(
-          //                       "Price:52kr",
-          //                       style: TextStyle(
-          //                           color: Colors.black,
-          //                           fontSize: 14,
-          //                           fontWeight: FontWeight.w300),
-          //                     ),
-          //                   ],
-          //                 ),
-          //               ))),
-          //       const SizedBox(
-          //         width: 20,
-          //       ),
-          //       Container(
-          //         decoration: BoxDecoration(
-          //             border:
-          //                 Border.all(color: const Color(0xffF6B6A9), width: 5),
-          //             image: const DecorationImage(
-          //                 image: AssetImage("assets/three.jpg")),
-          //             borderRadius:
-          //                 const BorderRadius.all(Radius.circular(100))),
-          //         height: 80,
-          //         width: MediaQuery.of(context).size.width * 0.2,
-          //       )
-          //     ],
-          //   ),
-          // ),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          //   child: Row(
-          //     children: [
-          //       SizedBox(
-          //           width: MediaQuery.of(context).size.width * 0.6,
-          //           child: ElevatedButton(
-          //               style: ButtonStyle(
-          //                   shape: MaterialStateProperty.all(
-          //                       const RoundedRectangleBorder(
-          //                           borderRadius:
-          //                               BorderRadius.all(Radius.circular(20)))),
-          //                   backgroundColor: MaterialStateProperty.all(
-          //                       const Color(0xffE6EED9))),
-          //               onPressed: () {
-          //                 _showAlertDialog();
-          //
-          //               },
-          //               child:  const Padding(
-          //                 padding: EdgeInsets.all(8.0),
-          //                 child: Column(
-          //                   mainAxisAlignment: MainAxisAlignment.center,
-          //                   crossAxisAlignment: CrossAxisAlignment.start,
-          //                   children: [
-          //                     Text(
-          //                       "Religion and Philosophy",
-          //                       style: TextStyle(
-          //                           color: Colors.black,
-          //                           fontSize: 15,
-          //                           fontWeight: FontWeight.w300),
-          //                     ),
-          //                     Text(
-          //                       "12 Chapters",
-          //                       style: TextStyle(
-          //                           color: Colors.black,
-          //                           fontSize: 14,
-          //                           fontWeight: FontWeight.w300),
-          //                     ),
-          //                     Text(
-          //                       "Price:12kr",
-          //                       style: TextStyle(
-          //                           color: Colors.black,
-          //                           fontSize: 14,
-          //                           fontWeight: FontWeight.w300),
-          //                     ),
-          //                   ],
-          //                 ),
-          //               ))),
-          //       const SizedBox(
-          //         width: 20,
-          //       ),
-          //       Container(
-          //         decoration: BoxDecoration(
-          //             border:
-          //                 Border.all(color: const Color(0xffE6EED9), width: 5),
-          //             image: const DecorationImage(
-          //                 image: AssetImage("assets/four.jpg")),
-          //             borderRadius:
-          //                 const BorderRadius.all(Radius.circular(100))),
-          //         height: 80,
-          //         width: MediaQuery.of(context).size.width * 0.2,
-          //       )
-          //     ],
-          //   ),
-          // ),
-          const SizedBox(
+
+           SizedBox(
             height: 30,
           ),
 

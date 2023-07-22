@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "852632874780-j2aj28mi0nebehm3g2m0sp48oui5l06u.apps.googleusercontent.com",
+          "client_id": "852632874780-1trvu1j1tip1h7lkb65dm4n57171hd1g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.brainboosters",
+            "certificate_hash": "d3325408bee09d82b9a3c570d339f31a3a946e5a"
+          }
+        },
+        {
+          "client_id": "852632874780-qmj4psq7ef0b806dclvru6athv2bni0v.apps.googleusercontent.com",
           "client_type": 3
         }
       ],

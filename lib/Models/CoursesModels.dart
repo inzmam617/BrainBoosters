@@ -13,37 +13,27 @@ class Course {
     );
   }
 }
-
 class SubCourse {
   String id;
   String name;
   List<Chapter> chapters;
-
   SubCourse({required this.id, required this.name, required this.chapters});
-
   factory SubCourse.fromJson(Map<String, dynamic> json) {
     return SubCourse(
       id: json['_id'],
       name: json['name'],
-      chapters: json['chapters'] != null
-          ? List<Chapter>.from(json['chapters'].map((chapterJson) => Chapter.fromJson(chapterJson)))
-          : [],
+      chapters: List<Chapter>.from(json['chapters'].map((chapterJson) => Chapter.fromJson(chapterJson))),
     );
   }
 }
-
 class Chapter {
   String id;
   String name;
-  String content;
-
-  Chapter({required this.id, required this.name, required this.content});
-
+  Chapter({required this.id, required this.name});
   factory Chapter.fromJson(Map<String, dynamic> json) {
     return Chapter(
       id: json['_id'],
       name: json['name'],
-      content: json['content'],
     );
   }
 }

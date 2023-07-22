@@ -9,20 +9,20 @@ class ChatScreen extends StatefulWidget {
   final String name;
 
 
-  const ChatScreen({super.key, required this.myUserId, required this.otherUserId, required this.name,});
+  ChatScreen({required this.myUserId, required this.otherUserId, required this.name,});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final TextEditingController _messageController = TextEditingController();
+  TextEditingController _messageController = TextEditingController();
   bool isConnected = false;
   String roomId=" ";
   late IO.Socket socket;
   int _page = 1;
   bool _isLoading = false;
-  final List<Map<String, String>> _messages = [];
+  List<Map<String, String>> _messages = [];
   final _scrollController = ScrollController();
 
   String _lastMessageId = '';
@@ -32,10 +32,9 @@ class _ChatScreenState extends State<ChatScreen> {
       setState(() {
         _isLoading = true;
       });
-
       try {
         final response = await http.get(
-          Uri.parse('https://dolphin-app-ldyyx.ondigitalocean.app/messages/${widget.myUserId}/${widget.otherUserId}/$_page/?lastMessageId=$_lastMessageId'),
+          Uri.parse('http://192.168.0.172:3000/messages/${widget.myUserId}/${widget.otherUserId}/$_page/?lastMessageId=$_lastMessageId'),
           headers: {"Content-Type": "application/json"},
         );
         final data = jsonDecode(response.body);
@@ -66,7 +65,7 @@ class _ChatScreenState extends State<ChatScreen> {
           });
         }
       } catch (e) {
-        // print('Error: $e');
+        print('Error: $e');
         setState(() {
           _isLoading = false;
         });
@@ -77,10 +76,12 @@ class _ChatScreenState extends State<ChatScreen> {
   void connectToServer() {
     try {
       // Configure socket transports must be specified
-      socket = IO.io('https://dolphin-app-ldyyx.ondigitalocean.app/',IO.OptionBuilder().setTransports(['websocket']).disableAutoConnect().build());
+      socket = IO.io('http://192.168.0.172:3000/',IO.OptionBuilder().setTransports(['websocket']).disableAutoConnect().build());
+      socket.connect();
+
     } catch (e) {
       // print("hello");
-      // print(e.toString());
+      print(e.toString());
     }
   }
   @override
@@ -96,14 +97,13 @@ class _ChatScreenState extends State<ChatScreen> {
     }
     socket.emit('join', roomId );
     socket.onConnect((data) {
-      // print('Connected to socket');
+      print('Connected to socket');
       isConnected = true;
     });
     socket.onDisconnect((data) {
-      // print('Disconnected from socket');
+      print('Disconnected from socket');
       isConnected = false;
     });
-    socket.connect();
     socket.on('message', _handleIncomingMessage);
   }
   void _scrollListener() {
@@ -198,7 +198,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                 ),
                                 height: 20,
                                 width: 20,
-                                child: const Icon(Icons.arrow_back)),
+                                child: const Icon(Icons.arrow_back,color: Colors.black,)),
                           ),
                           Text(
                             widget.name,
@@ -213,7 +213,9 @@ class _ChatScreenState extends State<ChatScreen> {
                 padding: const EdgeInsets.only(left: 60, top: 6),
                 child: Container(
                   decoration: const BoxDecoration(
-
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage("assets/profile.png")),
                       borderRadius: BorderRadius.all(Radius.circular(100)),
                       boxShadow: [
                         BoxShadow(
@@ -223,7 +225,6 @@ class _ChatScreenState extends State<ChatScreen> {
                       ]),
                   height: 50,
                   width: 50,
-                  child: const Icon(Icons.person),
                 ),
               ),
             ]),
@@ -318,17 +319,19 @@ class _ChatScreenState extends State<ChatScreen> {
               width: MediaQuery.of(context).size.width / 1.1,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  controller: _messageController,
-                  decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.only(bottom: 17, left: 10),
-                      border: InputBorder.none,
-                      hintText: "Type your message ",
-                      hintStyle:
-                      const TextStyle(fontSize: 10, color: Color(0xff97AABD)),
-                      suffixIcon: IconButton(onPressed: _sendMessage, icon: const Icon(Icons.send),
+                child: Center(
+                  child: TextFormField(
+                    controller: _messageController,
+                    decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.only(bottom: 17, left: 10),
+                        border: InputBorder.none,
+                        hintText: "Type your message ",
+                        hintStyle:
+                        const TextStyle(fontSize: 15, color: Color(0xff97AABD)),
+                        suffixIcon: IconButton(onPressed: _sendMessage, icon: const Icon(Icons.send),
 
-                      )),
+                        )),
+                  ),
                 ),
               ),
             ),

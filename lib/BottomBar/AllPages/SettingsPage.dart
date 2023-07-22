@@ -3,6 +3,8 @@ import 'package:brainboosters/LoginScreens/LoginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../ApiServices/ApiServieForSignInOut.dart';
 import '../../ChooseCourseStudy/ChooseCourse.dart';
 import '../BottomNavBar.dart';
 
@@ -53,9 +55,9 @@ class _SettingPageState extends State<SettingPage> {
 
           () {
         print("object");
-        Get.to(() => const BottomNavBar(page: 1,));
+        Get.to(() =>  BottomNavBar(page: 1,));
 
-            // Function 1
+        // Function 1
         // Add your code here
       },
           () {
@@ -71,13 +73,13 @@ class _SettingPageState extends State<SettingPage> {
         // Add your code here
       },
           () {
-      Get.to(() => const ChooseCoursePage());
+        Get.to(() => const ChooseCoursePage());
         // Function 5
         // Add your code here
       },
           () {
 
-      Get.to(() => const FeedBackScreen());
+        Get.to(() => const FeedBackScreen());
         // Function6 6
         // Add your code here
       },
@@ -86,71 +88,108 @@ class _SettingPageState extends State<SettingPage> {
         // Add your code here
       },
           (){
-            showDialog<void>(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext dialogContext) {
-                return AlertDialog(
-                  title: const Icon(Icons.person, color: Colors.black),
-                  content:  SingleChildScrollView(
-                    child: ListBody(
-                      children: <Widget>[
-                        Text('Are you sure you want to Logout?'),
-                      ],
-                    ),
-                  ),
-                  actions: [
-                    Row(
-                      children: <Widget>[
-                        SizedBox(
-                          height: 28,
-                          width: 140,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                              shape: MaterialStateProperty.all(
-                                const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                                ),
-                              ),
-                              backgroundColor:
-                              MaterialStateProperty.all(const Color(0xff494FC7)),
-                            ),
-                            child: const Text('Confirm'),
-                            onPressed: () {
-                              // Add your logic here
-                              Get.to(() => const LoginScreen());
-                            },
-                          ),
-                        ),
-                        const SizedBox(width: 10,),
-                        SizedBox(
-                          height: 28,
-                          width: 140,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                              shape: MaterialStateProperty.all(
-                                const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                                ),
-                              ),
-                              backgroundColor: MaterialStateProperty.all(Colors.white),
-                            ),
-                            child: const Text(
-                              'Back',
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            onPressed: () {
-                              Get.back();
-                              },
-                          ),
-                        ),
-
-                      ],
-                    ),
+        showDialog<void>(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext dialogContext) {
+            return AlertDialog(
+              title: const Icon(Icons.person, color: Colors.black),
+              content:  SingleChildScrollView(
+                child: ListBody(
+                  children: <Widget>[
+                    Text('Are you sure you want to Logout?'),
                   ],
-                );
-              },
+                ),
+              ),
+              actions: [
+                Row(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 28,
+                      width: 140,
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          shape: MaterialStateProperty.all(
+                            const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                            ),
+                          ),
+                          backgroundColor:
+                          MaterialStateProperty.all(const Color(0xff494FC7)),
+                        ),
+                        child: const Text('Confirm'),
+                        onPressed: () {
+                          ApiServicesforSignIn_Out.logOut( ).then((value) async {
+
+
+                            if(value.message == "Student logged out successfully"){
+                              final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+
+                              prefs.remove("id");
+                              Get.to(() => const LoginScreen());
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text(value.message.toString() ),
+                              ));
+                            }
+
+                            else {
+                              print("Failed");
+                              showDialog<String>(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    AlertDialog(
+                                      title: const Text('Warning!'),
+                                      content: Text(value.message.toString() ??
+                                          value.error.toString()),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, 'Cancel'),
+                                          child: const Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, 'OK'),
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    ),
+                              );
+                            }
+                          });
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 10,),
+                    SizedBox(
+                      height: 28,
+                      width: 140,
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          shape: MaterialStateProperty.all(
+                            const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                            ),
+                          ),
+                          backgroundColor: MaterialStateProperty.all(Colors.white),
+                        ),
+                        child: const Text(
+                          'Back',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        onPressed: () {
+                          Get.back();
+                        },
+                      ),
+                    ),
+
+                  ],
+                ),
+              ],
             );
+          },
+        );
       }
       // Add more functions as needed
     ];
@@ -200,8 +239,8 @@ class _SettingPageState extends State<SettingPage> {
               itemBuilder: (BuildContext context, int index) {
                 bool isTrue = index < 4;
 
-              return button(icons[index] ,text[index] , onPressedFunctions[index] , isTrue , boolean[index]);
-            },),
+                return button(icons[index] ,text[index] , onPressedFunctions[index] , isTrue , boolean[index]);
+              },),
           )
 
         ],
@@ -214,7 +253,7 @@ class _SettingPageState extends State<SettingPage> {
       child: SizedBox(
         height: 45,
         width: MediaQuery.of(context).size.width,
-            child: ElevatedButton(
+        child: ElevatedButton(
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.white)
           ),
@@ -236,14 +275,14 @@ class _SettingPageState extends State<SettingPage> {
                   ),
                   check == true
                       ? ValueListenableBuilder<bool>(
-                        valueListenable: checkBoxBool,
-                        builder: (context, value, child) {
-                          return Switch(
-                          activeTrackColor: Colors.grey,
-                          inactiveTrackColor: Colors.grey,
-                          activeColor: const Color(0xff494FC7),
-                          value: value,
-                          onChanged: (bool newValue) {
+                    valueListenable: checkBoxBool,
+                    builder: (context, value, child) {
+                      return Switch(
+                        activeTrackColor: Colors.grey,
+                        inactiveTrackColor: Colors.grey,
+                        activeColor: const Color(0xff494FC7),
+                        value: value,
+                        onChanged: (bool newValue) {
                           checkBoxBool.value = newValue;
                         },
                       );
@@ -261,5 +300,4 @@ class _SettingPageState extends State<SettingPage> {
   }
 
 }
-
 

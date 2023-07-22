@@ -26,6 +26,24 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('/media/.../Local Disk/StudioProjects/BrainBoosters/android/your_keystore_file.jks')
+            storePassword '123456'
+            keyAlias 'your_key_alias'
+            keyPassword 'myKeyPassword'
+        }
+    }
+
+
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release // Add this line if you have a signing configuration
+            minifyEnabled true // You can enable code minification and optimization if desired
+            // ...
+        }
+    }
     namespace "com.example.brainboosters"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
@@ -44,11 +62,14 @@ android {
     }
 
     defaultConfig {
+//        manifestPlaceholders += [
+//                'appAuthRedirectScheme': 'com.googleusercontent.apps.852632874780-ui6hv6rg2b7nsqm15nntqaiilg9tci2q.apps.googleusercontent.com'
+//        ]
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.example.brainboosters"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -69,6 +90,7 @@ flutter {
 }
 
 dependencies {
+    implementation(platform("com.google.firebase:firebase-bom:32.1.1"))
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 apply plugin: 'com.google.gms.google-services'

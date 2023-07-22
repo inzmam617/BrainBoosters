@@ -1,38 +1,37 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:math';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-// import '../Quiz Model/QuizModelClass.dart';
-
-import 'package:http/http.dart' as http;
-
+import '../ApiServices/ApiForGettingQuizes.dart';
+import '../Models/CoursesModels.dart';
+import '../Models/QuizModels.dart';
 import '../Quiz Model/QuizModelClass.dart';
 
 
 class QuizPage extends StatefulWidget {
-  const QuizPage({Key? key}) : super(key: key);
-
+  final List<SubCourse>?  subcourses;
+  final String? courseName;
+  const QuizPage({Key? key, this.subcourses, this.courseName}) : super(key: key);
   @override
   State<QuizPage> createState() => _QuizPageState();
 }
 
 class _QuizPageState extends State<QuizPage> {
+
+
   Timer? _timer;
   int _seconds = 127;
-
   late ConfettiController _confettiController;
   final AssetsAudioPlayer _assetsAudioPlayer = AssetsAudioPlayer();
-
+  List<QuizQuestion> quizQuestions=[];
   @override
   void initState() {
     super.initState();
-    // fetchQuestions();
-    questionList = getQuestions();
-
+    print(widget.courseName);
+    print(widget.subcourses);
     _startTimer();
     colorSelect();
     _confettiController = ConfettiController(duration: const Duration(seconds: 3));
@@ -50,27 +49,35 @@ class _QuizPageState extends State<QuizPage> {
       autoStart: false,
       loopMode: LoopMode.single
     );
-// Generate a random index within the range of the colorList
-
   }
-
+  StreamController<List<QuizQuestion>> quizQuestionsController = StreamController<List<QuizQuestion>>();
+  Future<List<QuizQuestion>>? loadQuizQuestions() async {
+    try {
+       if(count==0){
+         quizQuestions = await QuizApiService.getQuizQuestions(
+           (widget.courseName!).toString(),
+           (widget.subcourses![0].name).toString(),
+           (widget.subcourses![0].chapters[0].name).toString(),
+         );
+       }
+      return quizQuestions;
+    } catch (e) {
+      print('Failed to fetch quiz questions: $e');
+    }
+    return[];
+  }
   colorSelect(){
     int randomIndex = Random().nextInt(colorList.length);
-
-// Assign the randomly selected color to the 'color' variable
     setState(() {
       color = colorList[randomIndex];
-
     });
   }
   @override
   void dispose() {
     _confettiController.dispose();
-
     _timer?.cancel();
     super.dispose();
   }
-
   void _startTimer() {
     const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(oneSec, (timer) {
@@ -83,9 +90,7 @@ class _QuizPageState extends State<QuizPage> {
       });
     });
   }
-
   Color color = Colors.transparent;
-
   List<Color> colorList = [
     Colors.orangeAccent,
     Colors.blue,
@@ -111,7 +116,7 @@ class _QuizPageState extends State<QuizPage> {
       builder: (BuildContext context) {
         return AlertDialog( // <-- SEE HERE
           title: const Text('Confirm'),
-          content:  SingleChildScrollView(
+          content:  const SingleChildScrollView(
             child: ListBody(
               children:  <Widget>[
                 Text('Are you sure want to Leave Quiz?'),
@@ -365,17 +370,13 @@ class _QuizPageState extends State<QuizPage> {
 
 
   bool shouldRevealAnswer = false;
-  List<Question> questionList = [];
   int currentQuestionIndex = 0;
-  int score = 0;
-  Answer? selectedAnswer;
-  bool selected = false;
+  int count = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xff6768b0),
-
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -409,7 +410,7 @@ class _QuizPageState extends State<QuizPage> {
                           Padding(
                             padding: const EdgeInsets.all(2),
                             child: SizedBox(
-                              width: 35,
+                              width: 30,
                               child: ElevatedButton(
                                   style: ButtonStyle(
                                       shape: MaterialStateProperty.all(
@@ -428,16 +429,16 @@ class _QuizPageState extends State<QuizPage> {
                                     child: Icon(
                                       Icons.arrow_back_ios,
                                       color: Colors.black,
-                                      size: 16,
+                                      size: 10,
                                     ),
                                   )),
                             ),
                           ),
                           const SizedBox(width: 5,),
                           const Text(
-                            "Programming Test",
+                            "Quiz Page",
                             style: TextStyle(
-                                color: Colors.white, fontSize: 14),
+                                color: Colors.white, fontSize: 18),
                           ),
                           const SizedBox(width: 5,),
 
@@ -505,7 +506,6 @@ class _QuizPageState extends State<QuizPage> {
                         borderRadius: BorderRadius.all(Radius.circular(100))),
                     child: Center(
                         child: IconButton(
-
                           onPressed: () {
                             showDialog(
                               context: context,
@@ -518,160 +518,212 @@ class _QuizPageState extends State<QuizPage> {
                     )),
                   )
                 ],
-
               ),
             ),
             const SizedBox(
               height: 25,
             ),
-            Container(
-              decoration: const BoxDecoration(
-                  boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 3.5)],
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
-              width: MediaQuery.of(context).size.width * 0.85,
-              height: 150,
-              child: Column(
-                children: [
-                  Container(
-                    decoration: const BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(color: Colors.grey, blurRadius: 3.5)
-                        ],
-                        color: Colors.yellow,
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(20),
-                            topLeft: Radius.circular(20))),
-                    width: MediaQuery.of(context).size.width * 0.95,
-                    height: 35,
-                    child: Center(
-                      child: Text(
-                        "Question (${currentQuestionIndex + 1}/${questionList.length})",
-                        style: const TextStyle(color: Colors.black, fontSize: 15),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 35,
-                  ),
-                  Center(
-                    child: Text(
-                      questionList[currentQuestionIndex].questionText.toString(),
-
-                      style: const TextStyle(color: Colors.black, fontSize: 17),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: 25,
-                left: 25,
-                right: 25,
-                top: 10
-              ),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.28,
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 30,
-                    mainAxisSpacing: 20,
-                    childAspectRatio: 2.0, // Adjust the aspect ratio as needed
-                  ),
-                  itemCount: questionList[currentQuestionIndex].answersList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    Answer answer = questionList[currentQuestionIndex].answersList[index];
-
-                    return SizedBox(
-                      width: MediaQuery.of(context).size.width *
-                          0.4, // Adjust the width as needed
-                      height: 200, // Adjust the height as needed
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                          shape: MaterialStateProperty.all(
-                            const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(20)),
+            FutureBuilder<List<QuizQuestion>>(
+              future: count==0?loadQuizQuestions():hello(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error: ${snapshot.error}'),
+                  );
+                } else if (snapshot.hasData) {
+                  List<QuizQuestion> questionList = snapshot.data!;
+                  count=questionList.length;
+                  return Column(
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(
+                          boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 3.5)],
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        width: MediaQuery.of(context).size.width * 0.85,
+                        child: Column(
+                          children: [
+                            Container(
+                              decoration: const BoxDecoration(
+                                boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 3.5)],
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(20),
+                                  topLeft: Radius.circular(20),
+                                ),
+                              ),
+                              width: MediaQuery.of(context).size.width * 0.95,
+                              height: 35,
+                              child: Center(
+                                child: Text(
+                                  "Question (${currentQuestionIndex + 1}/${questionList.length})",
+                                  style: const TextStyle(color: Colors.black, fontSize: 15),
+                                ),
+                              ),
                             ),
-                          ),
-                               backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                                (Set<MaterialState> states) {
-                                  if (states.contains(MaterialState.pressed)) {
-                                    // Button is pressed
-                                    return color;
-                                  } else if (shouldRevealAnswer) {
-                                    // Reveal the correct answer
-                                    if (answer.isCorrect) {
+                            const SizedBox(height: 35),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: Center(
+                                child: Text(
+                                  questionList[currentQuestionIndex].question,
+                                  style: const TextStyle(color: Colors.black, fontSize: 17),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20,)
 
-                                      return Colors.green;
-                                    } else if (selectedAnswer == answer) {
-                                      // Selected answer and it is wrong
-                                      return Colors.black;
-                                    } else {
-                                      return Colors.red;
+
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 20,),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            bottom: 25,
+                            left: 25,
+                            right: 25,
+                            top: 10
+                        ),
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.28,
+                          child: GridView.builder(
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 30,
+                              mainAxisSpacing: 20,
+                              childAspectRatio: 2.0, // Adjust the aspect ratio as needed
+                            ),
+                            itemCount: questionList[currentQuestionIndex].options.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              String answer = questionList[currentQuestionIndex].answer;
+
+                              return SizedBox(
+                                width: MediaQuery.of(context).size.width *
+                                    0.5, // Adjust the width as needed
+                                height: 220, // Adjust the height as needed
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                    shape: MaterialStateProperty.all(
+                                      const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                                      ),
+                                    ),
+                                    backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                          (Set<MaterialState> states) {
+                                        if (states.contains(MaterialState.pressed)) {
+                                          // Button is pressed
+                                          return color;
+                                        } else if (shouldRevealAnswer) {
+                                          // Reveal the correct answer
+                                          if (questionList[currentQuestionIndex].options[index].toString()==questionList[currentQuestionIndex].answer.toString()) {
+
+                                            return Colors.green;
+                                          } else if (questionList[currentQuestionIndex].options[index].toString()!=questionList[currentQuestionIndex].answer.toString()) {
+                                            // Selected answer and it is wrong
+                                            return Colors.black;
+                                          } else {
+                                            return Colors.red;
+                                          }
+                                        }
+                                        // else if (selectedAnswer != null && answer == selectedAnswer) {
+                                        //   // Selected answer
+                                        //   return Colors.black;
+                                        // }
+                                        else {
+                                          // Default color
+                                          return color;
+                                        }
+                                      },
+                                    ),
+
+
+
+                                  ),
+                                  onPressed: () async{
+
+                                    if(questionList[currentQuestionIndex].options[index].toString()==questionList[currentQuestionIndex].answer.toString()){
+                                      print("Match");
+
                                     }
-                                  } else if (selectedAnswer != null && answer == selectedAnswer) {
-                                    // Selected answer
-                                    return Colors.black;
-                                  } else {
-                                    // Default color
-                                    return color;
-                                  }
+
+
+                                      // if (questionList[currentQuestionIndex].options[index] == questionList[currentQuestionIndex].answer) {
+                                      //
+                                      //   print(currentQuestionIndex + 1);
+                                      // }
+
+
+
+                                    // print("Clicked item index: $index");
+                                    // print(questionList[currentQuestionIndex].options);
+
+
+
+                                  },
+                                  child: Center(
+                                    child: Text(
+                                      questionList[currentQuestionIndex].options[index],
+                                      style: const TextStyle(
+                                        fontSize: 17,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
                             },
                           ),
-
-                        ),
-                        onPressed: () {
-                          if(selected){
-
-                          }else {
-                            setState(() {
-                              selectedAnswer = answer;
-                              choose = "answer";
-                              selected = true;
-                            });
-                            shouldRevealAnswer = true;
-                            if (selectedAnswer?.isCorrect == true) {
-                              score++;
-                            } else {
-
-                            }
-                          }
-                        },
-                        child: Center(
-                          child: Text(
-                            answer.answerText,
-                            style: const TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                            ),
-                          ),
                         ),
                       ),
-                    );
-                  },
-                ),
-              ),
+                    ],
+                  );
+                } else {
+                  return const SizedBox(); // Return an empty widget if no data is available
+                }
+              },
             ),
+            // const SizedBox(height: 50,),
+            //
+            // ElevatedButton(
+            //   onPressed: () async{
+            //     if (currentQuestionIndex + 1 < count) {
+            //       setState(() {
+            //         currentQuestionIndex++;
+            //       });
+            //     }
+            //     else{
+            //
+            //     }
+            //   },
+            //   child: const Text('Next Question'),
+            // ),
+            //
+            // ElevatedButton(
+            //   onPressed: () {
+            //
+            //   },
+            //   child: const Text('Load Quiz Questions'),
+            // ),
+            //
 
 
-            ConfettiWidget(
-              confettiController: _confettiController,
-              blastDirectionality: BlastDirectionality.directional,
-              blastDirection: -pi /2, // Emit confetti at a diagonal direction
-              emissionFrequency: 0.05, // How often confetti is emitted
-              numberOfParticles: 10, // Increase the number of particles
-              gravity: 0.4, // Increase the gravity to make confetti fall faster
-              shouldLoop: false, // Stop after a single emission
-              colors: const [
-                Colors.green,
-                Colors.blue,
-                Colors.pink,
-                Colors.orange,
-                Colors.purple,
-              ], // Colors of confetti particles
-            ),
+
+
+
+
+
+
+
+
+
+
+
 
 
             SizedBox(
@@ -682,58 +734,44 @@ class _QuizPageState extends State<QuizPage> {
                         shape: MaterialStateProperty.all(
                             const RoundedRectangleBorder(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(50)))),
+                                BorderRadius.all(Radius.circular(50)))),
                         backgroundColor:
-                            MaterialStateProperty.all(const Color(0xff494FC7))),
+                        MaterialStateProperty.all(const Color(0xff494FC7))),
                     onPressed: () {
 
+                      if (currentQuestionIndex + 1 < count) {
+                        setState(() {
+                          currentQuestionIndex++;
+                        });
+                      }
+                      else{
+                        print(currentQuestionIndex);
 
-                       if (choose != "") {
-                         if (currentQuestionIndex + 1 == questionList.length) {
-                           Get.back();
-                         }
-                         else {
-
-                             setState(() {
-
-                               currentQuestionIndex++;
-                               colorSelect();
-                               shouldRevealAnswer = false;
-                               choose = "";
-                               selected = false;
-                             });
-
-                         }
-                       }
-                       else {
-                         ScaffoldMessenger.of(context).showSnackBar(
-                             const SnackBar(
-                               content: Text('Please Select an Answer'),
-                               duration: Duration(seconds: 1),
-
-                             ));
-                       }
+                      }
 
                     },
-                    child: currentQuestionIndex + 1 == questionList.length ? const Text(
-                      "Done",
+                    child: currentQuestionIndex + 1 < count? const Text(
+                      "Next",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 15,
                           fontWeight: FontWeight.w300),
                     ) : const Text(
-                      "Next",
+                      "Done",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 15,
                           fontWeight: FontWeight.w300),
                     )
                 )),
+
           ],
         ),
       ),
     );
   }
+
+  hello() {}
 }
 
 

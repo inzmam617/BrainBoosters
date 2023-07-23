@@ -5,6 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../ApiServices/ApiServiceForUserInfo.dart';
 import '../ApiServices/ApiServieForSignInOut.dart';
 import '../ChooseCourseStudy/ChooseCourse.dart';
 import 'SignUpPage.dart';
@@ -111,7 +112,6 @@ class _LoginEmailPasswordState extends State<LoginEmailPassword> {
                         MaterialStateProperty.all(Colors.orangeAccent)),
                     onPressed: (){
                       if(email.text == "" && pass.text == ""){
-                        // and use it to show a SnackBar.
                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           content: Text('Fields cannot be empty'),
                         ));
@@ -119,31 +119,34 @@ class _LoginEmailPasswordState extends State<LoginEmailPassword> {
 
                       else {
                         setState(() {
-
                           _loading = true;
                         });
                         ApiServicesforSignIn_Out.signIn(email.text, pass.text ).then((value) async {
-
+                          final SharedPreferences prefs = await SharedPreferences.getInstance();
                         if(value.message == null){
                           ScaffoldMessenger.of(context).showSnackBar( const SnackBar(
                             content: Text('Student Login successfully'),
                           ));
-                          print("This is the id: " +  value.id.toString());
-                          final SharedPreferences prefs = await SharedPreferences.getInstance();
+                          ApiServicetoGetUserInfo.GetPersionalInfo(value.id!).then((values) => {
+                           prefs.setString("name", values.name!),
+                           prefs.setString("email", values.email!),
+
+
+                        });
+                          print("This is the id: ${value.id}");
+
                           prefs.setString("id", value.id.toString());
                           String id = prefs.getString("id").toString();
-                          print("this is my id: " + id );
+                          print("this is my id: $id");
                           Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
                             return const ChooseCoursePage();
                           }));
                           setState(() {
-
                             _loading = false;
                           });
                         }
                         else{
                           setState(() {
-
                             _loading = false;
                           });
                           print("Failed");
@@ -167,7 +170,6 @@ class _LoginEmailPasswordState extends State<LoginEmailPassword> {
                         }
                       });
                       }
-
                     },
                     child: const Text("Login" ,style: TextStyle(color: Colors.white,fontSize: 16),),
                   ),
@@ -175,9 +177,7 @@ class _LoginEmailPasswordState extends State<LoginEmailPassword> {
                 SizedBox(height: 30,),
                 TextButton(onPressed: (){
                         Get.to(()  =>const SignUpEmailPassword());
-
                 }, child: Text("Doesn't have an Account? try SignUp",style: TextStyle(color: Colors.black),))
-
               ],
             ),
           ),

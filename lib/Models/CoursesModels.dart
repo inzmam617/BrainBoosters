@@ -18,6 +18,7 @@ class SubCourse {
   String name;
   List<Chapter> chapters;
   SubCourse({required this.id, required this.name, required this.chapters});
+
   factory SubCourse.fromJson(Map<String, dynamic> json) {
     return SubCourse(
       id: json['_id'],
@@ -36,4 +37,19 @@ class Chapter {
       name: json['name'],
     );
   }
+  Map<String, dynamic> toJson() {
+    return {
+      '_id': id,
+      'name': name,
+    };
+  }
+  // Method to convert Chapter to SubCourse
+  SubCourse toSubCourse() {
+    return SubCourse(
+      id: this.id,
+      name: this.name,
+      chapters: [this], // Add the current Chapter as a single item in the SubCourse's chapters list
+    );
+  }
+
 }

@@ -18,4 +18,18 @@ class QuizApiService {
       throw Exception('Failed to fetch quiz questions');
     }
   }
+
+
+  static Future<dynamic> getQuize(String CourseName ,String SubCoursename ,String ChapterName) async {
+    String URL = "${baseUrl}getMcqs/${CourseName}/${SubCoursename}/${ChapterName}";
+    print(URL);
+    final response = await http.get(Uri.parse(URL));
+
+    if (response.statusCode == 200) {
+      String  jsonData = response.body;
+      return jsonData;
+    } else {
+      throw Exception('Failed to fetch quiz questions');
+    }
+  }
 }

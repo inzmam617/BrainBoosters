@@ -4,7 +4,9 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../BottomBar/BottomNavBar.dart';
 import '../LoginScreens/LoginPage.dart';
 
 class SplashPage extends StatefulWidget {
@@ -15,13 +17,25 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+
+  String id = "";
+
+  initialize() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() async {
+      id =  prefs.getString("id") ??  "";
+    });
+    print(id);
+  }
   @override
   void initState() {
     super.initState();
+    initialize();
+
     Timer(
         const Duration(seconds: 4),
             () =>
-                Get.to(() => const LoginScreen())
+                Get.to(() => id == "" ?  const LoginScreen() : BottomNavBar(page: 0, ))
     );
   }
   @override
@@ -32,7 +46,6 @@ class _SplashPageState extends State<SplashPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: AnimatedTextKit(

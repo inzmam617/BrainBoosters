@@ -2,6 +2,7 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+
 import '../Models/CoursesModels.dart';
 import '../QuizePage/QuizePage.dart';
 import '../const.dart';
@@ -12,22 +13,13 @@ import 'AllPages/SettingsPage.dart';
 
 class BottomNavBar extends StatefulWidget {
   final int page;
-  final String? courseName;
-
-
-  final List<SubCourse>? subcourses;
-
-  BottomNavBar({Key? key, required this.page, this.subcourses,  this.courseName}) : super(key: key);
-
+  BottomNavBar({Key? key, required this.page}): super(key: key);
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-
   late IO.Socket socket;
-
-
   void connectToServer() {
     try {
       print("starting");
@@ -39,15 +31,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
     }
   }
   late int selectedIndex ;
-  late List<SubCourse>?  subcourses;
-  late String? courseName;
-
-
   void _handleIncomingMessage(data) {
     setState(() {
       Map<String, String> message = {
         'senderId': data['senderId'],
         'receiverId': data['receiverId'],
+        'senderName': data['senderName'],
+        'receiverName': data['receiverName'],
         'roomId': data['roomId'].toString(),
       };
       if(message["receiverId"] == id){
@@ -62,9 +52,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
   void _handleStartingQuize(data) {
     setState(() {
       String quizData =data["quizData"];
-      // print(quizData.split('courseName: ')[1].split(',')[0]);
-      // print(quizData.split('subcourseName: ')[1].split(',')[0]);
-      // print(quizData.split('chapterName: ')[1].split(',')[0].split('}')[0]);
       String roomId =data["roomId"];
       String senderId =data["senderId"];
       String receiverId =data["receiverId"];
@@ -97,9 +84,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
             child: Column(
               children: [
                 const Text("You Have 10 sec to accept otherwise it will be rejected",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
-                SizedBox(height: 10,),
-                Text( "${message["senderId"]!}wants to send you invitation to quiz"),
-                SizedBox(height: 10,),
+                const SizedBox(height: 10,),
+                Text( "${message["senderName"]!} wants to send you invitation to quiz"),
+                const SizedBox(height: 10,),
                 Text( "Room Id: ${message["roomId"]!}"),
               ],
             ),
@@ -171,25 +158,25 @@ class _BottomNavBarState extends State<BottomNavBar> {
     socket.on("invite", _handleIncomingMessage);
 
     selectedIndex = widget.page;
-    subcourses = widget.subcourses;
-    courseName = widget.courseName;
-    print("courseName$courseName");
+    // subcourses = widget.subcourses;
+    // courseName = widget.courseName;
+    // print("courseName$courseName");
     setState(() {
 
       _widgetOptions = <Widget>[
-        HomePage(subcourses : subcourses ,courseName : courseName),
-        MainPeoplePage(subcourses : subcourses ,courseName : courseName),
-        DashPage(subcourses : subcourses ,courseName : courseName),
+        HomePage(chapters: [],),
+        MainPeoplePage(),
+        DashPage(),
         const SettingPage()
       ];
     });
   }
 
    late List<Widget> _widgetOptions = <Widget>[
-    HomePage(subcourses : subcourses ,courseName : courseName),
-    MainPeoplePage(subcourses : subcourses ,courseName : courseName),
-    DashPage(subcourses : subcourses ,courseName : courseName),
-     const SettingPage()
+    HomePage(chapters: [],),
+    MainPeoplePage(),
+    DashPage(),
+      SettingPage()
 
    ];
   void _onItemTapped(int index) {

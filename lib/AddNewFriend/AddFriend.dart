@@ -183,30 +183,41 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 18),
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Container(
-                                      height: 60,
-                                      width: 60,
-                                      decoration: const BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage("assets/profile.png"),
-                                        ),
-                                        borderRadius: BorderRadius.all(Radius.circular(100)),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                    Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          user.name,
-                                          style: const TextStyle(color: Colors.black, fontSize: 14),
+                                        Container(
+                                          height: 60,
+                                          width: 60,
+                                          decoration: const BoxDecoration(
+                                            image: DecorationImage(
+                                              image: AssetImage("assets/profile.png"),
+                                            ),
+                                            borderRadius: BorderRadius.all(Radius.circular(100)),
+                                          ),
                                         ),
-                                        const SizedBox(height: 5),
-                                        Text(
-                                          user.email,
-                                          style: const TextStyle(color: Colors.black, fontSize: 10),
+                                        const SizedBox(width: 10),
+                                        SizedBox(
+
+                                          width: MediaQuery.of(context).size.width * 0.35,
+
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                user.name,
+                                                style: const TextStyle(color: Colors.black, fontSize: 14),
+                                              ),
+                                              const SizedBox(height: 5),
+                                              Text(
+                                                user.email,
+                                                style: const TextStyle(color: Colors.black, fontSize: 10),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -217,7 +228,7 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
                                         padding: const EdgeInsets.symmetric(vertical: 5),
                                         child: SizedBox(
                                           height: 35,
-                                          width: 100,
+                                          width: 90,
                                           child: ElevatedButton(
                                             style: ButtonStyle(
                                               shape: MaterialStateProperty.all(
@@ -230,7 +241,7 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
                                             onPressed: () {
                                               ApiServiceForHandlingRequests.sendUserReq(user.id).then((value) =>
                                               {
-                                                Get.to(() =>  BottomNavBar(page: 1)),
+                                                Navigator.of(context).pop(),
 
                                                 print("this is the data:" +   value.toString())
                                               });

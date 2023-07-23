@@ -1,8 +1,12 @@
+import 'dart:convert';
+
+import 'package:brainboosters/BottomBar/BottomNavBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../AddNewFriend/AddFriend.dart';
+import '../../ApiServices/ApiForGettingQuizes.dart';
 import '../../ApiServices/ApiServiceToGetAllUsers.dart';
 import '../../ChatScreen/ChatScreen.dart';
 import '../../Models/CoursesModels.dart';
@@ -25,28 +29,50 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
 
   late IO.Socket socket;
   late String id;
+
   @override
-  void initState(){
+  void initState() {
     super.initState();
     initialize();
+    initilize();
     connectToServer();
+    initilize();
+
   }
 
   void connectToServer() {
     try {
       print("starting");
-      socket =  IO.io(baseUrl,IO.OptionBuilder().setTransports(['websocket']).disableAutoConnect().build());
+      socket = IO.io(baseUrl, IO.OptionBuilder().setTransports(['websocket'])
+          .disableAutoConnect()
+          .build());
       socket.connect();
     } catch (e) {
       print(e.toString());
     }
   }
+
+  String chapterName = "";
+  String courseName = "";
+  String chapterid = "";
+
+  Future<void> initilize() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() async {
+      chapterName =   prefs.getString("chapterName").toString();
+      courseName = prefs.getString("courseName").toString();
+      chapterid = prefs.getString("chapterId").toString();
+    });
+
+  }
+
   initialize() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      id =  prefs.getString("id").toString();
+      id = prefs.getString("id").toString();
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +88,10 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                 Align(
                   alignment: Alignment.topLeft,
                   child: Container(
-                    width: MediaQuery.of(context).size.width * 0.4,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width * 0.4,
                     height: 35,
                     decoration: const BoxDecoration(
                         boxShadow: [
@@ -83,10 +112,11 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                 const SizedBox(
                   width: 20,
                 ),
-                TextButton(onPressed: (){
-                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                    return const RequestPage();
-                  }));
+                TextButton(onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (BuildContext context) {
+                        return const RequestPage();
+                      }));
                 }, child: const Text("See Request")),
               ],
             ),
@@ -95,8 +125,11 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
             ),
             SizedBox(
                 height: 35,
-                width: MediaQuery.of(context).size.width / 1.7,
-                child: SvgPicture.asset("assets/logo.svg",fit: BoxFit.cover,)),
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width / 1.7,
+                child: SvgPicture.asset("assets/logo.svg", fit: BoxFit.cover,)),
             FutureBuilder<FriendsListsModel>(
               future: ApiServicesforGetFriendsandNonFriends.getUsersData(),
               builder: (context, snapshot) {
@@ -105,9 +138,9 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 }
-                else if (snapshot.hasData) { // Add this condition to check if data is available
+                else if (snapshot
+                    .hasData) { // Add this condition to check if data is available
                   final List<User> friendsList = snapshot.data?.friends ?? [];
-
                   if (friendsList.isEmpty) {
                     return const Padding(
                       padding: EdgeInsets.only(top: 150.0, bottom: 150),
@@ -116,67 +149,101 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                   }
                   return SingleChildScrollView(
                     child: SizedBox(
-                      height: MediaQuery.of(context).size.height / 2,
+                      height: MediaQuery
+                          .of(context)
+                          .size
+                          .height / 2,
                       child: Padding(
                         padding: EdgeInsets.zero,
                         child: ListView.builder(
                           physics: const ScrollPhysics(),
                           itemCount: friendsList.length,
                           itemBuilder: (BuildContext context, int index) {
-                            final Color itemColor = itemColors[index % itemColors.length];
+                            final Color itemColor = itemColors[index %
+                                itemColors.length];
                             final user = friendsList[index];
                             return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
                               child: Container(
                                 decoration: BoxDecoration(
-                                  boxShadow: const [BoxShadow(color: Colors.grey, blurRadius: 2)],
+                                  boxShadow: const [
+                                    BoxShadow(color: Colors.grey, blurRadius: 2)
+                                  ],
                                   borderRadius: BorderRadius.circular(30),
                                   color: itemColor,
                                 ),
                                 height: 80,
-                                width: MediaQuery.of(context).size.width * 0.9,
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width * 0.9,
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 18),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 18),
                                   child: Row(
+                                    mainAxisAlignment: MainAxisAlignment
+                                        .spaceBetween,
                                     children: [
-                                      Container(
-                                        height: 60,
-                                        width: 60,
-                                        decoration: const BoxDecoration(
-                                          image: DecorationImage(
-                                            image: AssetImage("assets/profile.png"),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment
+                                            .center,
+                                        children: [
+                                          Container(
+                                            height: 60,
+                                            width: 60,
+                                            decoration: const BoxDecoration(
+                                              image: DecorationImage(
+                                                image: AssetImage(
+                                                    "assets/profile.png"),
+                                              ),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(100)),
+                                            ),
                                           ),
-                                          borderRadius: BorderRadius.all(Radius.circular(100)),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      SizedBox(
-                                        width: MediaQuery.of(context).size.width * 0.35,
+                                          const SizedBox(width: 10),
+                                          SizedBox(
+                                            width: MediaQuery
+                                                .of(context)
+                                                .size
+                                                .width * 0.35,
 
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              user.name,
-                                              style: TextStyle(color: Colors.black, fontSize: 14),
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment
+                                                  .start,
+                                              mainAxisAlignment: MainAxisAlignment
+                                                  .center,
+                                              children: [
+                                                Text(
+                                                  user.name,
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 14),
+                                                ),
+                                                const SizedBox(height: 5),
+                                                Text(
+                                                  user.email,
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 10),
+                                                ),
+                                              ],
                                             ),
-                                            const SizedBox(height: 5),
-                                            Text(
-                                              user.email,
-                                              style: TextStyle(color: Colors.black, fontSize: 10),
-                                            ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
 
                                       Padding(
-                                        padding: const EdgeInsets.only(right: 10),
+                                        padding: const EdgeInsets.only(
+                                            right: 10),
                                         child: Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 5),
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 5),
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.end,
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment: CrossAxisAlignment
+                                                .end,
+                                            mainAxisAlignment: MainAxisAlignment
+                                                .spaceBetween,
                                             children: [
 
                                               SizedBox(
@@ -184,38 +251,69 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                                                 width: 60,
                                                 child: ElevatedButton(
                                                   style: ButtonStyle(
-                                                    shape: MaterialStateProperty.all(
+                                                    shape: MaterialStateProperty
+                                                        .all(
                                                       const RoundedRectangleBorder(
-                                                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                                                        borderRadius: BorderRadius
+                                                            .all(
+                                                            Radius.circular(
+                                                                10)),
                                                       ),
                                                     ),
-                                                    backgroundColor: MaterialStateProperty.all(Colors.white),
+                                                    backgroundColor: MaterialStateProperty
+                                                        .all(Colors.white),
                                                   ),
                                                   onPressed: () {
-                                                    Map<String, String> quizData = {
-                                                      "courseName": widget.courseName!,
+                                                    Map<String,
+                                                        String> quizData = {
+                                                      "courseName": widget
+                                                          .courseName
+                                                          .toString(),
                                                       "subcourseName": "Mechanics",
                                                       "chapterName": "Motion"
                                                     };
-                                                    Map<String, String> message = {
-                                                      'senderId': id,
 
+                                                    String data = "";
+
+                                                    // print("This is starting");
+                                                    // QuizApiService.getQuize("Physics", "Mechanics", "Motion").then((value) => {
+                                                    //   setState(() {
+                                                    //     data = value;
+                                                    //
+                                                    //   }),
+                                                    //
+                                                    //   print(data.length),
+                                                    //
+                                                    //
+                                                    // });
+
+                                                    Map<String,
+                                                        dynamic> message = {
+                                                      'senderId': id,
                                                       'receiverId': user.id,
-                                                      'roomId': id+user.id,
-                                                      "quizData" : quizData.toString()
+                                                      'roomId': id + user.id,
+                                                      // "quizData" : quizData.toString(),
+                                                      // "quizData" :data,
                                                     };
 
-                                                    socket.emit("invite" ,message);
+                                                    print(message);
 
-                                                    // ScaffoldMessenger.of(context).showSnackBar( const SnackBar(
-                                                    //   content: Text('Invitation Has been sent Please wait for response'),
-                                                    // ));
+
+                                                    socket.emit(
+                                                        "invite", message);
+
                                                     _showFriendsDialog();
+
+                                                    // Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+                                                    //   return BottomNavBar(page: 0,);
+                                                    // }));
                                                   },
                                                   child: const Center(
                                                     child: Text(
                                                       "Invite",
-                                                      style: TextStyle(color: Colors.red, fontSize: 10),
+                                                      style: TextStyle(
+                                                          color: Colors.red,
+                                                          fontSize: 10),
                                                     ),
                                                   ),
                                                 ),
@@ -226,20 +324,30 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                                                 width: 60,
                                                 child: ElevatedButton(
                                                   style: ButtonStyle(
-                                                    shape: MaterialStateProperty.all(
+                                                    shape: MaterialStateProperty
+                                                        .all(
                                                       const RoundedRectangleBorder(
-                                                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                                                        borderRadius: BorderRadius
+                                                            .all(
+                                                            Radius.circular(
+                                                                10)),
                                                       ),
                                                     ),
-                                                    backgroundColor: MaterialStateProperty.all(Colors.white),
+                                                    backgroundColor: MaterialStateProperty
+                                                        .all(Colors.white),
                                                   ),
                                                   onPressed: () {
-                                                    Get.to(() =>  ChatScreen(myUserId: id, otherUserId: user.id, name: user.name,));
+                                                    Get.to(() => ChatScreen(
+                                                      myUserId: id,
+                                                      otherUserId: user.id,
+                                                      name: user.name,));
                                                   },
                                                   child: const Center(
                                                     child: Text(
                                                       "Chat",
-                                                      style: TextStyle(color: Colors.green, fontSize: 10),
+                                                      style: TextStyle(
+                                                          color: Colors.green,
+                                                          fontSize: 10),
                                                     ),
                                                   ),
                                                 ),
@@ -260,15 +368,17 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                   )
                   ;
                 } else {
-                  // If data is null or empty, show a message or return an empty widget.
                   return const Center(child: Text('No data available.'));
                 }
               },
             ),
-           const SizedBox(height: 10,),
+            const SizedBox(height: 10,),
             SizedBox(
                 height: 35,
-                width: MediaQuery.of(context).size.width * 0.5,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width * 0.5,
                 child: ElevatedButton(
                     style: ButtonStyle(
                         shape: MaterialStateProperty.all(
@@ -278,17 +388,16 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                         backgroundColor:
                         MaterialStateProperty.all(const Color(0xff494FC7))),
                     onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                        return QuizPage(
-                            courseName : widget.courseName,
-                            subcourses: widget.subcourses,
-                            chapterName: widget.subcourses?[0].name,
-                            Id : id,
-                            MatchType : "solo"
-
-
-                        );
-                      }));
+                      // Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+                      //   return QuizPage(
+                      //       courseName : widget.courseName,
+                      //       subcourses: widget.subcourses,
+                      //       chapterName: widget.subcourses?[0].name,
+                      //       Id : id,
+                      //       MatchType : "solo"
+                      //
+                      //        );
+                      // }));
 
                     },
                     child: const Text(
@@ -302,7 +411,10 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
 
             SizedBox(
                 height: 35,
-                width: MediaQuery.of(context).size.width * 0.5,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width * 0.5,
                 child: ElevatedButton(
                     style: ButtonStyle(
                         shape: MaterialStateProperty.all(
@@ -325,7 +437,10 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
 
             SizedBox(
                 height: 35,
-                width: MediaQuery.of(context).size.width * 0.5,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width * 0.5,
                 child: ElevatedButton(
                     style: ButtonStyle(
                         shape: MaterialStateProperty.all(
@@ -350,6 +465,7 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
       ),
     );
   }
+
   Future<void> _showMyDialog() async {
     showDialog<void>(
       context: context,
@@ -395,6 +511,7 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
     );
   }
 
+  bool closedAfter11Seconds = false;
 
   Future<void> _showFriendsDialog() async {
     showDialog<void>(
@@ -411,8 +528,12 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                 SizedBox(height: 20,),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 50),
-                  child: CircularProgressIndicator(
-                    color: Colors.red,
+                  child: SizedBox(
+                    width: 5,
+                    height: 30,
+                    child: CircularProgressIndicator(
+                      color: Colors.red,
+                    ),
                   ),
                 )
               ],
@@ -428,18 +549,20 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
           ],
         );
 
-        // Automatically close the dialog after 10 seconds
+        // Automatically close the dialog after 11 seconds
         Future.delayed(const Duration(seconds: 11), () {
-          Navigator.pop(context);
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Request Rejected'),
-          ));
+          closedAfter11Seconds = true;
+          Navigator.of(context).pop();
+        }).then((value) {
+          if (closedAfter11Seconds) {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text('Request Rejected'),
+            ));
+          }
         });
 
-        return dialog;
+        return dialog; // Return the AlertDialog from the builder
       },
     );
   }
-
-
 }

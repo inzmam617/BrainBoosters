@@ -3,14 +3,14 @@ import 'dart:math';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../ApiServices/ApiForGettingQuizes.dart';
 import '../Models/CoursesModels.dart';
 import '../Models/QuizModels.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import '../const.dart';
-
 class QuizPage extends StatefulWidget {
   final List<SubCourse>?  subcourses;
   final String?  subcourseName;
@@ -26,6 +26,8 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
 
+
+  String donePressed = "";
   String? selectedOption;
   bool layoutType =false;
   late IO.Socket socket;
@@ -44,9 +46,23 @@ class _QuizPageState extends State<QuizPage> {
   late ConfettiController _confettiController;
   final AssetsAudioPlayer _assetsAudioPlayer = AssetsAudioPlayer();
   List<QuizQuestion> quizQuestions=[];
+
+
+  String? name;
+  String? email;
+
+  initialize() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      name = prefs.getString("name").toString();
+      email = prefs.getString("email").toString();
+    });
+  }
+
   @override
   void initState() {
     connectToServer();
+    initialize();
     print( "this is the match type: ${widget.MatchType}");
 
     super.initState();
@@ -112,7 +128,7 @@ class _QuizPageState extends State<QuizPage> {
           _seconds--;
         } else {
           _timer?.cancel();
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("Time's Up"),
             duration: Duration(milliseconds: 300),
           ));
@@ -126,14 +142,14 @@ class _QuizPageState extends State<QuizPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Time's Up"),
-          content: Text("Your time is up!"),
+          title: const Text("Time's Up"),
+          content: const Text("Your time is up!"),
           actions: [
             ElevatedButton(
               onPressed: () {
                 Navigator.pop(context); // Close the dialog
               },
-              child: Text("OK"),
+              child: const Text("OK"),
             ),
           ],
         );
@@ -141,18 +157,8 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 
-  // void _startTimer() {
-  //   const oneSec = Duration(seconds: 1);
-  //   _timer = Timer.periodic(oneSec, (timer) {
-  //     setState(() {
-  //       if (_seconds > 0) {
-  //         _seconds--;
-  //       } else {
-  //         _timer?.cancel();
-  //       }
-  //     });
-  //   });
-  // }
+
+
   Color color = Colors.transparent;
   List<Color> colorList = [
     Colors.orangeAccent,
@@ -431,10 +437,30 @@ class _QuizPageState extends State<QuizPage> {
   bool shouldRevealAnswer = false;
   int currentQuestionIndex = 0;
   int count = 0;
+  List<String> menuItems = ['Exit', 'Option 2', 'Music'];
 
+  void _showDialog(BuildContext context, String selectedItem) {
+    switch (selectedItem) {
+      case 'Exit':
+        _showAlertDialog();
+        break;
+      case 'Option 2':
+      // Show the dialog for Option 2
+        break;
+      case 'Music':
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return showAlertDialogForMusic();
+          },
+        );
+        break;
+      default:
+        break;
+    }
+  }
   @override
   Widget build(BuildContext context) {
-
     return WillPopScope(
       onWillPop: () async{
         ScaffoldMessenger.of(context).showSnackBar(
@@ -443,102 +469,94 @@ class _QuizPageState extends State<QuizPage> {
             duration: Duration(seconds: 1),
           ),
         );
-        // R
-        return false;
+         return false;
       },
       child: Scaffold(
-        backgroundColor: const Color(0xff6768b0),
+        backgroundColor: const Color(0xff3e44b8),
         body: SingleChildScrollView(
           child: Column(
             children: [
               const SizedBox(
                 height: 55,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Container(
-                      height: 35,
-                      decoration: const BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(color: Colors.grey, blurRadius: 3.5)
-                          ],
-                          borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(20),
-                              bottomRight: Radius.circular(20)),
-                          color: Color(0xff494FC7)),
-                      child: Center(
-                          child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 2),
-                        child: Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(2),
-                              child: SizedBox(
-                                width: 30,
-                                child: ElevatedButton(
-                                    style: ButtonStyle(
-                                        shape: MaterialStateProperty.all(
-                                            const RoundedRectangleBorder(
-                                                borderRadius:
-                                                BorderRadius.all(
-                                                    Radius.circular(
-                                                        100)))),
-                                        backgroundColor:
-                                        MaterialStateProperty.all(
-                                            Colors.white)),
-                                    onPressed: () {
-                                      _showAlertDialog();
-                                    },
-                                    child: const Center(
-                                      child: Icon(
-                                        Icons.arrow_back_ios,
-                                        color: Colors.black,
-                                        size: 10,
-                                      ),
-                                    )),
-                              ),
-                            ),
-                            const SizedBox(width: 5,),
-                            const Text(
-                              "Quiz Page",
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 18),
-                            ),
-                            const SizedBox(width: 5,),
-
-                          ],
-                        ),
-                      )),
-                    ),
-                  ),
-
-                  SvgPicture.asset(
-                    "assets/logo.svg",
-                    fit: BoxFit.scaleDown,
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 50,
-              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+
+
+                    //
+                    // SvgPicture.asset(
+                    //   "assets/logo.svg",
+                    //   fit: BoxFit.scaleDown,
+                    // ),
+
+
+                    SvgPicture.asset("assets/earth-svgrepo-com"),
+
+                    const SizedBox(width: 10,),
+                    PopupMenuButton<String>(
+                      onSelected: (String selectedItem) {
+                        _showDialog(context, selectedItem);
+                      },
+                      itemBuilder: (BuildContext context) {
+                        return menuItems.map((String item) {
+                          return PopupMenuItem<String>(
+                            value: item,
+                            child: Text(item),
+                          );
+                        }).toList();
+                      },
+                      icon: const Icon(Icons.more_vert, color: Colors.white, size: 30),
+                    )
+
+                  ],
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+
+                    Row(
+                      children: [
+                        Container(
+                          height: 20,
+                          width: 20,
+                          decoration: const BoxDecoration(
+                            color: Color(0xff2b31a7),
+                            borderRadius: BorderRadius.all(Radius.circular(100))
+                          ),
+                        ),
+                        const SizedBox(width: 10,),
+                        Container(
+                          height: 20,
+                          width: 20,
+                          decoration: const BoxDecoration(
+                            color: Color(0xff2b31a7),
+                              borderRadius: BorderRadius.all(Radius.circular(100))
+
+                          ),
+                        ),
+                        const SizedBox(width: 10,),
+
+                        Container(
+                          height: 20,
+                          width: 20,
+                          decoration: const BoxDecoration(
+                            color: Color(0xff2b31a7),
+                              borderRadius: BorderRadius.all(Radius.circular(100))
+
+                          ),
+                        ),
+                      ],
+                    ),
                     Container(
-                      height: 30,
-                      width: 130,
+                      height: 25,
+                      width: 80,
                       decoration: const BoxDecoration(
                           boxShadow: [
                             BoxShadow(color: Colors.grey, blurRadius: 3.5)
@@ -549,45 +567,54 @@ class _QuizPageState extends State<QuizPage> {
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
+
                           children: [
-                            const Icon(
-                              Icons.timer,
-                              color: Colors.black,
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
+
+
 
                             Text(
                               "${_formatDuration(Duration(seconds: _seconds))} sec",
-                              style: const TextStyle(fontSize: 16),
+                              style: const TextStyle(fontSize: 12),
                             ),
                           ],
                         ),
                       ),
                     ),
-                    Container(
-                      height: 35,
-                      width: 35,
-                      decoration: const BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(color: Colors.grey, blurRadius: 3.3)
-                          ],
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(100))),
-                      child: Center(
-                          child: IconButton(
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return showAlertDialogForMusic();
-                                },
-                              );
-                            },
-                        icon: const Icon(Icons.music_note,size: 20,),
-                      )),
-                    )
+                    Row(
+                      children: [
+                        Container(
+                          height: 20,
+                          width: 20,
+                          decoration: const BoxDecoration(
+                            color: Color(0xff2b31a7),
+                            borderRadius: BorderRadius.all(Radius.circular(100))
+                          ),
+                        ),
+                        const SizedBox(width: 10,),
+
+                        Container(
+                          height: 20,
+                          width: 20,
+                          decoration: const BoxDecoration(
+                            color: Color(0xff2b31a7),
+                              borderRadius: BorderRadius.all(Radius.circular(100))
+
+                          ),
+                        ),
+                        const SizedBox(width: 10,),
+
+                        Container(
+                          height: 20,
+                          width: 20,
+                          decoration: const BoxDecoration(
+                            color: Color(0xff2b31a7),
+                              borderRadius: BorderRadius.all(Radius.circular(100))
+
+                          ),
+                        ),
+                      ],
+                    ),
+
                   ],
                 ),
               ),
@@ -840,7 +867,7 @@ class _QuizPageState extends State<QuizPage> {
                         ),
 
                         const SizedBox(height: 20,),
-                        currentQuestionIndex + 1 < count
+                        currentQuestionIndex +1  < count
                             ?  SizedBox(
                           height: 35,
                           width: MediaQuery.of(context).size.width * 0.5,
@@ -866,7 +893,7 @@ class _QuizPageState extends State<QuizPage> {
                                 print("Totoal Length: " +  layoutType.toString());
 
                               if(selectedOption == null){
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                                   content: Text("Please Select and answer"),
                                   duration: Duration(milliseconds: 300),
                                 ));
@@ -903,7 +930,7 @@ class _QuizPageState extends State<QuizPage> {
 
                           ),
                         ) :
-                        SizedBox(
+                        donePressed == "press" ?  SizedBox(
                           height: 35,
                           width: MediaQuery.of(context).size.width * 0.5,
                           child: ElevatedButton(
@@ -916,7 +943,10 @@ class _QuizPageState extends State<QuizPage> {
                               backgroundColor: MaterialStateProperty.all(const Color(0xff494FC7)),
                             ),
                             onPressed: () {
-                              print( "this is total: " +  count.toString() + " Correct Answers: "  + correctedanswers.toString());
+                              setState(() {
+                                donePressed = "press";
+                              });
+                              print( "this is total: $count Correct Answers: $correctedanswers");
                               print(widget.Id);
 
                               Map<String , String> data = {
@@ -926,6 +956,13 @@ class _QuizPageState extends State<QuizPage> {
                                 "userAnswers" :  correctedanswers.toString()
                               };
                               socket.emit("quiz_completed" , data);
+
+                              socket.on("quiz_result_announcement", (data) => {
+                                print(data),
+                                _showMyDialog(data),
+
+                              });
+
 
 
 
@@ -939,7 +976,7 @@ class _QuizPageState extends State<QuizPage> {
                               ),
                             ),
                           ),
-                        )
+                        ) :const SizedBox(),
 
 
                       ],
@@ -972,8 +1009,39 @@ class _QuizPageState extends State<QuizPage> {
       ),
     );
   }
+  Future<void> _showMyDialog(dynamic a) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('AlertDialog Title'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Winner:   ${a["winner"]["name"]}'),
+                Text('Looser" ${a["loser"]["name"]}'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Okay'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              },
+            ),
+
+          ],
+        );
+      },
+    );
+  }
 
   hello() {}
+  // Define the customization options for different avatar parts
+
 }
 
 

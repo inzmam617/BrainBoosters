@@ -1,10 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../Models/CoursesModels.dart';
+import '../../Models/SampleSubCourseForChaptersNew.dart';
 import '../BottomNavBar.dart';
 
 class ChooseYourChaptersForQuiz extends StatefulWidget {
-  const ChooseYourChaptersForQuiz({Key? key}) : super(key: key);
+  final List<SubCourse>?  subcourses;
+  final String?  subcourseName;
+  const ChooseYourChaptersForQuiz({Key? key, this.subcourses, this.subcourseName}) : super(key: key);
 
   @override
   State<ChooseYourChaptersForQuiz> createState() =>
@@ -20,15 +27,65 @@ class _ChooseYourChaptersForQuizState extends State<ChooseYourChaptersForQuiz> {
     "assets/h.jpg"
 
   ];
-  List names = [
-    "Engineering Mechanics: Statics and Dynamics",
-    "Materials Science and Engin-eering Fundamentals",
-    "Engineering Mechanics: Statics and Dynamics",
-    "Materials Science and Engin-eering Fundamentals"
+  setChapters( String chapterId,  String chapterName,  String courseName ) async {
+    final SharedPreferences prefs =  await SharedPreferences.getInstance();
+    prefs.setString("chapterName",chapterName );
+    prefs.setString("chapterId",chapterId );
+    prefs.setString("courseName",courseName);
+    Get.to(() =>  BottomNavBar(page: 0));
+  }
+  List <SubCourse>  chapters = [
+
   ];
+
+  @override
+  void initState(){
+    super.initState();
+    setState(() {
+      chapters.addAll(widget.subcourses!);
+
+       });
+
+
+  }
+
+
+  Future<void> _show3list(List<Chapter> chapters) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          content: SizedBox(
+            width: 150,
+            height: 200,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: chapters.length,
+              itemBuilder: (context, index) {
+                final chapter = chapters[index];
+                return ListTile(
+                  onTap: (){
+                    print(chapter.name);
+                    // Navigator.of(context).pop();
+                    // _showAlertDialog();
+                  },
+                  title: Text(chapter.name),
+                );
+              },
+            ),
+          ),
+        );
+
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Column(
         children: [
@@ -170,7 +227,7 @@ class _ChooseYourChaptersForQuizState extends State<ChooseYourChaptersForQuiz> {
             child: Align(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  "Chpateres Wise Distribution",
+                  "Chapters Wise Distribution",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 17,
@@ -183,13 +240,12 @@ class _ChooseYourChaptersForQuizState extends State<ChooseYourChaptersForQuiz> {
             child: ListView.builder(
               shrinkWrap: true,
               physics: const ScrollPhysics(),
-
-              itemCount: names.length,
+              itemCount: chapters.length,
               itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
                 onTap: (){
-
-                  Get.to(() =>  BottomNavBar(page: 2));
+                  setChapters(chapters[index].id,chapters[index].name, widget.subcourseName!);
+                  print(chapters[index].id+ widget.subcourseName!);
                 },
                 child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
@@ -237,7 +293,7 @@ class _ChooseYourChaptersForQuizState extends State<ChooseYourChaptersForQuiz> {
                                 const SizedBox(height: 5,),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                                  child: Text(names[index]),
+                                  child: Text(chapters[index].name),
                                 )
                               ],
                             )),
@@ -248,7 +304,7 @@ class _ChooseYourChaptersForQuizState extends State<ChooseYourChaptersForQuiz> {
                           decoration: BoxDecoration(
                               border: Border.all(color: const Color(0xffBF6196), width: 5),
                               image:
-                                  DecorationImage(image: AssetImage(pictures[index])),
+                                  const DecorationImage(image: AssetImage("assets/h.jpg")),
                               borderRadius: const BorderRadius.all(Radius.circular(100))),
                           height: 80,
                           width: MediaQuery.of(context).size.width * 0.2,

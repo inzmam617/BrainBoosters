@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../ApiServices/ApiForgettingAlltheCourses.dart';
+import '../BottomBar/AllPages/ChooseYourChaptersforQuize.dart';
 import '../BottomBar/BottomNavBar.dart';
 import '../Models/CoursesModels.dart';
 
@@ -58,7 +60,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
                           ),
                           onPressed: () {
                             print(text);
-                            Get.to(() => BottomNavBar(page: 0,subcourses :subcourses ,courseName: text));
+                            // Get.to(() => BottomNavBar(page: 0,));
                           },
                         ),
                       ),
@@ -115,7 +117,8 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
                 color: Color(0xff494FC7)
               ),
               child: const Center(child: Text("Choose Your Course",style: TextStyle(color: Colors.white,fontSize: 18),textAlign: TextAlign.center,)),
-            ),),
+            ),
+            ),
             const SizedBox(height: 30,),
             SizedBox(
                 height: 35,
@@ -149,8 +152,12 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
                                     backgroundColor: MaterialStateProperty.all(const Color(0xffF9F4AC)),
                                   ),
                                   onPressed: () {
-                                    print(course.subCourses[index].runtimeType);
-                                    _showAlertDialog(course.name , course.subCourses);
+                                    // print(course.subCourses[index].chapters[index].name);
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+                                      return  ChooseYourChaptersForQuiz(subcourses : course.subCourses , subcourseName: course.name,);
+                                    }));
+                                    // setChapters();
+                                    // _showAlertDialog(course.name , course.subCourses);
                                   },
                                   child: Text(
                                     course.name,

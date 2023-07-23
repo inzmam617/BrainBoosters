@@ -81,134 +81,121 @@ class _DashPageState extends State<DashPage> {
             const SizedBox(
               height: 30,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgPicture.asset("assets/boy.svg"),
-                const SizedBox(
-                  width: 20,
-                ),
-                FutureBuilder<Map<String, dynamic>>(
-                  future: ApiServicestogetMatch.addMatch(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
-                    } else {
-                      final totalPlay = snapshot.data?['totalPlay'];
-                      final totalWin = snapshot.data?['totalWin'];
-                      final totalLoss = snapshot.data?['totalLoss'];
-
-                      // Use the values totalPlay, totalWin, and totalLoss as needed in your UI.
-                      // For example:
-                      return Container(
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(35)),
-                          boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 3.5)],
-                          color: Colors.white,
+            FutureBuilder<Map<String, dynamic>>(
+              future: ApiServicestogetMatch.addMatch(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else {
+                  final totalPlay = snapshot.data?['totalPlay'];
+                  final totalWin = snapshot.data?['totalWin'];
+                  final totalLoss = snapshot.data?['totalLoss'];
+                  return Container(
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(35)),
+                      boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 3.5)],
+                      color: Colors.white,
+                    ),
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.6,
+                            height: 30,
+                            decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(35),
+                                    topRight: Radius.circular(35)),
+                                color: Color(0xffC3D7A2)),
+                            child: const Center(
+                                child: Text(
+                                  "Dash History",
+                                  style: TextStyle(color: Colors.white, fontSize: 16),
+                                )),
+                          ),
                         ),
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        child: Column(
-                          children: [
-                            Align(
-                              alignment: Alignment.topCenter,
-                              child: Container(
-                                width: MediaQuery.of(context).size.width * 0.6,
-                                height: 30,
-                                decoration: const BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(35),
-                                        topRight: Radius.circular(35)),
-                                    color: Color(0xffC3D7A2)),
-                                child: const Center(
-                                    child: Text(
-                                      "Dash History",
-                                      style: TextStyle(color: Colors.white, fontSize: 16),
-                                    )),
+                        Padding(
+                          padding:
+                          const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 10,
                               ),
-                            ),
-                            Padding(
-                              padding:
-                              const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                              child: Column(
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const SizedBox(
-                                    height: 10,
+                                  const Text(
+                                    "Total Play",
+                                    style: TextStyle(color: Colors.green),
                                   ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const Text(
-                                        "Total Play",
-                                        style: TextStyle(color: Colors.green),
-                                      ),
-                                      Text(totalPlay.toString())
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const Text(
-                                        "Total Winning",
-                                        style: TextStyle(color: Colors.blue),
-                                      ),
-                                      Text(totalWin.toString())
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const Text(
-                                        "Total Loose",
-                                        style: TextStyle(color: Colors.red),
-                                      ),
-                                      Text(totalLoss.toString())
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  const Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Points",
-                                        style: TextStyle(color: Colors.orange),
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text("205"),
-                                          Icon(
-                                            Icons.star,
-                                            color: Colors.orange,
-                                          )
-                                        ],
-                                      )
-                                    ],
-                                  ),
+                                  Text(totalPlay.toString())
                                 ],
                               ),
-                            ),
-                          ],
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text(
+                                    "Total Winning",
+                                    style: TextStyle(color: Colors.blue),
+                                  ),
+                                  Text(totalWin.toString())
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text(
+                                    "Total Loose",
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                  Text(totalLoss.toString())
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              const Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Points",
+                                    style: TextStyle(color: Colors.orange),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text("205"),
+                                      Icon(
+                                        Icons.star,
+                                        color: Colors.orange,
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      );
+                      ],
+                    ),
+                  );
 
-                    }
-                  },
-                ),
-
-              ],
+                }
+              },
             ),
 
 
-            const SizedBox(height: 20,),
+            const SizedBox(height: 50,),
             SizedBox(
                 height: 35,
                 width: MediaQuery.of(context).size.width * 0.5,

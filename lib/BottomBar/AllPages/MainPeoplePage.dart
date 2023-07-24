@@ -40,6 +40,8 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
 
   }
 
+
+
   void connectToServer() {
     try {
       print("starting");
@@ -52,16 +54,18 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
     }
   }
 
-  String chapterName = "";
+  String subCourseName = "";
   String courseName = "";
   String chapterid = "";
+  String? ChapterName  = '';
 
   Future<void> initilize() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() async {
-      chapterName =   prefs.getString("chapterName").toString();
-      courseName = prefs.getString("courseName").toString();
+    setState(()  {
+      courseName =   prefs.getString("courseName").toString();
+      subCourseName = prefs.getString("subCourseName").toString();
       chapterid = prefs.getString("chapterId").toString();
+      ChapterName = prefs.getString("ChapterName").toString();
     });
 
   }
@@ -264,7 +268,11 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                                                         .all(Colors.white),
                                                   ),
                                                   onPressed: () {
-                                                    Map<String,
+                                                    if(ChapterName == "null"){
+                                                      print("object");
+                                                      _ShowMessage();
+                                                    }else {
+                                                      Map<String,
                                                         String> quizData = {
                                                       "courseName": widget
                                                           .courseName
@@ -275,18 +283,6 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
 
                                                     String data = "";
 
-                                                    // print("This is starting");
-                                                    // QuizApiService.getQuize("Physics", "Mechanics", "Motion").then((value) => {
-                                                    //   setState(() {
-                                                    //     data = value;
-                                                    //
-                                                    //   }),
-                                                    //
-                                                    //   print(data.length),
-                                                    //
-                                                    //
-                                                    // });
-
                                                     Map<String,
                                                         dynamic> message = {
                                                       'senderId': id,
@@ -295,18 +291,16 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                                                       // "quizData" : quizData.toString(),
                                                       // "quizData" :data,
                                                     };
-
-                                                    print(message);
-
-
-                                                    socket.emit(
-                                                        "invite", message);
-
-                                                    _showFriendsDialog();
+                                                    socket.emit("invite", message);
+                                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                                      content: Text('Invitation Sent Successful'),
+                                                    ));
 
                                                     // Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
                                                     //   return BottomNavBar(page: 0,);
                                                     // }));
+                                                    }
+
                                                   },
                                                   child: const Center(
                                                     child: Text(
@@ -388,16 +382,33 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                         backgroundColor:
                         MaterialStateProperty.all(const Color(0xff494FC7))),
                     onPressed: () {
-                      // Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                      //   return QuizPage(
-                      //       courseName : widget.courseName,
-                      //       subcourses: widget.subcourses,
-                      //       chapterName: widget.subcourses?[0].name,
-                      //       Id : id,
-                      //       MatchType : "solo"
-                      //
-                      //        );
-                      // }));
+
+                     print ( "chapterName:"   );
+
+
+                     print(subCourseName );
+                     print(courseName );
+                     print(chapterid );
+                     print( ChapterName  );
+                     if(ChapterName == "null"){
+                       print("object");
+                       _ShowMessage();
+                     }
+                     else {
+                       print("object");
+
+                       Navigator.of(context).push(
+                           MaterialPageRoute(builder: (BuildContext context) {
+                             return QuizPage(
+                                 courseName: courseName,
+                                 subcourseName: subCourseName,
+                                 chapterName: ChapterName,
+                                 Id: id,
+                                 MatchType: "solo"
+
+                             );
+                           }));
+                     }
 
                     },
                     child: const Text(
@@ -510,36 +521,23 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
       },
     );
   }
-
-  bool closedAfter11Seconds = false;
-
-  Future<void> _showFriendsDialog() async {
-    showDialog<void>(
+  Future<void> _ShowMessage() async {
+    return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        // Show the dialog
-        AlertDialog dialog = AlertDialog(
-          title: const Text('Invite has been sent'),
-          content: const SingleChildScrollView(
+        return AlertDialog(
+          title: const Text('Alert'),
+          content: SingleChildScrollView(
             child: ListBody(
-              children: <Widget>[
-                Text('Invitation Has been sent Please wait for response..'),
-                SizedBox(height: 20,),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 50),
-                  child: SizedBox(
-                    width: 5,
-                    height: 30,
-                    child: CircularProgressIndicator(
-                      color: Colors.red,
-                    ),
-                  ),
-                )
+              children: const <Widget>[
+                Text('Please Select a Chapter from Home screen before'),
+                Text('Starting a Quiz!'),
               ],
             ),
           ),
           actions: <Widget>[
+
             TextButton(
               child: const Text('Okay'),
               onPressed: () {
@@ -548,20 +546,6 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
             ),
           ],
         );
-
-        // Automatically close the dialog after 11 seconds
-        Future.delayed(const Duration(seconds: 11), () {
-          closedAfter11Seconds = true;
-          Navigator.of(context).pop();
-        }).then((value) {
-          if (closedAfter11Seconds) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text('Request Rejected'),
-            ));
-          }
-        });
-
-        return dialog; // Return the AlertDialog from the builder
       },
     );
   }

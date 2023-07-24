@@ -154,7 +154,7 @@ class _ChooseCoursePageState extends State<ChooseCoursePage> {
                                   onPressed: () {
                                     // print(course.subCourses[index].chapters[index].name);
                                     Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                                      return  ChooseYourChaptersForQuiz(subcourses : course.subCourses , subcourseName: course.name,);
+                                      return  ChooseYourChaptersForQuiz(subcourses : course.subCourses , CourseName: course.name,);
                                     }));
                                     // setChapters();
                                     // _showAlertDialog(course.name , course.subCourses);

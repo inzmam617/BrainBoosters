@@ -32,6 +32,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   }
   late int selectedIndex ;
   void _handleIncomingMessage(data) {
+
     setState(() {
       Map<String, String> message = {
         'senderId': data['senderId'],
@@ -41,8 +42,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
         'roomId': data['roomId'].toString(),
       };
       if(message["receiverId"] == id){
+        _assetsAudioPlayer.playlistPlayAtIndex(0);
+
         // _assetsAudioPlayer.playlistPlayAtIndex(1);
-        print("this is id$id");
+        // print("this is id$id");
         _dialogBuilder(context, message);
       }
       print(message);
@@ -77,7 +80,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        // Show the dialog
+
         AlertDialog dialog = AlertDialog(
           title: const Text('Basic dialog title'),
           content: SingleChildScrollView(
@@ -127,6 +130,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
         // Automatically close the dialog after 10 seconds
         Future.delayed(const Duration(seconds: 10), () {
+          print(11);
           Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar( const SnackBar(
             content: Text('Invitation Has been rejected'),
@@ -155,7 +159,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         autoStart: false,
         loopMode: LoopMode.none
     );
-    socket.on("invite", _handleIncomingMessage);
+    socket.on("inviteTo", _handleIncomingMessage);
 
     selectedIndex = widget.page;
     // subcourses = widget.subcourses;

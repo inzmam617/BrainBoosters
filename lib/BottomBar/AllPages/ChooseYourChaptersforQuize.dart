@@ -10,8 +10,8 @@ import '../BottomNavBar.dart';
 
 class ChooseYourChaptersForQuiz extends StatefulWidget {
   final List<SubCourse>?  subcourses;
-  final String?  subcourseName;
-  const ChooseYourChaptersForQuiz({Key? key, this.subcourses, this.subcourseName}) : super(key: key);
+  final String?  CourseName;
+  const ChooseYourChaptersForQuiz({Key? key, this.subcourses, this.CourseName}) : super(key: key);
 
   @override
   State<ChooseYourChaptersForQuiz> createState() =>
@@ -27,9 +27,9 @@ class _ChooseYourChaptersForQuizState extends State<ChooseYourChaptersForQuiz> {
     "assets/h.jpg"
 
   ];
-  setChapters( String chapterId,  String chapterName,  String courseName ) async {
+  setChapters( String chapterId,  String subCourseName,  String courseName ) async {
     final SharedPreferences prefs =  await SharedPreferences.getInstance();
-    prefs.setString("chapterName",chapterName );
+    prefs.setString("subCourseName",subCourseName );
     prefs.setString("chapterId",chapterId );
     prefs.setString("courseName",courseName);
     Get.to(() =>  BottomNavBar(page: 0));
@@ -244,8 +244,10 @@ class _ChooseYourChaptersForQuizState extends State<ChooseYourChaptersForQuiz> {
               itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
                 onTap: (){
-                  setChapters(chapters[index].id,chapters[index].name, widget.subcourseName!);
-                  print(chapters[index].id+ widget.subcourseName!);
+                  setChapters(chapters[index].id,chapters[index].name, widget.CourseName!);
+
+                  // print("Couse: ")
+                  print(chapters[index].name  + widget.CourseName!);
                 },
                 child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),

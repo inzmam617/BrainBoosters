@@ -92,6 +92,8 @@ class _DashPageState extends State<DashPage> {
                   final totalPlay = snapshot.data?['totalPlay'];
                   final totalWin = snapshot.data?['totalWin'];
                   final totalLoss = snapshot.data?['totalLoss'];
+                  double points=  calculatePoints(totalWin,totalPlay );
+                  int pointsAsInt = points.toInt();
                   return Container(
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(35)),
@@ -165,7 +167,7 @@ class _DashPageState extends State<DashPage> {
                               const SizedBox(
                                 height: 10,
                               ),
-                              const Row(
+                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
@@ -174,7 +176,7 @@ class _DashPageState extends State<DashPage> {
                                   ),
                                   Row(
                                     children: [
-                                      Text("205"),
+                                      Text(    pointsAsInt.toString()),
                                       Icon(
                                         Icons.star,
                                         color: Colors.orange,
@@ -208,7 +210,7 @@ class _DashPageState extends State<DashPage> {
                         backgroundColor:
                             MaterialStateProperty.all(const Color(0xff494FC7))),
                     onPressed: () {
-                      Get.to(() =>  QuizPage(subcourses: widget.subcourses,courseName: widget.courseName,));
+                      // Get.to(() =>  QuizPage(subcourses: widget.subcourses,courseName: widget.courseName,));
                     },
                     child: const Text(
                       "Play",
@@ -327,5 +329,15 @@ class _DashPageState extends State<DashPage> {
         ),
       ),
     );
+  }
+
+
+
+  double calculatePoints(int totalWins, int totalPlays, {double k = 10}) {
+    if (totalPlays == 0) {
+      // Avoid division by zero, return 0 points if there are no plays
+      return 0;
+    }
+    return (totalWins / totalPlays) * k;
   }
 }

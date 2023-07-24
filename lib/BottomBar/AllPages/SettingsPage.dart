@@ -142,8 +142,10 @@ class _SettingPageState extends State<SettingPage> {
                               prefs.remove("name");
                               prefs.remove("email");
                               prefs.remove("chapterName");
-                              prefs.remove("courseName");
+                              prefs.remove("subCourseName");
                               prefs.remove("chapterId");
+                              prefs.remove("courseName");
+                              prefs.clear();
 
                               Get.to(() => const LoginScreen());
                               ScaffoldMessenger.of(context)
@@ -251,13 +253,41 @@ class _SettingPageState extends State<SettingPage> {
           ),
           const SizedBox(height: 20,),
 
+
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 35),
+            padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Name: ${name ?? ""}",style: const TextStyle(color: Colors.black,fontWeight: FontWeight.bold ,  fontSize: 14),),
-                Text("Email:  ${email ?? ""}",style: const TextStyle(color: Colors.black,fontWeight: FontWeight.bold ,  fontSize: 14)),
+                const SizedBox(
+                  // width: MediaQuery.of(context).size.width / 2.5,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+
+                        Text("Name:" ,style: TextStyle(color: Colors.blueGrey,fontWeight: FontWeight.bold),),
+                        SizedBox(height: 10,),
+
+                        Text("Email:" ,style: TextStyle(color: Colors.blueGrey,fontWeight: FontWeight.bold),),
+
+                      ],
+                    )),
+                const SizedBox(width: 20,),
+                SizedBox(
+                  // width: MediaQuery.of(context).size.width / 2.5,
+
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+
+                      children: [
+                        Text("  $name"),
+                        const SizedBox(height: 10,),
+
+                        Text("  $email"),
+
+                      ],
+                    ))
               ],
             ),
           ),

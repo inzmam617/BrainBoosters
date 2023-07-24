@@ -22,7 +22,7 @@ class _SplashPageState extends State<SplashPage> {
 
   initialize() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() async {
+    setState(()  {
       id =  prefs.getString("id") ??  "";
     });
     print(id);

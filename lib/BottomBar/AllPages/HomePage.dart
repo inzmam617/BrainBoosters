@@ -40,12 +40,14 @@ class _HomePageState extends State<HomePage> {
 
 
 String? chapterName = "Nothing";
+String? subCourseName = "Nothing";
 String? courseName  = "Nothing";
 String? id  = "Nothing";
 Future<void> initilize() async {
   final SharedPreferences prefs =  await SharedPreferences.getInstance();
   setState(() {
-    chapterName =  prefs.getString("chapterName");
+    chapterName =  prefs.getString("ChapterName");
+    subCourseName =  prefs.getString("subCourseName");
     courseName =  prefs.getString("courseName");
     id =  prefs.getString("chapterId");
   });
@@ -134,7 +136,7 @@ Future<void> initilize() async {
                         Text("  $courseName"),
                         const SizedBox(height: 10,),
 
-                        Text("  $chapterName"),
+                        Text("  $subCourseName"),
 
                       ],
                     ))
@@ -252,8 +254,15 @@ Future<void> initilize() async {
                                               BorderRadius.all(Radius.circular(10)))),
                                       backgroundColor: MaterialStateProperty.all(
                                           const Color(0xffE6EED9))),
-                                  onPressed: () {
-                                    // _show3list(chapters[index].chapters);
+                                  onPressed: () async {
+                                    final SharedPreferences prefs = await SharedPreferences.getInstance();
+                                    prefs.setString("ChapterName", chapters[index]);
+
+                                    // print(chapters![index]);
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                      content: Text("Chapter ${chapters[index]} Selected!"),
+                                      duration: const Duration(milliseconds: 1000),
+                                    ));
 
                                   },
                                   child:   Padding(

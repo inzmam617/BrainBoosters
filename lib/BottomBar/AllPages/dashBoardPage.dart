@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../../ApiServices/ApiForgettingAlltheCourses.dart';
 import '../../ApiServices/ApiServicetoGetMatchDetails.dart';
 import '../../Models/CoursesModels.dart';
+import '../QuizHistoryPage.dart';
 
 class DashPage extends StatefulWidget {
   final List<SubCourse>?  subcourses;
@@ -214,6 +215,28 @@ class _DashPageState extends State<DashPage> {
                     },
                     child: const Text(
                       "Play",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w300),
+                    ))),
+            SizedBox(height: 20,),
+            SizedBox(
+                height: 35,
+                width: MediaQuery.of(context).size.width * 0.5,
+                child: ElevatedButton(
+                    style: ButtonStyle(
+                        shape: MaterialStateProperty.all(
+                            const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)))),
+                        backgroundColor:
+                            MaterialStateProperty.all(const Color(0xff494FC7))),
+                    onPressed: () {
+                      Get.to(() =>  QuizHistoryScreen());
+                    },
+                    child: const Text(
+                      "See History",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,

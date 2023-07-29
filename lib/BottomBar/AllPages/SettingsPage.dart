@@ -3,9 +3,11 @@ import 'package:brainboosters/LoginScreens/LoginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../ApiServices/ApiServieForSignInOut.dart';
 import '../../ChooseCourseStudy/ChooseCourse.dart';
+import '../../ColorScheme/ColorScheme.dart';
 import '../BottomNavBar.dart';
 
 class SettingPage extends StatefulWidget {
@@ -33,7 +35,7 @@ class _SettingPageState extends State<SettingPage> {
 
   List<IconData> icons = [
     Icons.music_note,
-    Icons.color_lens_outlined,
+    // Icons.color_lens_outlined,
     // Icons.phone_android,
     // Icons.notifications,
     Icons.book_outlined,
@@ -43,7 +45,7 @@ class _SettingPageState extends State<SettingPage> {
   ];
   List text = [
     "Music",
-    "Toggle the colorblind tool",
+    // "Toggle the colorblind tool",
     // "Toggle Shakes in the phone",
     // "Toggle Push Notification",
     "Change Course of Study",
@@ -64,15 +66,13 @@ class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     onPressedFunctions = [
-      () {
-        print("object");
-        // Get.to(() => BottomNavBar(
-        //       page: 1,
-        //     ));
-
-        // Function 1
-        // Add your code here
-      },
+      //     () {
+      //   // Access the AppTheme instance using Provider.of
+      //   final themeProvider = Provider.of<AppTheme>(context, listen: false);
+      //
+      //   // Toggle the color-blind mode
+      //   themeProvider.toggleColorBlindMode(!themeProvider.colorBlindMode);
+      // },
       () {
         // Function 2
         // Add your code here
@@ -212,98 +212,102 @@ class _SettingPageState extends State<SettingPage> {
         );
       }
     ];
-    return Scaffold(
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 55,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Builder(
+      builder: (context) {
+        return Scaffold(
+          body: Column(
             children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.35,
-                  height: 35,
-                  decoration: const BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(color: Colors.grey, blurRadius: 3.5)
-                      ],
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(20),
-                          bottomRight: Radius.circular(20)),
-                      color: Color(0xff494FC7)),
-                  child: const Center(
-                      child: Text(
-                    "Settings",
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                    textAlign: TextAlign.center,
-                  )),
+              const SizedBox(
+                height: 55,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.35,
+                      height: 35,
+                      decoration: const BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(color: Colors.grey, blurRadius: 3.5)
+                          ],
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(20),
+                              bottomRight: Radius.circular(20)),
+                          color: Color(0xff494FC7)),
+                      child: const Center(
+                          child: Text(
+                        "Settings",
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                        textAlign: TextAlign.center,
+                      )),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  SvgPicture.asset("assets/logo.svg"),
+                  const SizedBox(
+                    width: 10,
+                  )
+                ],
+              ),
+              const SizedBox(height: 20,),
+
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      // width: MediaQuery.of(context).size.width / 2.5,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+
+                            Text("Name:" ,style: TextStyle(color: Colors.blueGrey,fontWeight: FontWeight.bold),),
+                            SizedBox(height: 10,),
+
+                            Text("Email:" ,style: TextStyle(color: Colors.blueGrey,fontWeight: FontWeight.bold),),
+
+                          ],
+                        )),
+                    const SizedBox(width: 20,),
+                    SizedBox(
+                      // width: MediaQuery.of(context).size.width / 2.5,
+
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+
+                          children: [
+                            Text("  $name"),
+                            const SizedBox(height: 10,),
+
+                            Text("  $email"),
+
+                          ],
+                        ))
+                  ],
                 ),
               ),
-              const SizedBox(
-                width: 20,
-              ),
-              SvgPicture.asset("assets/logo.svg"),
-              const SizedBox(
-                width: 10,
+              Expanded(
+                child: ListView.builder(
+                  itemCount: 5,
+                  itemBuilder: (BuildContext context, int index) {
+                    bool isTrue = index < 1;
+
+                    return button(icons[index], text[index],
+                        onPressedFunctions[index], isTrue, boolean[index]);
+                  },
+                ),
               )
             ],
           ),
-          const SizedBox(height: 20,),
-
-
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(
-                  // width: MediaQuery.of(context).size.width / 2.5,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-
-                        Text("Name:" ,style: TextStyle(color: Colors.blueGrey,fontWeight: FontWeight.bold),),
-                        SizedBox(height: 10,),
-
-                        Text("Email:" ,style: TextStyle(color: Colors.blueGrey,fontWeight: FontWeight.bold),),
-
-                      ],
-                    )),
-                const SizedBox(width: 20,),
-                SizedBox(
-                  // width: MediaQuery.of(context).size.width / 2.5,
-
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-
-                      children: [
-                        Text("  $name"),
-                        const SizedBox(height: 10,),
-
-                        Text("  $email"),
-
-                      ],
-                    ))
-              ],
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: 6,
-              itemBuilder: (BuildContext context, int index) {
-                bool isTrue = index < 2;
-
-                return button(icons[index], text[index],
-                    onPressedFunctions[index], isTrue, boolean[index]);
-              },
-            ),
-          )
-        ],
-      ),
+        );
+      }
     );
   }
   Widget button(

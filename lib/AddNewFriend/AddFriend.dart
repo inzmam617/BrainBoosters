@@ -240,6 +240,10 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
                                           onPressed: () {
                                             ApiServiceForHandlingRequests.sendUserReq(user.id).then((value) =>
                                             {
+                                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                            content: Text("Request Sent Successfully"),
+                                            duration: Duration(milliseconds: 600),
+                                            )),
                                               Navigator.of(context).pop(),
 
                                               print("this is the data:" +   value.toString())

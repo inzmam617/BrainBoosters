@@ -13,8 +13,11 @@ import '../Models/QuizModels.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import '../const.dart';
 import 'SoloQuize.dart';
+import 'SoloReplayHistoryQuiz.dart';
 
 class QuizPage extends StatefulWidget {
+  final List<dynamic>? quizData;
+
   final String? subcourseName;
   final String? receiverName;
   final List<dynamic>? mcqs;
@@ -31,7 +34,7 @@ class QuizPage extends StatefulWidget {
     this.chapterName,
     this.MatchType,
     this.roomId,
-    this.Id, this.mcqs, this.receiverName,
+    this.Id, this.mcqs, this.receiverName, this.quizData,
   }) : super(key: key);
 
   @override
@@ -655,12 +658,12 @@ class _QuizPageState extends State<QuizPage> {
             const SizedBox(
               height: 10,
             ),
-            widget.MatchType == "1v1" ?  Expanded(
+            widget.MatchType == "1v1" ?    Expanded(
               child: MultiPlayerQuizScreen(
                 reciverName: widget.receiverName,
                 roomId: widget.roomId,Id: widget.Id,
                 quizData: widget.mcqs!, chapterName: widget.chapterName!, socket: socket,),
-            ) : Expanded(
+            ) : widget.MatchType ==    "historyReplay" ? Expanded(child: SoloReplayHistoryQuiz(Id: id,quizData:widget.quizData!, chapterName: widget.chapterName!, socket: socket,)) :   Expanded(
               child: SoloQuizPage(socket: socket,subcourseName: widget.subcourseName,MatchType: "solo",
                 chapterName: widget.chapterName,courseName: widget.courseName,Id: widget.Id,
                 roomId: widget.roomId,              

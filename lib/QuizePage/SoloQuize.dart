@@ -9,7 +9,6 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 class SoloQuizPage extends StatefulWidget {
   final String? subcourseName;
   final IO.Socket socket;
-
   final String? MatchType;
   final String? Id;
   final String? roomId;

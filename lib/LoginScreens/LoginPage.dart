@@ -77,8 +77,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       backgroundColor:
                           MaterialStateProperty.all(Colors.white)),
                   onPressed: ()  {
-
-                    _handleSignIn();
+                    _showMyDialog();
+                    // _handleSignIn();
                   },
                   child: Row(
                     children: [
@@ -217,7 +217,7 @@ class _LoginScreenState extends State<LoginScreen> {
         String? token = auth.accessToken ?? auth.idToken;
 
         // Make an HTTP GET request to your Node.js backend with the token
-        const String URL = "http://${baseUrl}:3000/auth/google"; // Replace 'YOUR_NODEJS_SERVER_ADDRESS' with your actual backend URL.
+        const String URL = "http://$baseUrl:3000/auth/google"; // Replace 'YOUR_NODEJS_SERVER_ADDRESS' with your actual backend URL.
         final response = await http.get(
           Uri.parse('$URL?token=$token'),
         );

@@ -9,9 +9,7 @@ import '../Models/QuizHistoryModel.dart';
 class SoloReplayHistoryQuiz extends StatefulWidget {
   final List<dynamic> quizData;
   final String chapterName;
-
   final IO.Socket socket;
-
   final String? Id;
   SoloReplayHistoryQuiz({required this.quizData, required this.chapterName, required this.socket,  this.Id,});
 
@@ -25,9 +23,11 @@ class _SoloReplayHistoryQuizState extends State<SoloReplayHistoryQuiz> {
   bool shouldRevealAnswer = false;
   int correctedAnswers = 0;
   List<String> selectedAnswers = [];
+  int total = 0;
 
   String? completed;
   void checkAnswer(String option) {
+    total++;
     if (shouldRevealAnswer) return; // Don't do anything if the answer is already revealed
     setState(() {
       selectedOption = option;
@@ -79,6 +79,7 @@ class _SoloReplayHistoryQuizState extends State<SoloReplayHistoryQuiz> {
   @override
   Widget build(BuildContext context) {
     QuizHistoryData questionData = widget.quizData[currentQuestionIndex];
+
     String question = questionData.question!;
     List<String> options = questionData.options!;
     String answer = questionData.answer!;
@@ -209,28 +210,27 @@ class _SoloReplayHistoryQuizState extends State<SoloReplayHistoryQuiz> {
               ),
               onPressed: () {
 
-                int totalQuestions = count;
-                int correctAnswers =
-                    correctedanswers;
 
                 bool didWin = didWinQuiz(
-                    totalQuestions, correctAnswers);
+                    total, currentQuestionIndex);
+
 
                 if (didWin) {
                   ApiServicestogetMatch
                       .giveResulOftMatch("win");
                   _showResult(
                       "Won",
-                      count.toString(),
-                      correctedanswers.toString());
+                     total.toString(),
+                      currentQuestionIndex.toString());
                 } else {
                   ApiServicestogetMatch
                       .giveResulOftMatch("loss");
                   _showResult(
                       "Lost",
-                      count.toString(),
-                      correctedanswers.toString());
+                      total.toString(),
+                      currentQuestionIndex.toString());
                 }
+
               },
               child: const Text("Done",style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w300),
               ),

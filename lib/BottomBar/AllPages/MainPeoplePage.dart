@@ -471,7 +471,7 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
         // Show the dialog
         AlertDialog dialog = AlertDialog(
           title: const Text('Invite has been sent'),
-          content: const SingleChildScrollView(
+          content:  SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 Text('Waiting for 30 people to join'),

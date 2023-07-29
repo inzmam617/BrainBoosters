@@ -56,7 +56,7 @@ class _SignUpEmailPasswordState extends State<SignUpEmailPassword> {
                   child: TextFormField(
                     controller: name,
 
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.symmetric(horizontal: 20),
 
@@ -64,7 +64,7 @@ class _SignUpEmailPasswordState extends State<SignUpEmailPassword> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
 
                 Container(
                   decoration: const BoxDecoration(
@@ -80,7 +80,7 @@ class _SignUpEmailPasswordState extends State<SignUpEmailPassword> {
                   child: TextFormField(
                     controller: email,
 
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.symmetric(horizontal: 20),
 
@@ -88,7 +88,7 @@ class _SignUpEmailPasswordState extends State<SignUpEmailPassword> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
                 Container(
                   decoration: const BoxDecoration(
                       color: Colors.white,
@@ -103,7 +103,7 @@ class _SignUpEmailPasswordState extends State<SignUpEmailPassword> {
                   child: TextFormField(
                     controller: pass,
 
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.symmetric(horizontal: 20),
 
@@ -111,7 +111,7 @@ class _SignUpEmailPasswordState extends State<SignUpEmailPassword> {
                     ),
                   ),
                 ),
-                SizedBox(height: 50,),
+                const SizedBox(height: 50,),
                 SizedBox(
                   height: 35,
                   width: MediaQuery.of(context).size.width * 0.5,
@@ -136,7 +136,7 @@ class _SignUpEmailPasswordState extends State<SignUpEmailPassword> {
                               content: Text('Student created successfully'),
                             ));
                             Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                              return LoginEmailPassword();
+                              return const LoginEmailPassword();
                             }));
                           }
                           else{

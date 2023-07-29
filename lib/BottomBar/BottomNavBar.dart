@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,20 +34,26 @@ class _BottomNavBarState extends State<BottomNavBar> {
   }
   late int selectedIndex ;
   void _handleIncomingMessage(data) {
-
+    print(data);
     setState(() {
-      Map<String, String> message = {
+      Map<String, dynamic> quizData = {
+        'courseName': data["quizData"]["courseName"],
+        'subcourseName': data["quizData"]["subcourseName"],
+        'chapterName': data["quizData"]["chapterName"]
+
+      };
+
+      Map<String, dynamic> message = {
         'senderId': data['senderId'],
         'receiverId': data['receiverId'],
         'senderName': data['senderName'],
         'receiverName': data['receiverName'],
         'roomId': data['roomId'].toString(),
+        "quizData" : data['quizData']
       };
       if(message["receiverId"] == id){
         _assetsAudioPlayer.playlistPlayAtIndex(0);
-
-        // _assetsAudioPlayer.playlistPlayAtIndex(1);
-        // print("this is id$id");
+        print(message);
         _dialogBuilder(context, message);
       }
       print(message);
@@ -53,18 +61,25 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   }
   void _handleStartingQuize(data) {
+    print(data);
     setState(() {
-      String quizData =data["quizData"];
+      Map<String, dynamic> quizData = {
+        'courseName': data["quizData"]["courseName"],
+        'subcourseName': data["quizData"]["subcourseName"],
+        'chapterName': data["quizData"]["chapterName"],
+        "mcqs" : data["mcqs"]
+     };
       String roomId =data["roomId"];
       String senderId =data["senderId"];
       String receiverId =data["receiverId"];
-      if((roomId ==   senderId+receiverId&&id==senderId)||(roomId ==   senderId+receiverId&&id==receiverId)){
+      if((roomId ==   senderId+receiverId&&id==senderId)||(roomId == senderId+receiverId&&id==receiverId)){
         Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-          return QuizPage(courseName :quizData.split('courseName: ')[1].split(',')[0],
+          return QuizPage(courseName :quizData['courseName'],
+            mcqs: data["mcqs"],
             roomId: roomId,
             Id:id,
               MatchType: "1v1",
-              subcourseName :quizData.split('subcourseName: ')[1].split(',')[0],chapterName:quizData.split('chapterName: ')[1].split(',')[0].split('}')[0] ,);
+              subcourseName :quizData['subcourseName'],chapterName:quizData['chapterName'] ,);
         }));
       }
     });
@@ -76,11 +91,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
       id =  prefs.getString("id").toString();
     });
   }
-  Future<void> _dialogBuilder(BuildContext context, Map<String, String> message) async {
+  Future<void> _dialogBuilder(BuildContext context, Map<String, dynamic> message) async {
     showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-
         AlertDialog dialog = AlertDialog(
           title: const Text('Basic dialog title'),
           content: SingleChildScrollView(
@@ -90,7 +104,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 const SizedBox(height: 10,),
                 Text( "${message["senderName"]!} wants to send you invitation to quiz"),
                 const SizedBox(height: 10,),
-                Text( "Room Id: ${message["roomId"]!}"),
+                Text("courseName:${message["quizData"]["courseName"]}" ),
+                const SizedBox(height: 10,),
+                Text("subcourseName:${message["quizData"]["subcourseName"]}" ),
+                const SizedBox(height: 10,),
+                Text("chapterName:${message["quizData"]["chapterName"]}" ),
               ],
             ),
           ),
@@ -101,14 +119,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
               ),
               child: const Text('Accept'),
               onPressed: () {
-                Map<String, String> quizData = {
-                  "courseName": "Physics",
-                  "subcourseName": "Mechanics",
-                  "chapterName": "Motion",
-                };
                 Map<String, String> Accept = {
                   'roomId': message["roomId"]!,
-                  "quizData": quizData.toString(),
+
                 };
                 _assetsAudioPlayer.stop();
                 socket.emit("accept_invite", Accept);
@@ -160,13 +173,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
         loopMode: LoopMode.none
     );
     socket.on("inviteTo", _handleIncomingMessage);
-
     selectedIndex = widget.page;
-    // subcourses = widget.subcourses;
-    // courseName = widget.courseName;
-    // print("courseName$courseName");
     setState(() {
-
       _widgetOptions = <Widget>[
         HomePage(chapters: [],),
         MainPeoplePage(),

@@ -54,20 +54,16 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
     }
   }
 
-  String subCourseName = "";
-  String courseName = "";
-  String chapterid = "";
-  String? ChapterName  = '';
-
+  String? chapterName = "Nothing";
+  String? subCourseName = "Nothing";
+  String? courseName  = "Nothing";
   Future<void> initilize() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(()  {
-      courseName =   prefs.getString("courseName").toString();
-      subCourseName = prefs.getString("subCourseName").toString();
-      chapterid = prefs.getString("chapterId").toString();
-      ChapterName = prefs.getString("ChapterName").toString();
+    final SharedPreferences prefs =  await SharedPreferences.getInstance();
+    setState(() {
+      chapterName =  prefs.getString("ChapterName");
+      subCourseName =  prefs.getString("subCourseName");
+      courseName =  prefs.getString("courseName");
     });
-
   }
 
   initialize() async {
@@ -268,29 +264,22 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                                                         .all(Colors.white),
                                                   ),
                                                   onPressed: () {
-                                                    if(ChapterName == "null"){
+                                                    if(chapterName == "null"){
                                                       print("object");
                                                       _ShowMessage();
                                                     }else {
-                                                      Map<String,
-                                                        String> quizData = {
-                                                      "courseName": widget
-                                                          .courseName
-                                                          .toString(),
-                                                      "subcourseName": "Mechanics",
-                                                      "chapterName": "Motion"
+                                                      Map<String,String> quizData = {
+                                                      "courseName": courseName.toString(),
+                                                      "subcourseName": subCourseName.toString(),
+                                                      "chapterName": chapterName.toString()
                                                     };
-
-                                                    String data = "";
-
-                                                    Map<String,
-                                                        dynamic> message = {
+                                                    Map<String,dynamic> message = {
                                                       'senderId': id,
                                                       'receiverId': user.id,
                                                       'roomId': id + user.id,
-                                                      // "quizData" : quizData.toString(),
-                                                      // "quizData" :data,
+                                                      "quizData" : quizData,
                                                     };
+                                                    print(message);
                                                     socket.emit("invite", message);
                                                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                                                       content: Text('Invitation Sent Successful'),
@@ -386,11 +375,8 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                      print ( "chapterName:"   );
 
 
-                     print(subCourseName );
-                     print(courseName );
-                     print(chapterid );
-                     print( ChapterName  );
-                     if(ChapterName == "null"){
+
+                     if(chapterName == "null"){
                        print("object");
                        _ShowMessage();
                      }
@@ -402,7 +388,7 @@ class _MainPeoplePageState extends State<MainPeoplePage> {
                              return QuizPage(
                                  courseName: courseName,
                                  subcourseName: subCourseName,
-                                 chapterName: ChapterName,
+                                 chapterName: chapterName,
                                  Id: id,
                                  MatchType: "solo"
 

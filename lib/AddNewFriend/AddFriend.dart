@@ -159,111 +159,109 @@ class _AddFriendScreenState extends State<AddFriendScreen> {
                     child: Center(child: Text('No friends found.')),
                   );
                 }
-                return SingleChildScrollView(
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height / 2,
-                    child: Padding(
-                      padding: EdgeInsets.zero,
-                      child: ListView.builder(
-                        physics: const ScrollPhysics(),
-                        itemCount: friendsList.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final Color itemColor = itemColors[index % itemColors.length];
-                          final user = friendsList[index];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                boxShadow: const [BoxShadow(color: Colors.grey, blurRadius: 2)],
-                                borderRadius: BorderRadius.circular(30),
-                                color: itemColor,
-                              ),
-                              height: 80,
-                              width: MediaQuery.of(context).size.width * 0.9,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 18),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          height: 60,
-                                          width: 60,
-                                          decoration: const BoxDecoration(
-                                            image: DecorationImage(
-                                              image: AssetImage("assets/profile.png"),
-                                            ),
-                                            borderRadius: BorderRadius.all(Radius.circular(100)),
+                return Expanded(
+
+                  child: Padding(
+                    padding: EdgeInsets.zero,
+                    child: ListView.builder(
+                      physics: const ScrollPhysics(),
+                      itemCount: friendsList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final Color itemColor = itemColors[index % itemColors.length];
+                        final user = friendsList[index];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              boxShadow: const [BoxShadow(color: Colors.grey, blurRadius: 2)],
+                              borderRadius: BorderRadius.circular(30),
+                              color: itemColor,
+                            ),
+                            height: 80,
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        height: 60,
+                                        width: 60,
+                                        decoration: const BoxDecoration(
+                                          image: DecorationImage(
+                                            image: AssetImage("assets/profile.png"),
                                           ),
+                                          borderRadius: BorderRadius.all(Radius.circular(100)),
                                         ),
-                                        const SizedBox(width: 10),
-                                        SizedBox(
+                                      ),
+                                      const SizedBox(width: 10),
+                                      SizedBox(
 
-                                          width: MediaQuery.of(context).size.width * 0.35,
+                                        width: MediaQuery.of(context).size.width / 3,
 
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                user.name,
-                                                style: const TextStyle(color: Colors.black, fontSize: 14),
-                                              ),
-                                              const SizedBox(height: 5),
-                                              Text(
-                                                user.email,
-                                                style: const TextStyle(color: Colors.black, fontSize: 10),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const Spacer(),
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 20),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(vertical: 5),
-                                        child: SizedBox(
-                                          height: 35,
-                                          width: 90,
-                                          child: ElevatedButton(
-                                            style: ButtonStyle(
-                                              shape: MaterialStateProperty.all(
-                                                const RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                                                ),
-                                              ),
-                                              backgroundColor: MaterialStateProperty.all(Colors.white),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              user.name,
+                                              style: const TextStyle(color: Colors.black, fontSize: 14),
                                             ),
-                                            onPressed: () {
-                                              ApiServiceForHandlingRequests.sendUserReq(user.id).then((value) =>
-                                              {
-                                                Navigator.of(context).pop(),
-
-                                                print("this is the data:" +   value.toString())
-                                              });
-
-                                            },
-                                            child: const Center(
-                                              child: Text(
-                                                "Sent Req",
-                                                style: TextStyle(color: Colors.red, fontSize: 12),
+                                            const SizedBox(height: 5),
+                                            Text(
+                                              user.email,
+                                              style: const TextStyle(color: Colors.black, fontSize: 10),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const Spacer(),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 20),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 5),
+                                      child: SizedBox(
+                                        height: 30,
+                                        width: 80,
+                                        child: ElevatedButton(
+                                          style: ButtonStyle(
+                                            shape: MaterialStateProperty.all(
+                                              const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(Radius.circular(10)),
                                               ),
+                                            ),
+                                            backgroundColor: MaterialStateProperty.all(Colors.white),
+                                          ),
+                                          onPressed: () {
+                                            ApiServiceForHandlingRequests.sendUserReq(user.id).then((value) =>
+                                            {
+                                              Navigator.of(context).pop(),
+
+                                              print("this is the data:" +   value.toString())
+                                            });
+
+                                          },
+                                          child: const Center(
+                                            child: Text(
+                                              "Sent Req",
+                                              style: TextStyle(color: Colors.red, fontSize: 12),
                                             ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
-                          );
-                        },
-                      ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 )

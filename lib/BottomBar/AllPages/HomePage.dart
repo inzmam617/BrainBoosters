@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
 String? chapterName = "Nothing";
 String? subCourseName = "Nothing";
 String? courseName  = "Nothing";
-String? id  = "Nothing";
+String? id;
 Future<void> initilize() async {
   final SharedPreferences prefs =  await SharedPreferences.getInstance();
   setState(() {
@@ -51,6 +51,7 @@ Future<void> initilize() async {
     courseName =  prefs.getString("courseName");
     id =  prefs.getString("chapterId");
   });
+  print( "this is teh chapter :$id");
   ApiServicetogetSpecificChaptersLists.getChaptersLists(id!);
 }
   List <String> names  = [];
